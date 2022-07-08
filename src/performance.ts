@@ -4,13 +4,6 @@ let Panel;
 export const showPerformance = () => {
   (function (f: Window, e) {
     Stats = e();
-    /*
-    "object" === typeof exports && "undefined" !== typeof module
-      ? module.exports = e()
-      : "function" === typeof define && define.amd
-        ? define(e)
-        : f.Stats = e()
-    */
   })(window, function () {
     var f = function (top = 0, left = 0, mode = 0) {
       function e(a) {
