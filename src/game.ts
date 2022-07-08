@@ -8,7 +8,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
   height: VIEWPORT_HEIGHT,
   parent: 'viewport',
   type: Phaser.WEBGL,
-  scene: [ExampleScene],
+  scene: ExampleScene,
   physics: {
     default: 'arcade',
     arcade: {
@@ -27,6 +27,7 @@ export class GnosisGame extends Phaser.Game {
    *
    */
   constructor(config: Phaser.Types.Core.GameConfig = GameConfig) {
+    console.log(config);
     super(config);
   }
 
@@ -34,7 +35,8 @@ export class GnosisGame extends Phaser.Game {
    *
    */
   getScene(sceneKey: string) {
-    console.log('>', this.scene);
+    console.log('>');
+    console.log(this.scene.scenes);
     return this.scene.getScene(sceneKey) as GameScene;
   }
 }
