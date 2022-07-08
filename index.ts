@@ -1,1 +1,3 @@
-import './src';
+import { startEngine } from './src';
+
+startEngine();

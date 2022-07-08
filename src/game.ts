@@ -1,4 +1,5 @@
 import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from './config';
+import { ExampleScene } from './scenes/example';
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Gnosis',
@@ -6,7 +7,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
   height: VIEWPORT_HEIGHT,
   parent: 'viewport',
   type: Phaser.WEBGL,
-  scene: [],
+  scene: [ExampleScene],
   physics: {
     default: 'arcade',
     arcade: {
@@ -21,7 +22,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
 };
 
 export class GnosisGame extends Phaser.Game {
-  constructor(config: Phaser.Types.Core.GameConfig) {
+  constructor(config: Phaser.Types.Core.GameConfig = GameConfig) {
     super(config);
   }
 }

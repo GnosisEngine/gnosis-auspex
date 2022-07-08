@@ -1,3 +1,16 @@
+interface Child extends HTMLCollection, Element {
+  style: {
+    display: string;
+  };
+}
+
+interface PerformanceInstance extends Performance {
+  memory: {
+    usedJSHeapSize: number;
+    jsHeapSizeLimit: number;
+  };
+}
+
 let Stats;
 let Panel;
 
@@ -13,7 +26,7 @@ export const showPerformance = () => {
 
       function u(a) {
         for (var d = 0; d < c.children.length; d++)
-          c.children[d].style.display = d === a ? 'block' : 'none';
+          (c.children[d] as Child).style.display = d === a ? 'block' : 'none';
         l = a;
       }
       var l = 0,
@@ -38,7 +51,7 @@ export const showPerformance = () => {
         a = 0,
         r = e(new Panel('FPS', '#0ff', '#002')),
         h = e(new Panel('MS', '#0f0', '#020'));
-      if (self.performance && self.performance.memory)
+      if (self.performance && (self.performance as PerformanceInstance).memory)
         var t = e(new Panel('MB', '#f08', '#201'));
 
       u(mode % c.children.length);
@@ -60,7 +73,7 @@ export const showPerformance = () => {
             c >= g + 1e3 &&
             (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
           ) {
-            var d = performance.memory;
+            var d = (performance as PerformanceInstance).memory;
             t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
           }
           return c;
