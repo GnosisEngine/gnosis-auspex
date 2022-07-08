@@ -7,19 +7,25 @@ import { ExampleScene } from './scenes/example';
 /**
  *
  */
-function onLoad() {
-  const game = new GnosisGame(GameConfig);
-  const scene = game.getScene(ExampleScene.key);
-  console.log(scene);
-  //scene.addLayer('test');
-  console.log('Engine started.');
-  return game;
+async function onLoad(onReady: () => Promise<void> = async () => undefined) {
+  return new Promise((resolve) => {
+    const game = new GnosisGame(GameConfig, async () => {
+      const scene = game.getScene(ExampleScene.key);
+      const layer = scene.addLayer('test');
+      await onReady();
+      resolve(game);
+      console.log('Engine started.');
+    });
+  });
 }
 
 /**
  *
  */
-export const startEngine = (hidePerformance = false, loadCanvas = false) => {
+export const startEngine = async (
+  hidePerformance = false,
+  loadCanvas = false
+) => {
   if (hidePerformance === false) {
     showPerformance();
   }
@@ -27,12 +33,12 @@ export const startEngine = (hidePerformance = false, loadCanvas = false) => {
   console.log('Starting engine...');
 
   if (loadCanvas) {
-    onLoad();
+    await onLoad();
   } else if (window.addEventListener) {
-    window.addEventListener('load', onLoad, false);
+    window.addEventListener('load', async () => onLoad(), false);
   } else if ((window as any).attachEvent) {
-    (window as any).attachEvent('onload', onLoad);
+    (window as any).attachEvent('onload', async () => onLoad());
   } else {
-    window.onload = onLoad;
+    window.onload = async () => onLoad();
   }
 };

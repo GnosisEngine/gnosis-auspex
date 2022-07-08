@@ -13,13 +13,9 @@ export class GameScene extends Phaser.Scene {
     this.layers = {};
   }
 
-  preload() {
-    console.log(1);
-  }
+  preload() {}
 
-  create() {
-    console.log(2);
-  }
+  create() {}
 
   update() {}
 
@@ -57,6 +53,7 @@ export class GameScene extends Phaser.Scene {
    */
   addLayer(name: string) {
     const layer = this.add.layer();
+    layer.setName(name);
     this.layers[name] = layer;
     return layer;
   }

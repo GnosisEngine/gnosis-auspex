@@ -8,7 +8,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
   height: VIEWPORT_HEIGHT,
   parent: 'viewport',
   type: Phaser.WEBGL,
-  scene: ExampleScene,
+  scene: [ExampleScene],
   physics: {
     default: 'arcade',
     arcade: {
@@ -23,20 +23,24 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
 };
 
 export class GnosisGame extends Phaser.Game {
+  onReady: () => Promise<void>;
+
   /**
    *
    */
-  constructor(config: Phaser.Types.Core.GameConfig = GameConfig) {
-    console.log(config);
+  constructor(
+    config: Phaser.Types.Core.GameConfig = GameConfig,
+    onReady: () => Promise<void>
+  ) {
     super(config);
+    this.onReady = onReady;
+    this.events.once('ready', this.onReady, this);
   }
 
   /**
    *
    */
   getScene(sceneKey: string) {
-    console.log('>');
-    console.log(this.scene.scenes);
     return this.scene.getScene(sceneKey) as GameScene;
   }
 }
