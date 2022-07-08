@@ -13,9 +13,7 @@ export class GameScene extends Phaser.Scene {
     console.log(2);
   }
 
-  update() {
-    console.log(3);
-  }
+  update() {}
 }
 
 const json = {

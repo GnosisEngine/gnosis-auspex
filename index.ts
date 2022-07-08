@@ -1,3 +1,3 @@
 import { startEngine } from './src';
 
-startEngine();
+startEngine(false, true);

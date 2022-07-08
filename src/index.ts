@@ -14,13 +14,16 @@ function onLoad() {
 /**
  *
  */
-export const startEngine = (hidePerformance = false) => {
+export const startEngine = (hidePerformance = false, loadCanvas = false) => {
   if (hidePerformance === false) {
     showPerformance();
   }
 
   console.log('Starting engine...');
 
+  if (loadCanvas) {
+    onLoad();
+  }
   if (window.addEventListener) {
     window.addEventListener('load', onLoad, false);
   } else if ((window as any).attachEvent) {
