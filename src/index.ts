@@ -9,6 +9,7 @@ import { GameConfig, GnosisGame } from './game';
 function onLoad() {
   const game = new GnosisGame(GameConfig);
   console.log('Engine started.');
+  return game;
 }
 
 /**
@@ -23,8 +24,7 @@ export const startEngine = (hidePerformance = false, loadCanvas = false) => {
 
   if (loadCanvas) {
     onLoad();
-  }
-  if (window.addEventListener) {
+  } else if (window.addEventListener) {
     window.addEventListener('load', onLoad, false);
   } else if ((window as any).attachEvent) {
     (window as any).attachEvent('onload', onLoad);
