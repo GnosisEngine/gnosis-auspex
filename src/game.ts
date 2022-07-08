@@ -1,4 +1,5 @@
 import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from './config';
+import { GameScene } from './scenes';
 import { ExampleScene } from './scenes/example';
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
@@ -22,7 +23,18 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
 };
 
 export class GnosisGame extends Phaser.Game {
+  /**
+   *
+   */
   constructor(config: Phaser.Types.Core.GameConfig = GameConfig) {
     super(config);
+  }
+
+  /**
+   *
+   */
+  getScene(sceneKey: string) {
+    console.log('>', this.scene);
+    return this.scene.getScene(sceneKey) as GameScene;
   }
 }

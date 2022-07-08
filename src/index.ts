@@ -2,12 +2,16 @@ import './style.css';
 import 'phaser';
 import { showPerformance } from './performance';
 import { GameConfig, GnosisGame } from './game';
+import { ExampleScene } from './scenes/example';
 
 /**
  *
  */
 function onLoad() {
   const game = new GnosisGame(GameConfig);
+  const scene = game.getScene(ExampleScene.key);
+  console.log(scene);
+  //scene.addLayer('test');
   console.log('Engine started.');
   return game;
 }

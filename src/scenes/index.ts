@@ -1,8 +1,16 @@
 import * as Phaser from 'phaser';
 
+interface Layers {
+  [key: string]: Phaser.GameObjects.Layer;
+}
+
 export class GameScene extends Phaser.Scene {
+  layers: Layers;
+  loadedSprites = [];
+
   constructor(config: string | Phaser.Types.Scenes.SettingsConfig = '') {
     super(config);
+    this.layers = {};
   }
 
   preload() {
@@ -14,6 +22,44 @@ export class GameScene extends Phaser.Scene {
   }
 
   update() {}
+
+  /**
+   *
+   */
+  loadSprite(
+    config: Phaser.Types.GameObjects.Sprite.SpriteConfig,
+    path: string
+  ) {
+    this.load.image(config.key, path);
+  }
+
+  /**
+   *
+   */
+  addSprite(
+    layerName: string,
+    config: Phaser.Types.GameObjects.Sprite.SpriteConfig
+  ) {
+    const layer = this.layers[layerName];
+
+    if (layer === undefined) {
+      throw new RangeError(`${layerName} is not a valid layer`);
+    }
+
+    const sprite = this.make.sprite(config, false);
+    layer.add(sprite);
+
+    return sprite;
+  }
+
+  /**
+   *
+   */
+  addLayer(name: string) {
+    const layer = this.add.layer();
+    this.layers[name] = layer;
+    return layer;
+  }
 }
 
 const json = {
