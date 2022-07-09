@@ -10,8 +10,6 @@ interface Containers {
 
 interface Config extends Phaser.Types.Scenes.SettingsConfig {}
 
-const numbers = [];
-
 export class GameScene extends Phaser.Scene {
   layers: Layers;
   containers: Containers;
@@ -34,19 +32,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    const a = 7;
-    /*
-    numbers.push(this.add.image(32 + 0 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 1 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 2 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 3 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 4 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 5 * 50, 742, 'atlas', '0'));
-    numbers.push(this.add.image(32 + 6 * 50, 742, 'atlas', '0'));
+    const a = 8;
 
     const blitter = this.add.blitter(0, 0, 'atlas');
 
-    for (var idx = 0; idx < 50; ++idx) {
+    for (var idx = 0; idx < 5; ++idx) {
       if (idx === 38) {
         idx = 1;
       }
@@ -66,15 +56,6 @@ export class GameScene extends Phaser.Scene {
       '0',
       1
     );
-
-    numbers[0].setFrame(len[0]);
-    numbers[1].setFrame(len[1]);
-    numbers[2].setFrame(len[2]);
-    numbers[3].setFrame(len[3]);
-    numbers[4].setFrame(len[4]);
-    numbers[5].setFrame(len[5]);
-    numbers[6].setFrame(len[6]);
-    */
   }
 
   /**
