@@ -24,6 +24,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    /*
     this.loadAtlas(
       'atlas',
       [
@@ -31,9 +32,11 @@ export class GameScene extends Phaser.Scene {
       ],
       'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/veg.json'
     );
+    */
   }
 
   create() {
+    /*
     numbers.push(this.add.image(32 + 0 * 50, 742, 'atlas', '0'));
     numbers.push(this.add.image(32 + 1 * 50, 742, 'atlas', '0'));
     numbers.push(this.add.image(32 + 2 * 50, 742, 'atlas', '0'));
@@ -72,6 +75,7 @@ export class GameScene extends Phaser.Scene {
     numbers[4].setFrame(len[4]);
     numbers[5].setFrame(len[5]);
     numbers[6].setFrame(len[6]);
+    */
   }
 
   /**
