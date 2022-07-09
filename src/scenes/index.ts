@@ -10,6 +10,8 @@ interface Containers {
 
 interface Config extends Phaser.Types.Scenes.SettingsConfig {}
 
+const numbers = [];
+
 export class GameScene extends Phaser.Scene {
   layers: Layers;
   containers: Containers;
@@ -25,21 +27,71 @@ export class GameScene extends Phaser.Scene {
     this.loadAtlas(
       'atlas',
       [
-        'https://cdn.jsdelivr.net/gh/GnosisEngine/gnosis-auspex@main/assets/veg.png',
+        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/veg.png',
       ],
-      'https://cdn.jsdelivr.net/gh/GnosisEngine/gnosis-auspex@main/assets/veg.json'
+      'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/veg.json'
     );
   }
 
-  create() {}
+  create() {
+    numbers.push(this.add.image(32 + 0 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 1 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 2 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 3 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 4 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 5 * 50, 742, 'atlas', '0'));
+    numbers.push(this.add.image(32 + 6 * 50, 742, 'atlas', '0'));
 
+    const blitter = this.add.blitter(0, 0, 'atlas');
+
+    for (var idx = 0; idx < 50; ++idx) {
+      if (idx === 38) {
+        idx = 1;
+      }
+
+      const frame = idx < 10 ? 'veg0' + idx.toString() : 'veg' + idx.toString();
+
+      var bob = blitter.create(0, 0, frame);
+      // bob.data.vx = Math.random() * 10;
+      // bob.data.vy = Math.random() * 10;
+      // bob.data.bounce = 0.8 + (Math.random() * 0.3);
+      console.log(bob);
+    }
+
+    var len = Phaser.Utils.String.Pad(
+      blitter.children.list.length.toString(),
+      7,
+      '0',
+      1
+    );
+
+    numbers[0].setFrame(len[0]);
+    numbers[1].setFrame(len[1]);
+    numbers[2].setFrame(len[2]);
+    numbers[3].setFrame(len[3]);
+    numbers[4].setFrame(len[4]);
+    numbers[5].setFrame(len[5]);
+    numbers[6].setFrame(len[6]);
+  }
+
+  /**
+   *
+   */
   update() {}
 
   /**
    *
    */
-  loadAtlas(name: string, texturePaths: string[], atlasJson: string) {
-    const result = this.load.atlas(name, texturePaths, atlasJson);
+  loadAtlas(
+    name: string,
+    texturePathsOrUrls: string[],
+    atlasJsonPathsOrUrls: string
+  ) {
+    const result = this.load.atlas(
+      name,
+      texturePathsOrUrls,
+      atlasJsonPathsOrUrls
+    );
     return result;
   }
 
