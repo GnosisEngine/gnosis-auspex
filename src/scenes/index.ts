@@ -21,7 +21,15 @@ export class GameScene extends Phaser.Scene {
     this.containers = {};
   }
 
-  preload() {}
+  preload() {
+    this.loadAtlas(
+      'atlas',
+      [
+        'https://cdn.jsdelivr.net/gh/GnosisEngine/gnosis-auspex@main/assets/veg.png',
+      ],
+      'https://cdn.jsdelivr.net/gh/GnosisEngine/gnosis-auspex@main/assets/veg.json'
+    );
+  }
 
   create() {}
 
