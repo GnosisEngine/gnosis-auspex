@@ -35,8 +35,8 @@ export class GameScene extends Phaser.Scene {
     const a = 8;
 
     const blitter = this.add.blitter(0, 0, 'atlas');
-    /*
-    for (var idx = 0; idx < 5; ++idx) {
+
+    for (var idx = 1; idx < 37; ++idx) {
       if (idx === 38) {
         idx = 1;
       }
@@ -47,16 +47,7 @@ export class GameScene extends Phaser.Scene {
       // bob.data.vx = Math.random() * 10;
       // bob.data.vy = Math.random() * 10;
       // bob.data.bounce = 0.8 + (Math.random() * 0.3);
-      console.log(bob);
     }
-
-    var len = Phaser.Utils.String.Pad(
-      blitter.children.list.length.toString(),
-      7,
-      '0',
-      1
-    );
-    */
   }
 
   /**
