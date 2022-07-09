@@ -35,7 +35,7 @@ export class GameScene extends Phaser.Scene {
     const a = 8;
 
     const blitter = this.add.blitter(0, 0, 'atlas');
-
+    /*
     for (var idx = 0; idx < 5; ++idx) {
       if (idx === 38) {
         idx = 1;
@@ -56,6 +56,7 @@ export class GameScene extends Phaser.Scene {
       '0',
       1
     );
+    */
   }
 
   /**
