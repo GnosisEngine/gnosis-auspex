@@ -4,13 +4,21 @@ interface Layers {
   [key: string]: Phaser.GameObjects.Layer;
 }
 
+interface Containers {
+  [key: string]: Phaser.GameObjects.Container;
+}
+
+interface Config extends Phaser.Types.Scenes.SettingsConfig {}
+
 export class GameScene extends Phaser.Scene {
   layers: Layers;
+  containers: Containers;
   loadedSprites = [];
 
-  constructor(config: string | Phaser.Types.Scenes.SettingsConfig = '') {
+  constructor(config: string | Config = '') {
     super(config);
     this.layers = {};
+    this.containers = {};
   }
 
   preload() {}
@@ -18,6 +26,14 @@ export class GameScene extends Phaser.Scene {
   create() {}
 
   update() {}
+
+  /**
+   *
+   */
+  loadAtlas(name: string, texturePaths: string[], atlasJson: string) {
+    const result = this.load.atlas(name, texturePaths, atlasJson);
+    return result;
+  }
 
   /**
    *
@@ -32,30 +48,104 @@ export class GameScene extends Phaser.Scene {
   /**
    *
    */
-  addSprite(
-    layerName: string,
-    config: Phaser.Types.GameObjects.Sprite.SpriteConfig
-  ) {
-    const layer = this.layers[layerName];
-
-    if (layer === undefined) {
-      throw new RangeError(`${layerName} is not a valid layer`);
-    }
-
-    const sprite = this.make.sprite(config, false);
-    layer.add(sprite);
-
-    return sprite;
-  }
-
-  /**
-   *
-   */
   addLayer(name: string) {
     const layer = this.add.layer();
     layer.setName(name);
     this.layers[name] = layer;
     return layer;
+  }
+
+  /**
+   *
+   */
+  addContainer(
+    containerName: string,
+    layerName: string,
+    x: number = 0,
+    y: number = 0,
+    children: Phaser.GameObjects.GameObject[] = []
+  ) {
+    const container = this.add.container(x, y, children);
+    this.containers[containerName] = container;
+    const layer = this.getLayer(layerName);
+    layer.add(container);
+    return container;
+  }
+
+  /**
+   *
+   */
+  getLayer(name: string) {
+    const layer = this.layers[name];
+
+    if (layer === undefined) {
+      throw new RangeError(`${name} is not a defined layer`);
+    }
+
+    return layer;
+  }
+
+  /**
+   *
+   */
+  getContainer(name: string) {
+    const container = this.containers[name];
+
+    if (container === undefined) {
+      throw new RangeError(`${name} is not a defined container`);
+    }
+
+    return container;
+  }
+
+  /**
+   *
+   */
+  addSpriteToLayer(
+    layerName: string,
+    spriteConfigs:
+      | Phaser.Types.GameObjects.Sprite.SpriteConfig[]
+      | Phaser.GameObjects.Sprite[]
+  ) {
+    const layer = this.getLayer(layerName);
+    const result: Phaser.GameObjects.Sprite[] = [];
+
+    for (const config of spriteConfigs) {
+      const sprite =
+        config instanceof Phaser.GameObjects.Sprite
+          ? config
+          : this.make.sprite(config, false);
+
+      layer.add(sprite);
+      result.push(sprite);
+    }
+
+    return result;
+  }
+
+  /**
+   *
+   */
+  addSpritesToContainer(
+    name: string,
+    spriteConfigs:
+      | Phaser.Types.GameObjects.Sprite.SpriteConfig[]
+      | Phaser.GameObjects.Sprite[]
+  ) {
+    const container = this.getContainer(name);
+    const result: Phaser.GameObjects.Sprite[] = [];
+
+    for (const config of spriteConfigs) {
+      const sprite =
+        config instanceof Phaser.GameObjects.Sprite
+          ? config
+          : this.make.sprite(config, false);
+
+      container.add(sprite);
+      result.push(sprite);
+    }
+
+    return result;
   }
 }
 

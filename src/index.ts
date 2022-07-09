@@ -10,8 +10,11 @@ import { ExampleScene } from './scenes/example';
 async function onLoad(onReady: () => Promise<void> = async () => undefined) {
   return new Promise((resolve) => {
     const game = new GnosisGame(GameConfig, async () => {
+      // @TODO: Make this JSONable
       const scene = game.getScene(ExampleScene.key);
       const layer = scene.addLayer('test');
+      const container = scene.addContainer('box', 'test', 0, 0);
+
       await onReady();
       resolve(game);
       console.log('Engine started.');
