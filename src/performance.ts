@@ -14,8 +14,6 @@ interface PerformanceInstance extends Performance {
 let Stats;
 let Panel;
 
-let highestTotalGameObjects = 0;
-
 const customPanels = {};
 
 function customPanel(name: string, panel: any) {
@@ -127,6 +125,7 @@ export const showPerformance = () => {
 
       // CUSTOM PANELS ARE DEFINED HERE
       var totalGameObjects = e(new Panel('OBJ', '#0ff', '#002'));
+      var totalTextures = e(new Panel('TEX', '#0f0', '#020'));
 
       u(mode % c.children.length);
 
@@ -152,6 +151,7 @@ export const showPerformance = () => {
 
           // CUSTOM PANELS ARE UPDATED HERE
           customPanel('totalGameObjects', totalGameObjects);
+          customPanel('totalTextures', totalTextures);
 
           return c;
         },
@@ -171,17 +171,20 @@ export const showPerformance = () => {
   var stats2 = new Stats(topPosition, '85px', 1);
   var stats3 = new Stats(topPosition, '165px', 2);
   var stats4 = new Stats(topPosition, '245px', 3);
+  var stats5 = new Stats(topPosition, '325px', 4);
 
   document.body.appendChild(stats1.dom);
   document.body.appendChild(stats2.dom);
   document.body.appendChild(stats3.dom);
   document.body.appendChild(stats4.dom);
+  document.body.appendChild(stats5.dom);
 
   requestAnimationFrame(function loop() {
     stats1.update();
     stats2.update();
     stats3.update();
     stats4.update();
+    stats5.update();
     requestAnimationFrame(loop);
   });
 };

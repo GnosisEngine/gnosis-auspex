@@ -42,6 +42,7 @@ export class GameScene extends Phaser.Scene {
     blitter.create(175, 50, 'city7');
     blitter.create(200, 50, 'city8');
     blitter.create(225, 50, 'city0');
+    blitter.create(250, 50, 'city0');
   }
 
   /**
