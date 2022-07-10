@@ -1,4 +1,6 @@
-export interface GameConfig extends Phaser.Types.Core.GameConfig {}
+export interface GameConfig extends Phaser.Types.Core.GameConfig {
+  debug: true;
+}
 
 export interface SceneConfig extends Phaser.Types.Scenes.SettingsConfig {
   defaultTilePaths: string[];

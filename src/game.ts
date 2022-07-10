@@ -3,34 +3,34 @@ import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from './config';
 import { GameScene } from './scenes';
 import { ExampleScene } from './scenes/example';
 
+export const gameConfig: GameConfig = {
+  title: 'Gnosis',
+  width: VIEWPORT_WIDTH,
+  height: VIEWPORT_HEIGHT,
+  parent: 'viewport',
+  type: Phaser.WEBGL,
+  scene: [ExampleScene],
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 2000 },
+      debug: false,
+    },
+  },
+  backgroundColor: '#000033',
+  pixelArt: true,
+  roundPixels: false,
+  antialias: false,
+  debug: true,
+};
+
 export class GnosisGame extends Phaser.Game {
   onReady: () => Promise<void>;
 
   /**
    *
    */
-  constructor(
-    config: GameConfig = {
-      title: 'Gnosis',
-      width: VIEWPORT_WIDTH,
-      height: VIEWPORT_HEIGHT,
-      parent: 'viewport',
-      type: Phaser.WEBGL,
-      scene: [ExampleScene],
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { y: 2000 },
-          debug: false,
-        },
-      },
-      backgroundColor: '#000033',
-      pixelArt: true,
-      roundPixels: false,
-      antialias: false,
-    },
-    onReady: () => Promise<void>
-  ) {
+  constructor(config: GameConfig = gameConfig, onReady: () => Promise<void>) {
     super(config);
     this.onReady = onReady;
     this.events.once('ready', this.onReady, this);

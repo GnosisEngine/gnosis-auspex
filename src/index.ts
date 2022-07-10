@@ -1,7 +1,7 @@
 import './style.css';
 import 'phaser';
 import { showPerformance } from './performance';
-import { GameConfig, GnosisGame } from './game';
+import { gameConfig, GnosisGame } from './game';
 import { ExampleScene } from './scenes/example';
 
 /**
@@ -9,11 +9,27 @@ import { ExampleScene } from './scenes/example';
  */
 async function onLoad(onReady: () => Promise<void> = async () => undefined) {
   return new Promise((resolve) => {
-    const game = new GnosisGame(GameConfig, async () => {
+    const game = new GnosisGame(gameConfig, async () => {
       // @TODO: Make this JSONable
       const scene = game.getScene(ExampleScene.key);
       const layer = scene.addLayer('test');
       const container = scene.addContainer('box', 'test', 0, 0);
+
+      if (gameConfig.debug) {
+        globalThis.__debug = {
+          totalGameObjects: 0,
+        };
+
+        game.events.addListener('step', () => {
+          let totalGameObjects = 0;
+
+          for (const scene of game.scene.scenes) {
+            totalGameObjects += scene.children.length;
+          }
+
+          globalThis.__debug.totalGameObjects = totalGameObjects;
+        });
+      }
 
       await onReady();
       resolve(game);
@@ -25,11 +41,8 @@ async function onLoad(onReady: () => Promise<void> = async () => undefined) {
 /**
  *
  */
-export const startEngine = async (
-  hidePerformance = false,
-  loadCanvas = false
-) => {
-  if (hidePerformance === false) {
+export const startEngine = async (loadCanvas = false) => {
+  if (gameConfig.debug) {
     showPerformance();
   }
 

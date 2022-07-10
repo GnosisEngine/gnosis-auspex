@@ -14,78 +14,33 @@ interface PerformanceInstance extends Performance {
 let Stats;
 let Panel;
 
+let highestTotalGameObjects = 0;
+
+const customPanels = {};
+
+function customPanel(name: string, panel: any) {
+  if (customPanels[name] === undefined) {
+    customPanels[name] = {
+      key: name,
+      highest: 0,
+    };
+  }
+
+  const custom = customPanels[name];
+
+  const value = (globalThis.__debug || {})[name] || 0;
+
+  if (value > custom.highest) {
+    custom.highest = value;
+  }
+
+  panel.update(value, custom.highest);
+}
+
 export const showPerformance = () => {
   (function (f: Window, e) {
     Stats = e();
   })(window, function () {
-    var f = function (top = 0, left = 0, mode = 0) {
-      function e(a) {
-        c.appendChild(a.dom);
-        return a;
-      }
-
-      function u(a) {
-        for (var d = 0; d < c.children.length; d++)
-          (c.children[d] as Child).style.display = d === a ? 'block' : 'none';
-        l = a;
-      }
-      var l = 0,
-        c = document.createElement('div');
-      c.style.cssText =
-        'position:fixed;top:' +
-        top +
-        ';left:' +
-        left +
-        ';cursor:pointer;opacity:0.9;z-index:10000';
-      c.addEventListener(
-        'click',
-        function (a) {
-          a.preventDefault();
-          u(++l % c.children.length);
-        },
-        !1
-      );
-
-      var k = (performance || Date).now(),
-        g = k,
-        a = 0,
-        r = e(new Panel('FPS', '#0ff', '#002')),
-        h = e(new Panel('MS', '#0f0', '#020'));
-      if (self.performance && (self.performance as PerformanceInstance).memory)
-        var t = e(new Panel('MB', '#f08', '#201'));
-
-      u(mode % c.children.length);
-      // u(0);
-
-      return {
-        REVISION: 16,
-        dom: c,
-        addPanel: e,
-        showPanel: u,
-        begin: function () {
-          k = (performance || Date).now();
-        },
-        end: function () {
-          a++;
-          var c = (performance || Date).now();
-          h.update(c - k, 200);
-          if (
-            c >= g + 1e3 &&
-            (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
-          ) {
-            var d = (performance as PerformanceInstance).memory;
-            t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
-          }
-          return c;
-        },
-        update: function () {
-          k = this.end();
-        },
-        domElement: c,
-        setMode: u,
-      };
-    };
-
     Panel = function (e, f, l) {
       var c = Infinity,
         k = 0,
@@ -132,6 +87,82 @@ export const showPerformance = () => {
         },
       };
     };
+
+    var f = function (top = 0, left = 0, mode = 0) {
+      function e(a) {
+        c.appendChild(a.dom);
+        return a;
+      }
+
+      function u(a) {
+        for (var d = 0; d < c.children.length; d++)
+          (c.children[d] as Child).style.display = d === a ? 'block' : 'none';
+        l = a;
+      }
+      var l = 0,
+        c = document.createElement('div');
+      c.style.cssText =
+        'position:fixed;top:' +
+        top +
+        ';left:' +
+        left +
+        ';cursor:pointer;opacity:0.9;z-index:10000';
+      c.addEventListener(
+        'click',
+        function (a) {
+          a.preventDefault();
+          u(++l % c.children.length);
+        },
+        !1
+      );
+
+      var k = (performance || Date).now(),
+        g = k,
+        a = 0,
+        r = e(new Panel('FPS', '#0ff', '#002')),
+        h = e(new Panel('MS', '#0f0', '#020'));
+
+      if (self.performance && (self.performance as PerformanceInstance).memory)
+        var t = e(new Panel('MB', '#f08', '#201'));
+
+      // CUSTOM PANELS ARE DEFINED HERE
+      var totalGameObjects = e(new Panel('OBJ', '#0ff', '#002'));
+
+      u(mode % c.children.length);
+
+      return {
+        REVISION: 16,
+        dom: c,
+        addPanel: e,
+        showPanel: u,
+        begin: function () {
+          k = (performance || Date).now();
+        },
+        end: function () {
+          a++;
+          var c = (performance || Date).now();
+          h.update(c - k, 200);
+          if (
+            c >= g + 1e3 &&
+            (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
+          ) {
+            var d = (performance as PerformanceInstance).memory;
+            t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
+          }
+
+          // CUSTOM PANELS ARE UPDATED HERE
+          customPanel('totalGameObjects', totalGameObjects);
+
+          return c;
+        },
+        update: function () {
+          k = this.end();
+        },
+        domElement: c,
+        setMode: u,
+      };
+    };
+
     return f;
   });
 
@@ -139,15 +170,18 @@ export const showPerformance = () => {
   var stats1 = new Stats(topPosition, '5px', 0);
   var stats2 = new Stats(topPosition, '85px', 1);
   var stats3 = new Stats(topPosition, '165px', 2);
+  var stats4 = new Stats(topPosition, '245px', 3);
 
   document.body.appendChild(stats1.dom);
   document.body.appendChild(stats2.dom);
   document.body.appendChild(stats3.dom);
+  document.body.appendChild(stats4.dom);
 
   requestAnimationFrame(function loop() {
     stats1.update();
     stats2.update();
     stats3.update();
+    stats4.update();
     requestAnimationFrame(loop);
   });
 };
