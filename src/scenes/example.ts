@@ -6,6 +6,11 @@ export class ExampleScene extends GameScene {
   constructor() {
     super({
       key: ExampleScene.key,
+      defaultTilePaths: [
+        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
+      ],
+      defaultTileConfigPath:
+        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json',
     });
   }
 }

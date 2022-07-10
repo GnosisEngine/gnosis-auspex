@@ -1,3 +1,4 @@
+import type { SceneConfig } from '../index.d';
 import * as Phaser from 'phaser';
 
 interface Layers {
@@ -8,27 +9,23 @@ interface Containers {
   [key: string]: Phaser.GameObjects.Container;
 }
 
-interface Config extends Phaser.Types.Scenes.SettingsConfig {}
-
 export class GameScene extends Phaser.Scene {
   layers: Layers;
   containers: Containers;
   loadedSprites = [];
+  defaultTilePaths: string[];
+  defaultTileConfigPath: string;
 
-  constructor(config: string | Config = '') {
+  constructor(config: string | SceneConfig = '') {
     super(config);
+    this.defaultTilePaths = (config as SceneConfig).defaultTilePaths;
+    this.defaultTileConfigPath = (config as SceneConfig).defaultTileConfigPath;
     this.layers = {};
     this.containers = {};
   }
 
   preload() {
-    this.loadAtlas(
-      'atlas',
-      [
-        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
-      ],
-      'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json'
-    );
+    this.loadAtlas('atlas', this.defaultTilePaths, this.defaultTileConfigPath);
   }
 
   create() {
