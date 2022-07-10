@@ -1,4 +1,3 @@
-import { Game } from 'phaser';
 import { GameScene } from '../scenes';
 
 export class AutoTile {

@@ -84,8 +84,8 @@ export class GameScene extends Phaser.Scene {
   /**
    *
    */
-  addLayer(name: string) {
-    const layer = this.add.layer();
+  addLayer(name: string, children: Phaser.GameObjects.GameObject[] = []) {
+    const layer = this.add.layer(children);
     layer.setName(name);
     this.layers[name] = layer;
     return layer;
