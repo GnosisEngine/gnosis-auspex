@@ -36,14 +36,15 @@ export class GameScene extends Phaser.Scene {
 
     const blitter = this.add.blitter(0, 0, 'atlas');
 
-    blitter.create(25, 50, 'city1');
-    blitter.create(50, 50, 'city2');
-    blitter.create(75, 50, 'city3');
-    blitter.create(100, 50, 'city4');
-    blitter.create(125, 50, 'city5');
-    blitter.create(150, 50, 'city6');
+    blitter.create(25, 50, 'city2');
+    blitter.create(50, 50, 'city1');
+    blitter.create(75, 50, 'city4');
+    blitter.create(100, 50, 'city3');
+    blitter.create(125, 50, 'city6');
+    blitter.create(150, 50, 'city5');
     blitter.create(175, 50, 'city7');
-    blitter.create(200, 50, 'city0');
+    blitter.create(200, 50, 'city8');
+    blitter.create(225, 50, 'city0');
   }
 
   /**
