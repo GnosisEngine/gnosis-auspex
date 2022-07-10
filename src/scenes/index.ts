@@ -25,9 +25,9 @@ export class GameScene extends Phaser.Scene {
     this.loadAtlas(
       'atlas',
       [
-        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/veg.png',
+        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
       ],
-      'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/veg.json'
+      'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json'
     );
   }
 
@@ -36,18 +36,14 @@ export class GameScene extends Phaser.Scene {
 
     const blitter = this.add.blitter(0, 0, 'atlas');
 
-    for (var idx = 1; idx < 37; ++idx) {
-      if (idx === 38) {
-        idx = 1;
-      }
-
-      const frame = idx < 10 ? 'veg0' + idx.toString() : 'veg' + idx.toString();
-
-      var bob = blitter.create(0, 0, frame);
-      // bob.data.vx = Math.random() * 10;
-      // bob.data.vy = Math.random() * 10;
-      // bob.data.bounce = 0.8 + (Math.random() * 0.3);
-    }
+    blitter.create(0, 0, 'city0');
+    blitter.create(25, 0, 'city1');
+    blitter.create(50, 0, 'city2');
+    blitter.create(75, 0, 'city3');
+    blitter.create(100, 0, 'city4');
+    blitter.create(125, 0, 'city5');
+    blitter.create(150, 0, 'city6');
+    blitter.create(175, 0, 'city7');
   }
 
   /**
