@@ -45,11 +45,17 @@ export class GnosisGame extends Phaser.Game {
       this.events.addListener('step', () => {
         let totalGameObjects = 0;
         let totalTextures = 0;
+        let renderList = 0;
         let x = 0;
         let y = 0;
 
         for (const scene of this.scene.scenes as GameScene[]) {
           totalGameObjects += scene.children.length;
+
+          if (scene.autotile.blitter) {
+            renderList += scene.autotile.blitter.getRenderList().length;
+          }
+
           scene.textures.each(() => {
             totalTextures += 1;
           }, scene);
@@ -63,6 +69,7 @@ export class GnosisGame extends Phaser.Game {
         globalThis.__debug.totalTextures = totalTextures;
         globalThis.__debug.x = x;
         globalThis.__debug.y = y;
+        globalThis.__debug.renderList = renderList;
       });
     }
   }

@@ -128,6 +128,7 @@ export const showPerformance = () => {
       var totalTextures = e(new Panel('TEX', '#0f0', '#020'));
       var x = e(new Panel('X', '#f08', '#201'));
       var y = e(new Panel('Y', '#0ff', '#002'));
+      var renderList = e(new Panel('REND', '#0f0', '#020'));
 
       u(mode % c.children.length);
 
@@ -156,6 +157,7 @@ export const showPerformance = () => {
           customPanel('totalTextures', totalTextures);
           customPanel('x', x);
           customPanel('y', y);
+          customPanel('renderList', renderList);
 
           return c;
         },
@@ -178,6 +180,7 @@ export const showPerformance = () => {
   var stats5 = new Stats(topPosition, '325px', 4);
   var stats6 = new Stats(topPosition, '405px', 5);
   var stats7 = new Stats(topPosition, '485px', 6);
+  var stats8 = new Stats(topPosition, '565px', 7);
 
   document.body.appendChild(stats1.dom);
   document.body.appendChild(stats2.dom);
@@ -186,6 +189,7 @@ export const showPerformance = () => {
   document.body.appendChild(stats5.dom);
   document.body.appendChild(stats6.dom);
   document.body.appendChild(stats7.dom);
+  document.body.appendChild(stats8.dom);
 
   requestAnimationFrame(function loop() {
     stats1.update();
@@ -195,6 +199,7 @@ export const showPerformance = () => {
     stats5.update();
     stats6.update();
     stats7.update();
+    stats8.update();
     requestAnimationFrame(loop);
   });
 };

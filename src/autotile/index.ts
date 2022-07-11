@@ -10,10 +10,7 @@ import { GameScene } from '../scenes';
 /**
  *
  */
-function insertionSort(
-  inputArr: Phaser.GameObjects.Blitter[],
-  coord: 'x' | 'y'
-) {
+function insertionSort(inputArr: Phaser.GameObjects.Bob[], coord: 'x' | 'y') {
   let n = inputArr.length;
 
   for (let i = 1; i < n; i++) {
@@ -37,9 +34,9 @@ export class AutoTile {
   textureUrlsOrPaths: string[];
   jsonPathOrUrl: string;
   onCreate: (scene: GameScene, autoTile: AutoTile) => AutoTile;
-  blittersX: Phaser.GameObjects.Blitter[];
-  blittersY: Phaser.GameObjects.Blitter[];
-  blitterList: Phaser.GameObjects.DisplayList;
+  bobsX: Phaser.GameObjects.Bob[];
+  bobsY: Phaser.GameObjects.Bob[];
+  blitter: Phaser.GameObjects.Blitter;
   private needsSorting: boolean = true;
 
   constructor(
@@ -52,13 +49,13 @@ export class AutoTile {
     this.textureUrlsOrPaths = textureUrlsOrPaths;
     this.jsonPathOrUrl = jsonPathOrUrl;
     // this.onCreate = onCreate;
-    this.blittersX = [];
-    this.blittersY = [];
+    this.bobsX = [];
+    this.bobsY = [];
 
     setInterval(() => {
       if (this.needsSorting === true) {
-        insertionSort(this.blittersX, 'x');
-        insertionSort(this.blittersY, 'y');
+        insertionSort(this.bobsX, 'x');
+        insertionSort(this.bobsY, 'y');
         this.needsSorting = false;
       }
     }, BLITTER_SORT_DELAY);
@@ -75,38 +72,37 @@ export class AutoTile {
    *
    */
   create(scene: GameScene) {
-    const blitter = scene.add.blitter(-1000, -1000, '');
-    this.blitterList = blitter.displayList;
+    this.blitter = scene.add.blitter(0, 0, this.name);
     // this.onCreate(scene, this);
   }
 
   /**
    *
    */
-  addTile(scene: GameScene, x: number, y: number) {
-    const blitter = scene.add.blitter(x, y, this.name);
+  addTile(scene: GameScene, x: number, y: number, name: string) {
+    const bob = this.blitter.create(x, y, name);
 
-    if (this.blittersX[0] && x < this.blittersX[0].x) {
-      this.blittersX.unshift(blitter);
+    if (this.bobsX[0] && x < this.bobsX[0].x) {
+      this.bobsX.unshift(bob);
     } else {
-      this.blittersX.push(blitter);
+      this.bobsX.push(bob);
     }
 
-    if (this.blittersY[0] && y < this.blittersY[0].y) {
-      this.blittersY.unshift(blitter);
+    if (this.bobsY[0] && y < this.bobsY[0].y) {
+      this.bobsY.unshift(bob);
     } else {
-      this.blittersY.push(blitter);
+      this.bobsY.push(bob);
     }
 
     this.needsSorting = true;
 
-    return blitter;
+    return bob;
   }
 
   /**
    *
    */
-  static update(scene: GameScene, autotile: AutoTile) {
+  static update(scene: GameScene) {
     const currentX = scene.cameras.main.worldView.x;
     const currentY = scene.cameras.main.worldView.y;
 
@@ -115,30 +111,37 @@ export class AutoTile {
     const upperBound = currentY - TILE_HEIGHT * 3;
     const lowerBound = currentY + VIEWPORT_HEIGHT * 1.5 + TILE_HEIGHT * 3;
 
-    document.getElementById('debug').innerHTML = `
-      <div>Current X: ${currentX} / ${
-      scene.cameras.main.worldView.width
-    }x${VIEWPORT_HEIGHT}</div>
-      <div>Current Y: ${currentY}</div>
-      <div>Left Bound: ${leftBound}</div>
-      <div>Right Bound: ${rightBound}</div>
-      <div>Upper Bound: ${upperBound}</div>
-      <div>Lower Bound: ${lowerBound}</div>
-      <div>Display List: ${(autotile.blitterList || []).length}</div>
-    `;
+    const bobXLength = scene.autotile.bobsX.length;
+    const bpbYLength = scene.autotile.bobsY.length;
 
-    const blitterXLength = autotile.blittersX.length;
-    const blitterYLength = autotile.blittersY.length;
-    const purgeX: number[] = [];
-    const purgeY: number[] = [];
-
-    for (let i = 0; i < blitterXLength; i++) {
-      if (autotile.blittersX[i].x < leftBound) {
-        autotile.blittersX[i].destroy();
-        purgeX.push(i);
+    for (let i = bobXLength; i > 0; i--) {
+      const tile = scene.autotile.bobsX[i];
+      if (tile && tile.x > rightBound) {
+        tile.visible = false;
       } else {
         break;
       }
     }
+
+    for (let i = 0; i < bobXLength; i++) {
+      const tile = scene.autotile.bobsX[i];
+      if (tile && tile.x < leftBound) {
+        tile.visible = false;
+      } else {
+        break;
+      }
+    }
+
+    document.getElementById('debug').innerHTML = `
+    <div>Current X: ${currentX} / ${
+      scene.cameras.main.worldView.width
+    }x${VIEWPORT_HEIGHT}</div>
+    <div>Current Y: ${currentY}</div>
+    <div>Left Bound: ${leftBound}</div>
+    <div>Right Bound: ${rightBound}</div>
+    <div>Upper Bound: ${upperBound}</div>
+    <div>Lower Bound: ${lowerBound}</div>
+    <div>Purge X: ${scene.autotile.blitter.getRenderList().length}</div>
+  `;
   }
 }

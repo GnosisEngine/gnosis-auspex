@@ -25,25 +25,30 @@ export class GameScene extends Phaser.Scene {
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   config: SceneConfig;
-  autotile: AutoTile
+  autotile: AutoTile;
 
   constructor(config: SceneConfig) {
     super(config);
     this.config = config;
     this.layers = {};
     this.containers = {};
-    this.autotile = new AutoTile('atlas', this.config.defaultTilePaths, this.config.defaultTileConfigPath)
-  }
-
-  preload() {
-    this.autotile.preload(this)
-    this.loadAtlas(
+    this.autotile = new AutoTile(
       'atlas',
       this.config.defaultTilePaths,
       this.config.defaultTileConfigPath
     );
   }
 
+  /**
+   *
+   */
+  preload() {
+    this.autotile.preload(this);
+  }
+
+  /**
+   *
+   */
   create() {
     this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
     this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
@@ -60,18 +65,18 @@ export class GameScene extends Phaser.Scene {
     );
     this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
-    const blitter = this.add.blitter(0, 0, 'atlas');
+    this.autotile.create(this);
 
-    blitter.create(25, 50, 'city2');
-    blitter.create(50, 50, 'city1');
-    blitter.create(75, 50, 'city4');
-    blitter.create(100, 50, 'city3');
-    blitter.create(125, 50, 'city6');
-    blitter.create(150, 50, 'city5');
-    blitter.create(175, 50, 'city7');
-    blitter.create(200, 50, 'city8');
-    blitter.create(225, 50, 'city0');
-    blitter.create(250, 50, 'city0');
+    this.autotile.addTile(this, 25, 50, 'city2');
+    this.autotile.addTile(this, 50, 50, 'city1');
+    this.autotile.addTile(this, 75, 50, 'city4');
+    this.autotile.addTile(this, 100, 50, 'city3');
+    this.autotile.addTile(this, 125, 50, 'city6');
+    this.autotile.addTile(this, 150, 50, 'city5');
+    this.autotile.addTile(this, 175, 50, 'city7');
+    this.autotile.addTile(this, 200, 50, 'city8');
+    this.autotile.addTile(this, 225, 50, 'city0');
+    this.autotile.addTile(this, 250, 50, 'city0');
   }
 
   /**
@@ -92,7 +97,7 @@ export class GameScene extends Phaser.Scene {
       this.player.setVelocityY(300);
     }
 
-    AutoTile.update(this)
+    AutoTile.update(this);
   }
 
   /**
