@@ -47,6 +47,23 @@ export class AutoTile {
     // this.onCreate(scene, this);
     // Update `worldView` before first render
 
+    // @TODO load faster
+    const tileCommands = [];
+
+    for (let x = 0; x < VIEWPORT_WIDTH * 10; x += TILE_WIDTH) {
+      for (let y = 0; y < VIEWPORT_HEIGHT * 10; y += TILE_HEIGHT) {
+        tileCommands.push(
+          ((x: number, y: number) => {
+            return new Promise(() => {
+              this.addTile(x, y, 'city0');
+            });
+          })(x, y)
+        );
+      }
+    }
+
+    Promise.all(tileCommands);
+
     // Force the first cull
     scene.cameras.main.dirty = true;
   }

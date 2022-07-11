@@ -49,7 +49,7 @@ export class GameScene extends Phaser.Scene {
   /**
    *
    */
-  create() {
+  async create() {
     this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
     this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
     this.physics.add.image(0, 0, 'null'); // @TODO remove
@@ -66,12 +66,6 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
     this.autotile.create(this);
-
-    for (let x = 0; x < VIEWPORT_WIDTH * 20; x += TILE_WIDTH) {
-      for (let y = 0; y < VIEWPORT_HEIGHT * 20; y += TILE_HEIGHT) {
-        this.autotile.addTile(x, y, 'city0');
-      }
-    }
   }
 
   /**
