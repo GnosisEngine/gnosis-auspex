@@ -1,6 +1,12 @@
 import type { SceneConfig } from '../index.d';
 import * as Phaser from 'phaser';
-import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../config';
+import {
+  TILE_HEIGHT,
+  TILE_WIDTH,
+  VIEWPORT_HEIGHT,
+  VIEWPORT_WIDTH,
+} from '../config';
+import { AutoTile } from '../autotile';
 
 interface Layers {
   [key: string]: Phaser.GameObjects.Layer;
@@ -18,36 +24,41 @@ export class GameScene extends Phaser.Scene {
   defaultTileConfigPath: string;
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
-  config: SceneConfig
+  config: SceneConfig;
+  autotile: AutoTile
 
   constructor(config: SceneConfig) {
     super(config);
-    this.config = config
+    this.config = config;
     this.layers = {};
     this.containers = {};
+    this.autotile = new AutoTile('atlas', this.config.defaultTilePaths, this.config.defaultTileConfigPath)
   }
 
   preload() {
-    this.loadAtlas('atlas', this.config.defaultTilePaths, this.config.defaultTileConfigPath);
+    this.autotile.preload(this)
+    this.loadAtlas(
+      'atlas',
+      this.config.defaultTilePaths,
+      this.config.defaultTileConfigPath
+    );
   }
 
   create() {
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.player = this.physics.add.image(0, 0, 'null');
-    
-    this.player.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player, true);
-    
-    this.physics.world.setBounds(this.config.bounds.x, this.config.bounds.y, this.config.bounds.width, this.config.bounds.height);
-    this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
+    this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
+    this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
+    this.physics.add.image(0, 0, 'null'); // @TODO remove
 
-    /*
-    if (this.cameras.main.deadzone)     {
-        const graphics = this.add.graphics().setScrollFactor(0);
-        graphics.lineStyle(2, 0x00ff00, 1);
-        graphics.strokeRect(200, 200, this.cameras.main.deadzone.width, this.cameras.main.deadzone.height);
-    }
-    */
+    this.player.setCollideWorldBounds(true); // @TODO more flexible
+    this.cameras.main.startFollow(this.player, true); // @TODO more flexible
+
+    this.physics.world.setBounds(
+      this.config.bounds.x,
+      this.config.bounds.y,
+      this.config.bounds.width,
+      this.config.bounds.height
+    );
+    this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
     const blitter = this.add.blitter(0, 0, 'atlas');
 
@@ -80,6 +91,8 @@ export class GameScene extends Phaser.Scene {
     } else if (this.cursors.down.isDown) {
       this.player.setVelocityY(300);
     }
+
+    AutoTile.update(this)
   }
 
   /**

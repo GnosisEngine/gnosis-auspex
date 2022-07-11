@@ -13,9 +13,9 @@ export const Z = {
   vehicle: 9,
 };
 
-export const TILE_WIDTH = 16;
+export const TILE_WIDTH = 25;
 
-export const TILE_HEIGHT = 16;
+export const TILE_HEIGHT = 25;
 
 // export const VIEWPORT_WIDTH = 860;
 export const VIEWPORT_WIDTH = 430;
@@ -62,3 +62,5 @@ export const PERSON_CACHE_TIMEOUT = 30000;
 export const MONTHS_PER_YEAR = 13;
 
 export const DAYS_PER_MONTH = 28;
+
+export const BLITTER_SORT_DELAY = 5000;
