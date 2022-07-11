@@ -9,8 +9,8 @@ export class ExampleScene extends GameScene {
       bounds: {
         x: -1024,
         y: -1024,
-        width: 1024 * 2,
-        height: 1024 * 2,
+        width: 1024 * 20,
+        height: 1024 * 20,
       },
       defaultTilePaths: [
         'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',

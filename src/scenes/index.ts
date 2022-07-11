@@ -67,16 +67,11 @@ export class GameScene extends Phaser.Scene {
 
     this.autotile.create(this);
 
-    this.autotile.addTile(this, 25, 50, 'city2');
-    this.autotile.addTile(this, 50, 50, 'city1');
-    this.autotile.addTile(this, 75, 50, 'city4');
-    this.autotile.addTile(this, 100, 50, 'city3');
-    this.autotile.addTile(this, 125, 50, 'city6');
-    this.autotile.addTile(this, 150, 50, 'city5');
-    this.autotile.addTile(this, 175, 50, 'city7');
-    this.autotile.addTile(this, 200, 50, 'city8');
-    this.autotile.addTile(this, 225, 50, 'city0');
-    this.autotile.addTile(this, 250, 50, 'city0');
+    for (let x = 0; x < VIEWPORT_WIDTH * 20; x += TILE_WIDTH) {
+      for (let y = 0; y < VIEWPORT_HEIGHT * 20; y += TILE_HEIGHT) {
+        this.autotile.addTile(x, y, 'city0');
+      }
+    }
   }
 
   /**
