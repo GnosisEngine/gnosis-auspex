@@ -13,7 +13,7 @@ export const gameConfig: GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 2000 },
+      // gravity: { y: 2000 },
       debug: false,
     },
   },
@@ -34,6 +34,37 @@ export class GnosisGame extends Phaser.Game {
     super(config);
     this.onReady = onReady;
     this.events.once('ready', this.onReady, this);
+
+    if (gameConfig.debug) {
+      // Debugging to see what's up
+      globalThis.__debug = {
+        totalGameObjects: 0,
+        totalTextures: 0,
+      };
+
+      this.events.addListener('step', () => {
+        let totalGameObjects = 0;
+        let totalTextures = 0;
+        let x = 0;
+        let y = 0;
+
+        for (const scene of this.scene.scenes as GameScene[]) {
+          totalGameObjects += scene.children.length;
+          scene.textures.each(() => {
+            totalTextures += 1;
+          }, scene);
+          if (scene.player) {
+            x = scene.player.x;
+            y = scene.player.y;
+          }
+        }
+
+        globalThis.__debug.totalGameObjects = totalGameObjects;
+        globalThis.__debug.totalTextures = totalTextures;
+        globalThis.__debug.x = x;
+        globalThis.__debug.y = y;
+      });
+    }
   }
 
   /**

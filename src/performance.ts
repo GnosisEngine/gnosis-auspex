@@ -126,6 +126,8 @@ export const showPerformance = () => {
       // CUSTOM PANELS ARE DEFINED HERE
       var totalGameObjects = e(new Panel('OBJ', '#0ff', '#002'));
       var totalTextures = e(new Panel('TEX', '#0f0', '#020'));
+      var x = e(new Panel('X', '#f08', '#201'));
+      var y = e(new Panel('Y', '#0ff', '#002'));
 
       u(mode % c.children.length);
 
@@ -152,6 +154,8 @@ export const showPerformance = () => {
           // CUSTOM PANELS ARE UPDATED HERE
           customPanel('totalGameObjects', totalGameObjects);
           customPanel('totalTextures', totalTextures);
+          customPanel('x', x);
+          customPanel('y', y);
 
           return c;
         },
@@ -172,12 +176,16 @@ export const showPerformance = () => {
   var stats3 = new Stats(topPosition, '165px', 2);
   var stats4 = new Stats(topPosition, '245px', 3);
   var stats5 = new Stats(topPosition, '325px', 4);
+  var stats6 = new Stats(topPosition, '405px', 5);
+  var stats7 = new Stats(topPosition, '485px', 6);
 
   document.body.appendChild(stats1.dom);
   document.body.appendChild(stats2.dom);
   document.body.appendChild(stats3.dom);
   document.body.appendChild(stats4.dom);
   document.body.appendChild(stats5.dom);
+  document.body.appendChild(stats6.dom);
+  document.body.appendChild(stats7.dom);
 
   requestAnimationFrame(function loop() {
     stats1.update();
@@ -185,6 +193,8 @@ export const showPerformance = () => {
     stats3.update();
     stats4.update();
     stats5.update();
+    stats6.update();
+    stats7.update();
     requestAnimationFrame(loop);
   });
 };

@@ -1,5 +1,6 @@
 import type { SceneConfig } from '../index.d';
 import * as Phaser from 'phaser';
+import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../config';
 
 interface Layers {
   [key: string]: Phaser.GameObjects.Layer;
@@ -15,21 +16,38 @@ export class GameScene extends Phaser.Scene {
   loadedSprites = [];
   defaultTilePaths: string[];
   defaultTileConfigPath: string;
+  cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+  player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+  config: SceneConfig
 
-  constructor(config: string | SceneConfig = '') {
+  constructor(config: SceneConfig) {
     super(config);
-    this.defaultTilePaths = (config as SceneConfig).defaultTilePaths;
-    this.defaultTileConfigPath = (config as SceneConfig).defaultTileConfigPath;
+    this.config = config
     this.layers = {};
     this.containers = {};
   }
 
   preload() {
-    this.loadAtlas('atlas', this.defaultTilePaths, this.defaultTileConfigPath);
+    this.loadAtlas('atlas', this.config.defaultTilePaths, this.config.defaultTileConfigPath);
   }
 
   create() {
-    const a = 8;
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.player = this.physics.add.image(0, 0, 'null');
+    
+    this.player.setCollideWorldBounds(true);
+    this.cameras.main.startFollow(this.player, true);
+    
+    this.physics.world.setBounds(this.config.bounds.x, this.config.bounds.y, this.config.bounds.width, this.config.bounds.height);
+    this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
+
+    /*
+    if (this.cameras.main.deadzone)     {
+        const graphics = this.add.graphics().setScrollFactor(0);
+        graphics.lineStyle(2, 0x00ff00, 1);
+        graphics.strokeRect(200, 200, this.cameras.main.deadzone.width, this.cameras.main.deadzone.height);
+    }
+    */
 
     const blitter = this.add.blitter(0, 0, 'atlas');
 
@@ -48,7 +66,21 @@ export class GameScene extends Phaser.Scene {
   /**
    *
    */
-  update() {}
+  update() {
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-300);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(300);
+    }
+
+    if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-300);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(300);
+    }
+  }
 
   /**
    *

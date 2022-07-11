@@ -15,28 +15,6 @@ async function onLoad(onReady: () => Promise<void> = async () => undefined) {
       const layer = scene.addLayer('test');
       const container = scene.addContainer('box', 'test', 0, 0);
 
-      if (gameConfig.debug) {
-        globalThis.__debug = {
-          totalGameObjects: 0,
-          totalTextures: 0,
-        };
-
-        game.events.addListener('step', () => {
-          let totalGameObjects = 0;
-          let totalTextures = 0;
-
-          for (const scene of game.scene.scenes) {
-            totalGameObjects += scene.children.length;
-            scene.textures.each(() => {
-              totalTextures += 1;
-            }, scene);
-          }
-
-          globalThis.__debug.totalGameObjects = totalGameObjects;
-          globalThis.__debug.totalTextures = totalTextures;
-        });
-      }
-
       await onReady();
       resolve(game);
       console.log('Engine started.');
