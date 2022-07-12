@@ -52,8 +52,8 @@ export class GnosisGame extends Phaser.Game {
         for (const scene of this.scene.scenes as GameScene[]) {
           totalGameObjects += scene.children.length;
 
-          if (scene.autotile.blitter) {
-            renderList += scene.autotile.blitter.getRenderList().length;
+          if (scene.cityTile.blitter) {
+            renderList += scene.cityTile.blitter.children.length;
           }
 
           scene.textures.each(() => {

@@ -6,7 +6,7 @@ import {
   VIEWPORT_HEIGHT,
   VIEWPORT_WIDTH,
 } from '../config';
-import { AutoTile } from '../autotile';
+import { CityTile } from '../citytile';
 
 interface Layers {
   [key: string]: Phaser.GameObjects.Layer;
@@ -25,14 +25,15 @@ export class GameScene extends Phaser.Scene {
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   config: SceneConfig;
-  autotile: AutoTile;
+  cityTile: CityTile;
 
   constructor(config: SceneConfig) {
     super(config);
     this.config = config;
     this.layers = {};
     this.containers = {};
-    this.autotile = new AutoTile(
+    this.cityTile = new CityTile(
+      this,
       'atlas',
       this.config.defaultTilePaths,
       this.config.defaultTileConfigPath
@@ -43,7 +44,7 @@ export class GameScene extends Phaser.Scene {
    *
    */
   preload() {
-    this.autotile.preload(this);
+    this.cityTile.preload();
   }
 
   /**
@@ -65,7 +66,7 @@ export class GameScene extends Phaser.Scene {
     );
     this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
-    this.autotile.create(this);
+    this.cityTile.create();
   }
 
   /**
@@ -86,7 +87,7 @@ export class GameScene extends Phaser.Scene {
       this.player.setVelocityY(300);
     }
 
-    AutoTile.update(this);
+    this.cityTile.update();
   }
 
   /**
