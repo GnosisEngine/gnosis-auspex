@@ -89,11 +89,8 @@ export class CityTile {
     // @TODO load faster
     const tileCommands = [];
 
-    console.log((VIEWPORT_WIDTH * 10) / TILE_WIDTH);
-    console.log((VIEWPORT_HEIGHT * 10) / TILE_HEIGHT);
-
-    for (let x = 0, xLen = VIEWPORT_WIDTH * 10; x < xLen; x += TILE_WIDTH) {
-      for (let y = 0, yLen = VIEWPORT_HEIGHT * 10; y < yLen; y += TILE_HEIGHT) {
+    for (let x = 0, xLen = VIEWPORT_WIDTH * 15; x < xLen; x += TILE_WIDTH) {
+      for (let y = 0, yLen = VIEWPORT_HEIGHT * 15; y < yLen; y += TILE_HEIGHT) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
@@ -171,10 +168,10 @@ export class CityTile {
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
 
-    const leftBound = cameraX - TILE_WIDTH * 3;
-    const rightBound = cameraX + VIEWPORT_WIDTH * 1.5 + TILE_WIDTH * 3;
-    const topBound = cameraY - TILE_HEIGHT * 3;
-    const bottomBound = cameraY + VIEWPORT_HEIGHT * 1.5 + TILE_HEIGHT * 3;
+    const leftBound = cameraX - TILE_WIDTH;
+    const rightBound = cameraX + VIEWPORT_WIDTH;
+    const topBound = cameraY - TILE_HEIGHT;
+    const bottomBound = cameraY + VIEWPORT_HEIGHT;
 
     let invis = 0,
       vis = 0;
@@ -187,7 +184,12 @@ export class CityTile {
       const blitter = this.blitterMap[index];
 
       for (let i = 0, len = blitter.children.length; i < len; i++) {
-        const tile = blitter.children.getAt(i);
+        const tile = blitter.children.getAt(0)
+
+        if (tile.visible === true) {
+        } else if (tile.visible === false) {
+        }
+
         tile.visible = true;
         vis += 1;
 
