@@ -36,6 +36,8 @@ export class CityTile {
   textureUrlsOrPaths: string[];
   jsonPathOrUrl: string;
   onCreate: (scene: GameScene, cityTile: CityTile) => CityTile;
+  lastCameraX: number;
+  lastCameraY: number;
   blitterMap: {
     [key: number]: Phaser.GameObjects.Blitter;
   };
@@ -157,18 +159,22 @@ export class CityTile {
    *
    */
   update() {
-    const now = Date.now();
-    if (!this.scene.cameras.main.dirty) {
+    const cameraX = this.scene.cameras.main.worldView.x;
+    const cameraY = this.scene.cameras.main.worldView.y;
+
+    if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
 
-    const currentX = this.scene.cameras.main.worldView.x;
-    const currentY = this.scene.cameras.main.worldView.y;
+    const now = Date.now();
 
-    const leftBound = currentX - TILE_WIDTH * 3;
-    const rightBound = currentX + VIEWPORT_WIDTH * 1.5 + TILE_WIDTH * 3;
-    const upperBound = currentY - TILE_HEIGHT * 3;
-    const lowerBound = currentY + VIEWPORT_HEIGHT * 1.5 + TILE_HEIGHT * 3;
+    this.lastCameraX = cameraX;
+    this.lastCameraY = cameraY;
+
+    const leftBound = cameraX - TILE_WIDTH * 3;
+    const rightBound = cameraX + VIEWPORT_WIDTH * 1.5 + TILE_WIDTH * 3;
+    const topBound = cameraY - TILE_HEIGHT * 3;
+    const bottomBound = cameraY + VIEWPORT_HEIGHT * 1.5 + TILE_HEIGHT * 3;
 
     let invis = 0,
       vis = 0;
@@ -182,13 +188,25 @@ export class CityTile {
 
       for (let i = 0, len = blitter.children.length; i < len; i++) {
         const tile = blitter.children.getAt(i);
+        tile.visible = true;
+        vis += 1;
 
-        if (tile && tile.x > rightBound) {
+        if (tile.x > rightBound) {
           tile.visible = false;
           invis += 1;
-        } else {
-          tile.visible = true;
-          vis += 1;
+          vis -= 1;
+        } else if (tile.x < leftBound) {
+          tile.visible = false;
+          invis += 1;
+          vis -= 1;
+        } else if (tile.y > bottomBound) {
+          tile.visible = false;
+          invis += 1;
+          vis -= 1;
+        } else if (tile.y < topBound) {
+          tile.visible = false;
+          invis += 1;
+          vis -= 1;
         }
       }
     }
@@ -196,12 +214,12 @@ export class CityTile {
     document.getElementById('debug').innerHTML = `
     <div>Update: ${Date.now()}</div>
     <div>Time: ${Date.now() - now}</div>
-    <div>Current X: ${currentX}</div>
-    <div>Current Y: ${currentY}</div>
+    <div>Camera X: ${cameraX}</div>
+    <div>Camera Y: ${cameraY}</div>
     <div>Left Bound: ${leftBound}</div>
     <div>Right Bound: ${rightBound}</div>
-    <div>Upper Bound: ${upperBound}</div>
-    <div>Lower Bound: ${lowerBound}</div>
+    <div>Top Bound: ${topBound}</div>
+    <div>Bottom Bound: ${bottomBound}</div>
     <div>Bobs: ${this.getBobCount()}</div>
     <div>Invis: ${invis}</div>
     <div>Vis: ${vis}</div>
