@@ -184,7 +184,7 @@ export class CityTile {
       const blitter = this.blitterMap[index];
 
       for (let i = 0, len = blitter.children.length; i < len; i++) {
-        const tile = blitter.children.getAt(0)
+        const tile = blitter.children.getAt(i);
 
         if (tile.visible === true) {
         } else if (tile.visible === false) {
