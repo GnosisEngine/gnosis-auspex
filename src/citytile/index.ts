@@ -22,7 +22,13 @@ export enum CityLayers {
   ground,
 }
 
-export const CityLayerIndexes = Object.keys(CityLayers);
+export const CityLayerIndexes = Object.keys(CityLayers)
+  .filter((key) => isNaN(Number(key)) === false)
+  .map((key) => Number(key));
+
+export const CityLayerNames = Object.keys(CityLayers).filter(
+  (key) => isNaN(Number(key)) === true
+);
 
 export class CityTile {
   name: string;
@@ -95,23 +101,21 @@ export class CityTile {
 
     Promise.all(tileCommands);
 
+    this.showOnlyLayers([CityLayers.building]);
+
     // Force the first cull
     this.scene.cameras.main.dirty = true;
-
-    setTimeout(() => {
-      this.scene.getLayer(CityLayers[CityLayers.building]).visible = false;
-    }, 5000);
   }
 
   /**
    *
    */
-  showOnlyLayers(layerIndexes: string[]) {
-    for (const layerName of CityLayerIndexes) {
-      if (layerIndexes.indexOf(layerName) > -1) {
-        this.scene.getLayer(layerName).visible = true;
+  showOnlyLayers(layerIndexes: number[]) {
+    for (const index of CityLayerIndexes) {
+      if (layerIndexes.indexOf(index) > -1) {
+        this.scene.getLayer(CityLayers[index]).visible = true;
       } else {
-        this.scene.getLayer(layerName).visible = false;
+        this.scene.getLayer(CityLayers[index]).visible = false;
       }
     }
   }
@@ -126,9 +130,19 @@ export class CityTile {
     return bob;
   }
 
+  /**
+   *
+   */
   getBobCount() {
     let result = 0;
+
     for (const index of CityLayerIndexes) {
+      const layer = this.scene.getLayer(CityLayers[index]);
+
+      if (layer === undefined || layer.visible === false) {
+        continue;
+      }
+
       const blitter = this.blitterMap[index];
       result += blitter.children.length;
     }
@@ -156,6 +170,10 @@ export class CityTile {
       vis = 0;
 
     for (const index of CityLayerIndexes) {
+      if (this.scene.getLayer(CityLayers[index]).visible === false) {
+        continue;
+      }
+
       const blitter = this.blitterMap[index];
 
       for (let i = 0, len = blitter.children.length; i < len; i++) {

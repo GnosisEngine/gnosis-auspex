@@ -147,26 +147,14 @@ export class GameScene extends Phaser.Scene {
    *
    */
   getLayer(name: string) {
-    const layer = this.layers[name];
-
-    if (layer === undefined) {
-      throw new RangeError(`${name} is not a defined layer`);
-    }
-
-    return layer;
+    return this.layers[name];
   }
 
   /**
    *
    */
   getContainer(name: string) {
-    const container = this.containers[name];
-
-    if (container === undefined) {
-      throw new RangeError(`${name} is not a defined container`);
-    }
-
-    return container;
+    return this.containers[name];
   }
 
   /**
