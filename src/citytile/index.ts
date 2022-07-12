@@ -87,12 +87,15 @@ export class CityTile {
     // @TODO load faster
     const tileCommands = [];
 
-    for (let x = 0; x < VIEWPORT_WIDTH * 10; x += TILE_WIDTH) {
-      for (let y = 0; y < VIEWPORT_HEIGHT * 10; y += TILE_HEIGHT) {
+    console.log((VIEWPORT_WIDTH * 10) / TILE_WIDTH);
+    console.log((VIEWPORT_HEIGHT * 10) / TILE_HEIGHT);
+
+    for (let x = 0, xLen = VIEWPORT_WIDTH * 10; x < xLen; x += TILE_WIDTH) {
+      for (let y = 0, yLen = VIEWPORT_HEIGHT * 10; y < yLen; y += TILE_HEIGHT) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
-              this.addTile(CityLayers.building, x, y, 'city0');
+              this.addTile(CityLayers.building, x, y, 'city1');
             });
           })(x, y)
         );
@@ -191,6 +194,7 @@ export class CityTile {
     }
 
     document.getElementById('debug').innerHTML = `
+    <div>Update: ${Date.now()}</div>
     <div>Time: ${Date.now() - now}</div>
     <div>Current X: ${currentX}</div>
     <div>Current Y: ${currentY}</div>
