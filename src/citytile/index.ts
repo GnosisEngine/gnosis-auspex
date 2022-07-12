@@ -97,6 +97,23 @@ export class CityTile {
 
     // Force the first cull
     this.scene.cameras.main.dirty = true;
+
+    setTimeout(() => {
+      this.scene.getLayer(CityLayers[CityLayers.building]).visible = false;
+    }, 5000);
+  }
+
+  /**
+   *
+   */
+  showOnlyLayers(layerIndexes: string[]) {
+    for (const layerName of CityLayerIndexes) {
+      if (layerIndexes.indexOf(layerName) > -1) {
+        this.scene.getLayer(layerName).visible = true;
+      } else {
+        this.scene.getLayer(layerName).visible = false;
+      }
+    }
   }
 
   /**
@@ -139,7 +156,7 @@ export class CityTile {
       vis = 0;
 
     for (const index of CityLayerIndexes) {
-      const blitter = this.scene.cityTile.blitterMap[index];
+      const blitter = this.blitterMap[index];
 
       for (let i = 0, len = blitter.children.length; i < len; i++) {
         const tile = blitter.children.getAt(i);
