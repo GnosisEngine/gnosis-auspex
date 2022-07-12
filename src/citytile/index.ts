@@ -88,9 +88,9 @@ export class CityTile {
 
     // @TODO load faster
     const tileCommands = [];
-
-    for (let x = 0, xLen = VIEWPORT_WIDTH * 15; x < xLen; x += TILE_WIDTH) {
-      for (let y = 0, yLen = VIEWPORT_HEIGHT * 15; y < yLen; y += TILE_HEIGHT) {
+    const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
+    for (let y = 0, yLen = VIEWPORT_HEIGHT; y < yLen; y += TILE_HEIGHT) {
+      for (let x = 0, xLen = VIEWPORT_WIDTH; x < xLen; x += TILE_WIDTH) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
@@ -152,6 +152,10 @@ export class CityTile {
     return result;
   }
 
+  getTileIndex(x: number, y: number, length: number) {
+    return Math.floor(x / TILE_WIDTH) + Math.floor(y / TILE_HEIGHT) * length;
+  }
+
   /**
    *
    */
@@ -172,6 +176,11 @@ export class CityTile {
     const rightBound = cameraX + VIEWPORT_WIDTH;
     const topBound = cameraY - TILE_HEIGHT;
     const bottomBound = cameraY + VIEWPORT_HEIGHT;
+
+    const lastLeftBound = this.lastCameraX - TILE_WIDTH;
+    const lastRightBound = this.lastCameraX + VIEWPORT_WIDTH;
+    const lastTopBound = this.lastCameraY - TILE_HEIGHT;
+    const lastBottomBound = this.lastCameraY + VIEWPORT_HEIGHT;
 
     let invis = 0,
       vis = 0;
