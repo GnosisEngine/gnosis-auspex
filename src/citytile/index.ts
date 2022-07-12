@@ -154,6 +154,7 @@ export class CityTile {
    *
    */
   update() {
+    const now = Date.now();
     if (!this.scene.cameras.main.dirty) {
       return;
     }
@@ -190,6 +191,7 @@ export class CityTile {
     }
 
     document.getElementById('debug').innerHTML = `
+    <div>Time: ${Date.now() - now}</div>
     <div>Current X: ${currentX}</div>
     <div>Current Y: ${currentY}</div>
     <div>Left Bound: ${leftBound}</div>
