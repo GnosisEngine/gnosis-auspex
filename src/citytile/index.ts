@@ -125,6 +125,8 @@ export class CityTile {
 
     // Force the first cull
     this.scene.cameras.main.dirty = true;
+    this.lastCameraX = this.scene.cameras.main.worldView.x;
+    this.lastCameraY = this.scene.cameras.main.worldView.y;
   }
 
   /**
@@ -207,7 +209,7 @@ export class CityTile {
   update() {
     const cameraX = this.scene.cameras.main.worldView.x;
     const cameraY = this.scene.cameras.main.worldView.y;
-    console.log([this.lastCameraX, cameraX]);
+
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
@@ -220,14 +222,17 @@ export class CityTile {
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     // Left Bound
-    for (
-      let i = lastBounds.topLeftIndex;
-      i < lastBounds.bottomLeftIndex;
-      i += this.cityXIndexOffset
-    ) {
-      if (i > 0) {
-        break;
-      } else {
+    if (cameraX > -1) {
+      const start =
+        lastBounds.topLeftIndex < 0
+          ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
+          : lastBounds.topLeftIndex - 1;
+      const end =
+        (lastBounds.bottomLeftIndex < 0
+          ? -lastBounds.bottomLeftIndex
+          : lastBounds.bottomLeftIndex) + this.cityXIndexOffset;
+
+      for (let i = start; i <= end; i += this.cityXIndexOffset) {
         deleteTiles.push(i);
 
         if (cameraX > lastCameraX) {
@@ -257,30 +262,27 @@ export class CityTile {
           tile.visible = true;
         }
       }
-
-      this.lastCameraX = cameraX;
-      this.lastCameraY = cameraY;
     }
+
+    this.lastCameraX = cameraX;
+    this.lastCameraY = cameraY;
 
     document.getElementById('debug').innerHTML = `
       <div>Camera X: ${cameraX}</div>
       <div>Camera Y: ${cameraY}</div>
-      <div>Left Bound: ${bounds.left}</div>
-      <div>Right Bound: ${bounds.right}</div>
-      <div>Top Bound: ${bounds.top}</div>
-      <div>Bottom Bound: ${bounds.bottom}</div>
-      <div>Bobs: ${this.getBobCount()}</div>
-      <div>Top City X Index Offset: ${this.cityXIndexOffset}</div>
+      <div>Last Camera X: ${lastCameraX}</div>
+      <div>Last Camera Y: ${lastCameraY}</div>
+      <br />
       <div>Top Left Index: ${bounds.topLeftIndex}</div>
       <div>Top Right Index: ${bounds.topRightIndex}</div>
       <div>Bottom Left Index: ${bounds.bottomLeftIndex}</div>
       <div>Bottom Right Index: ${bounds.bottomRightIndex}</div>
-
+      <br />
       <div>Last Top Left Index: ${lastBounds.topLeftIndex}</div>
       <div>Last Top Right Index: ${lastBounds.topRightIndex}</div>
       <div>Last Bottom Left Index: ${lastBounds.bottomLeftIndex}</div>
       <div>Last Bottom Right Index: ${lastBounds.bottomRightIndex}</div>
-
+      <br />
       <div>Delete: ${JSON.stringify(deleteTiles)}</div>
       <div>Add: ${JSON.stringify(addTiles)}</div>
     `;
