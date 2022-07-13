@@ -88,6 +88,11 @@ export class CityTile {
       this.blitterMap[index] = blitter;
     }
 
+    const bounds = this.getBounds(
+      this.scene.cameras.main.worldView.x,
+      this.scene.cameras.main.worldView.y
+    );
+
     // @TODO load faster
     const tileCommands = [];
     const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
@@ -96,7 +101,16 @@ export class CityTile {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
-              this.addTile(CityLayers.building, x, y, 'city1');
+              const tile = this.addTile(CityLayers.building, x, y, 'city1');
+
+              if (
+                tile.x < bounds.right &&
+                tile.x > bounds.left &&
+                tile.y < bounds.bottom &&
+                tile.y > bounds.top
+              ) {
+                tile.visible = true;
+              }
             });
           })(x, y)
         );
@@ -166,12 +180,35 @@ export class CityTile {
   /**
    *
    */
+  getBounds(x: number, y: number) {
+    const left = x - TILE_WIDTH;
+    const right = x + VIEWPORT_WIDTH;
+    const top = y - TILE_HEIGHT;
+    const bottom = y + VIEWPORT_HEIGHT;
+
+    return {
+      left,
+      right,
+      top,
+      bottom,
+      topLeftIndex: this.getTileIndex(left, top),
+      topRightIndex: this.getTileIndex(right, top),
+      bottomLeftIndex: this.getTileIndex(left, bottom),
+      bottomRightIndex: this.getTileIndex(right, bottom),
+    };
+  }
+
+  /**
+   *
+   */
   update() {
     let invis = 0;
     let vis = 0;
 
     const cameraX = this.scene.cameras.main.worldView.x;
     const cameraY = this.scene.cameras.main.worldView.y;
+    const lastCameraX = this.lastCameraX;
+    const lastCameraY = this.lastCameraY;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
@@ -180,28 +217,42 @@ export class CityTile {
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
 
-    const leftBound = cameraX - TILE_WIDTH;
-    const rightBound = cameraX + VIEWPORT_WIDTH;
-    const topBound = cameraY - TILE_HEIGHT;
-    const bottomBound = cameraY + VIEWPORT_HEIGHT;
+    const bounds = this.getBounds(cameraX, cameraY);
+    const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
-    const topLeftIndex = this.getTileIndex(leftBound, topBound);
-    const topRightIndex = this.getTileIndex(leftBound, topBound);
-    const bottomLeftIndex = this.getTileIndex(leftBound, topBound);
-    const bottomRightIndex = this.getTileIndex(leftBound, topBound);
+    const deleteTiles = [];
+    const addTiles = [];
 
-    const lastLeftBound = this.lastCameraX - TILE_WIDTH;
-    const lastRightBound = this.lastCameraX + VIEWPORT_WIDTH;
-    const lastTopBound = this.lastCameraY - TILE_HEIGHT;
-    const lastBottomBound = this.lastCameraY + VIEWPORT_HEIGHT;
+    if (
+      lastBounds.topLeftIndex > -1 &&
+      bounds.topLeftIndex !== lastBounds.topLeftIndex
+    ) {
+      deleteTiles.push(lastBounds.topLeftIndex);
+      //addTiles.push()
+    }
 
-    const lastTopLeftIndex = this.getTileIndex(lastLeftBound, lastTopBound);
-    const lastTopRightIndex = this.getTileIndex(lastLeftBound, lastTopBound);
-    const lastBottomLeftIndex = this.getTileIndex(lastLeftBound, lastTopBound);
-    const lastBottomRightIndex = this.getTileIndex(lastLeftBound, lastTopBound);
+    if (
+      lastBounds.topRightIndex > -1 &&
+      bounds.topRightIndex !== lastBounds.topRightIndex
+    ) {
+      deleteTiles.push(lastBounds.topRightIndex);
+      //addTiles.push()
+    }
 
-    if (topLeftIndex !== lastTopLeftIndex) {
-      console.log(topLeftIndex, lastTopLeftIndex);
+    if (
+      lastBounds.bottomLeftIndex > -1 &&
+      bounds.bottomLeftIndex !== lastBounds.bottomLeftIndex
+    ) {
+      deleteTiles.push(lastBounds.bottomLeftIndex);
+      //addTiles.push()
+    }
+
+    if (
+      lastBounds.bottomRightIndex > -1 &&
+      bounds.bottomRightIndex !== lastBounds.bottomRightIndex
+    ) {
+      deleteTiles.push(lastBounds.bottomRightIndex);
+      //addTiles.push()
     }
 
     for (const index of CityLayerIndexes) {
@@ -211,6 +262,20 @@ export class CityTile {
 
       const blitter = this.blitterMap[index];
 
+      for (const tileIndex of deleteTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+        if (tile) {
+          tile.visible = false;
+        }
+      }
+
+      for (const tileIndex of addTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+        if (tile) {
+          tile.visible = true;
+        }
+      }
+      /*
       for (let i = 0, len = blitter.children.length; i < len; i++) {
         const tile = blitter.children.getAt(i);
 
@@ -221,36 +286,48 @@ export class CityTile {
         tile.visible = true;
         vis += 1;
 
-        if (tile.x > rightBound) {
+        if (tile.x > bounds.right) {
           tile.visible = false;
           invis += 1;
           vis -= 1;
-        } else if (tile.x < leftBound) {
+        } else if (tile.x < bounds.left) {
           tile.visible = false;
           invis += 1;
           vis -= 1;
-        } else if (tile.y > bottomBound) {
+        } else if (tile.y > bounds.bottom) {
           tile.visible = false;
           invis += 1;
           vis -= 1;
-        } else if (tile.y < topBound) {
+        } else if (tile.y < bounds.top) {
           tile.visible = false;
           invis += 1;
           vis -= 1;
         }
       }
+      */
     }
 
     document.getElementById('debug').innerHTML = `
       <div>Camera X: ${cameraX}</div>
       <div>Camera Y: ${cameraY}</div>
-      <div>Left Bound: ${leftBound}</div>
-      <div>Right Bound: ${rightBound}</div>
-      <div>Top Bound: ${topBound}</div>
-      <div>Bottom Bound: ${bottomBound}</div>
+      <div>Left Bound: ${bounds.left}</div>
+      <div>Right Bound: ${bounds.right}</div>
+      <div>Top Bound: ${bounds.top}</div>
+      <div>Bottom Bound: ${bounds.bottom}</div>
       <div>Bobs: ${this.getBobCount()}</div>
-      <div>Top Left Index: ${topLeftIndex}</div>
-      <div>Last Top Left Index: ${lastTopLeftIndex}</div>
+
+      <div>Top Left Index: ${bounds.topLeftIndex}</div>
+      <div>Top Right Index: ${bounds.topRightIndex}</div>
+      <div>Bottom Left Index: ${bounds.bottomLeftIndex}</div>
+      <div>Bottom Right Index: ${bounds.bottomRightIndex}</div>
+
+      <div>Last Top Left Index: ${lastBounds.topLeftIndex}</div>
+      <div>Last Top Right Index: ${lastBounds.topRightIndex}</div>
+      <div>Last Bottom Left Index: ${lastBounds.bottomLeftIndex}</div>
+      <div>Last Bottom Right Index: ${lastBounds.bottomRightIndex}</div>
+
+      <div>Delete: ${JSON.stringify(deleteTiles)}</div>
+      <div>Add: ${JSON.stringify(addTiles)}</div>
     `;
   }
 
