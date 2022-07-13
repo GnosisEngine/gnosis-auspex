@@ -106,10 +106,10 @@ export class CityTile {
               const tile = this.addTile(CityLayers.building, x, y, 'city1');
 
               if (
-                tile.x < bounds.right &&
-                tile.x > bounds.left &&
-                tile.y < bounds.bottom &&
-                tile.y > bounds.top
+                tile.x <= bounds.right - TILE_WIDTH &&
+                tile.x >= bounds.left + TILE_WIDTH &&
+                tile.y <= bounds.bottom - TILE_HEIGHT &&
+                tile.y >= bounds.top + TILE_HEIGHT
               ) {
                 tile.visible = true;
               }
@@ -227,6 +227,7 @@ export class CityTile {
         lastBounds.topLeftIndex < 0
           ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
           : lastBounds.topLeftIndex - 1;
+
       const end =
         (lastBounds.bottomLeftIndex < 0
           ? -lastBounds.bottomLeftIndex
