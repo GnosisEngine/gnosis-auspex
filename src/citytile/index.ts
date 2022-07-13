@@ -1,4 +1,3 @@
-import { Game } from 'phaser';
 import {
   TILE_HEIGHT,
   TILE_WIDTH,
@@ -35,26 +34,29 @@ export class CityTile {
   scene: GameScene;
   textureUrlsOrPaths: string[];
   jsonPathOrUrl: string;
-  onCreate: (scene: GameScene, cityTile: CityTile) => CityTile;
   lastCameraX: number;
   lastCameraY: number;
   blitterMap: {
     [key: number]: Phaser.GameObjects.Blitter;
   };
+  cityWidth: number;
+  cityHeight: number;
 
   constructor(
     scene: GameScene,
     name: string,
     textureUrlsOrPaths: string[],
-    jsonPathOrUrl: string
-    // onCreate: () => CityTile
+    jsonPathOrUrl: string,
+    cityWidth: number = VIEWPORT_WIDTH * 3,
+    cityHeight: number = VIEWPORT_HEIGHT * 3
   ) {
     this.scene = scene;
     this.name = name;
     this.textureUrlsOrPaths = textureUrlsOrPaths;
     this.jsonPathOrUrl = jsonPathOrUrl;
-    // this.onCreate = onCreate;
     this.blitterMap = {};
+    this.cityWidth = cityWidth;
+    this.cityHeight = cityHeight;
   }
 
   /**
@@ -90,7 +92,7 @@ export class CityTile {
     const tileCommands = [];
     const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
     for (let y = 0, yLen = VIEWPORT_HEIGHT; y < yLen; y += TILE_HEIGHT) {
-      for (let x = 0, xLen = VIEWPORT_WIDTH; x < xLen; x += TILE_WIDTH) {
+      for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
@@ -152,22 +154,28 @@ export class CityTile {
     return result;
   }
 
-  getTileIndex(x: number, y: number, length: number) {
-    return Math.floor(x / TILE_WIDTH) + Math.floor(y / TILE_HEIGHT) * length;
+  /**
+   *
+   */
+  getTileIndex(x: number, y: number) {
+    return (
+      Math.floor(x / TILE_WIDTH) + Math.floor(y / TILE_HEIGHT) * this.cityWidth
+    );
   }
 
   /**
    *
    */
   update() {
+    let invis = 0;
+    let vis = 0;
+
     const cameraX = this.scene.cameras.main.worldView.x;
     const cameraY = this.scene.cameras.main.worldView.y;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
-
-    const now = Date.now();
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
@@ -177,13 +185,24 @@ export class CityTile {
     const topBound = cameraY - TILE_HEIGHT;
     const bottomBound = cameraY + VIEWPORT_HEIGHT;
 
+    const topLeftIndex = this.getTileIndex(leftBound, topBound);
+    const topRightIndex = this.getTileIndex(leftBound, topBound);
+    const bottomLeftIndex = this.getTileIndex(leftBound, topBound);
+    const bottomRightIndex = this.getTileIndex(leftBound, topBound);
+
     const lastLeftBound = this.lastCameraX - TILE_WIDTH;
     const lastRightBound = this.lastCameraX + VIEWPORT_WIDTH;
     const lastTopBound = this.lastCameraY - TILE_HEIGHT;
     const lastBottomBound = this.lastCameraY + VIEWPORT_HEIGHT;
 
-    let invis = 0,
-      vis = 0;
+    const lastTopLeftIndex = this.getTileIndex(lastLeftBound, lastTopBound);
+    const lastTopRightIndex = this.getTileIndex(lastLeftBound, lastTopBound);
+    const lastBottomLeftIndex = this.getTileIndex(lastLeftBound, lastTopBound);
+    const lastBottomRightIndex = this.getTileIndex(lastLeftBound, lastTopBound);
+
+    if (topLeftIndex !== lastTopLeftIndex) {
+      console.log(topLeftIndex, lastTopLeftIndex);
+    }
 
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
@@ -223,18 +242,16 @@ export class CityTile {
     }
 
     document.getElementById('debug').innerHTML = `
-    <div>Update: ${Date.now()}</div>
-    <div>Time: ${Date.now() - now}</div>
-    <div>Camera X: ${cameraX}</div>
-    <div>Camera Y: ${cameraY}</div>
-    <div>Left Bound: ${leftBound}</div>
-    <div>Right Bound: ${rightBound}</div>
-    <div>Top Bound: ${topBound}</div>
-    <div>Bottom Bound: ${bottomBound}</div>
-    <div>Bobs: ${this.getBobCount()}</div>
-    <div>Invis: ${invis}</div>
-    <div>Vis: ${vis}</div>
-  `;
+      <div>Camera X: ${cameraX}</div>
+      <div>Camera Y: ${cameraY}</div>
+      <div>Left Bound: ${leftBound}</div>
+      <div>Right Bound: ${rightBound}</div>
+      <div>Top Bound: ${topBound}</div>
+      <div>Bottom Bound: ${bottomBound}</div>
+      <div>Bobs: ${this.getBobCount()}</div>
+      <div>Top Left Index: ${topLeftIndex}</div>
+      <div>Last Top Left Index: ${lastTopLeftIndex}</div>
+    `;
   }
 
   /**
