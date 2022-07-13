@@ -202,26 +202,19 @@ export class CityTile {
    *
    */
   update() {
-    let invis = 0;
-    let vis = 0;
-
     const cameraX = this.scene.cameras.main.worldView.x;
     const cameraY = this.scene.cameras.main.worldView.y;
-    const lastCameraX = this.lastCameraX;
-    const lastCameraY = this.lastCameraY;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
 
-    this.lastCameraX = cameraX;
-    this.lastCameraY = cameraY;
-
-    const bounds = this.getBounds(cameraX, cameraY);
-    const lastBounds = this.getBounds(lastCameraX, lastCameraY);
-
     const deleteTiles = [];
     const addTiles = [];
+    const lastCameraX = this.lastCameraX;
+    const lastCameraY = this.lastCameraY;
+    const bounds = this.getBounds(cameraX, cameraY);
+    const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     if (
       lastBounds.topLeftIndex > -1 &&
@@ -305,6 +298,9 @@ export class CityTile {
         }
       }
       */
+
+      this.lastCameraX = cameraX;
+      this.lastCameraY = cameraY;
     }
 
     document.getElementById('debug').innerHTML = `
