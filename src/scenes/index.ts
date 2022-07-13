@@ -67,6 +67,9 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
     this.cityTile.create();
+
+    this.cityTile.lastCameraX = this.cameras.main.worldView.x;
+    this.cityTile.lastCameraY = this.cameras.main.worldView.y;
   }
 
   /**

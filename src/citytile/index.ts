@@ -41,14 +41,14 @@ export class CityTile {
   };
   cityWidth: number;
   cityHeight: number;
-  cityWidthIndexOffset: number;
+  cityXIndexOffset: number;
 
   constructor(
     scene: GameScene,
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = VIEWPORT_WIDTH * 3,
+    cityWidth: number = 475, //VIEWPORT_WIDTH * 3,
     cityHeight: number = VIEWPORT_HEIGHT * 3
   ) {
     this.scene = scene;
@@ -58,7 +58,7 @@ export class CityTile {
     this.blitterMap = {};
     this.cityWidth = cityWidth;
     this.cityHeight = cityHeight;
-    this.cityWidthIndexOffset = Math.ceil(cityWidth / TILE_WIDTH);
+    this.cityXIndexOffset = Math.ceil(cityWidth / TILE_WIDTH);
   }
 
   /**
@@ -175,7 +175,8 @@ export class CityTile {
    */
   getTileIndex(x: number, y: number) {
     return (
-      Math.floor(x / TILE_WIDTH) + Math.floor(y / TILE_HEIGHT) * this.cityWidth
+      Math.ceil(x / TILE_WIDTH) +
+      Math.ceil(y / TILE_HEIGHT) * this.cityXIndexOffset
     );
   }
 
@@ -206,7 +207,7 @@ export class CityTile {
   update() {
     const cameraX = this.scene.cameras.main.worldView.x;
     const cameraY = this.scene.cameras.main.worldView.y;
-
+    console.log([this.lastCameraX, cameraX]);
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
@@ -218,46 +219,24 @@ export class CityTile {
     const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
-    if (
-      lastBounds.topLeftIndex > -1 &&
-      bounds.topLeftIndex !== lastBounds.topLeftIndex
+    // Left Bound
+    for (
+      let i = lastBounds.topLeftIndex;
+      i < lastBounds.bottomLeftIndex;
+      i += this.cityXIndexOffset
     ) {
-      for (
-        let i = lastBounds.topLeftIndex;
-        i < lastBounds.bottomLeftIndex;
-        i++
-      ) {
+      if (i > 0) {
+        break;
+      } else {
         deleteTiles.push(i);
-        addTiles.push(i + this.cityWidthIndexOffset);
+
+        if (cameraX > lastCameraX) {
+          // addTiles.push(i + this.cityXIndexOffset - 3);
+        }
       }
-
-      //addTiles.push()
-    }
-    /*
-    if (
-      lastBounds.topRightIndex > -1 &&
-      bounds.topRightIndex !== lastBounds.topRightIndex
-    ) {
-      deleteTiles.push(lastBounds.topRightIndex);
-      //addTiles.push()
     }
 
-    if (
-      lastBounds.bottomLeftIndex > -1 &&
-      bounds.bottomLeftIndex !== lastBounds.bottomLeftIndex
-    ) {
-      deleteTiles.push(lastBounds.bottomLeftIndex);
-      //addTiles.push()
-    }
-
-    if (
-      lastBounds.bottomRightIndex > -1 &&
-      bounds.bottomRightIndex !== lastBounds.bottomRightIndex
-    ) {
-      deleteTiles.push(lastBounds.bottomRightIndex);
-      //addTiles.push()
-    }
-*/
+    // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
         continue;
@@ -278,36 +257,6 @@ export class CityTile {
           tile.visible = true;
         }
       }
-      /*
-      for (let i = 0, len = blitter.children.length; i < len; i++) {
-        const tile = blitter.children.getAt(i);
-
-        if (tile.visible === true) {
-        } else if (tile.visible === false) {
-        }
-
-        tile.visible = true;
-        vis += 1;
-
-        if (tile.x > bounds.right) {
-          tile.visible = false;
-          invis += 1;
-          vis -= 1;
-        } else if (tile.x < bounds.left) {
-          tile.visible = false;
-          invis += 1;
-          vis -= 1;
-        } else if (tile.y > bounds.bottom) {
-          tile.visible = false;
-          invis += 1;
-          vis -= 1;
-        } else if (tile.y < bounds.top) {
-          tile.visible = false;
-          invis += 1;
-          vis -= 1;
-        }
-      }
-      */
 
       this.lastCameraX = cameraX;
       this.lastCameraY = cameraY;
@@ -321,7 +270,7 @@ export class CityTile {
       <div>Top Bound: ${bounds.top}</div>
       <div>Bottom Bound: ${bounds.bottom}</div>
       <div>Bobs: ${this.getBobCount()}</div>
-
+      <div>Top City X Index Offset: ${this.cityXIndexOffset}</div>
       <div>Top Left Index: ${bounds.topLeftIndex}</div>
       <div>Top Right Index: ${bounds.topRightIndex}</div>
       <div>Bottom Left Index: ${bounds.bottomLeftIndex}</div>
