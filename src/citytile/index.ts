@@ -41,6 +41,7 @@ export class CityTile {
   };
   cityWidth: number;
   cityHeight: number;
+  cityWidthIndexOffset: number;
 
   constructor(
     scene: GameScene,
@@ -57,6 +58,7 @@ export class CityTile {
     this.blitterMap = {};
     this.cityWidth = cityWidth;
     this.cityHeight = cityHeight;
+    this.cityWidthIndexOffset = Math.ceil(cityWidth / TILE_WIDTH);
   }
 
   /**
@@ -220,10 +222,18 @@ export class CityTile {
       lastBounds.topLeftIndex > -1 &&
       bounds.topLeftIndex !== lastBounds.topLeftIndex
     ) {
-      deleteTiles.push(lastBounds.topLeftIndex);
+      for (
+        let i = lastBounds.topLeftIndex;
+        i < lastBounds.bottomLeftIndex;
+        i++
+      ) {
+        deleteTiles.push(i);
+        addTiles.push(i + this.cityWidthIndexOffset);
+      }
+
       //addTiles.push()
     }
-
+    /*
     if (
       lastBounds.topRightIndex > -1 &&
       bounds.topRightIndex !== lastBounds.topRightIndex
@@ -247,7 +257,7 @@ export class CityTile {
       deleteTiles.push(lastBounds.bottomRightIndex);
       //addTiles.push()
     }
-
+*/
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
         continue;
