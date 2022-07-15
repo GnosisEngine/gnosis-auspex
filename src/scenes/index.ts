@@ -28,7 +28,8 @@ export class GameScene extends Phaser.Scene {
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   config: SceneConfig;
   cityTile: CityTile;
-  rect: Phaser.GameObjects.Rectangle;
+
+  debugContainer: Phaser.GameObjects.Container;
 
   constructor(config: SceneConfig) {
     super(config);
@@ -72,8 +73,17 @@ export class GameScene extends Phaser.Scene {
     this.cityTile.create();
 
     // @TODO move to debug
-    this.rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
-    this.rect.setStrokeStyle(2, 0x1a65ac);
+    const rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
+    rect.setStrokeStyle(2, 0x1a65ac);
+    const text = this.add.text(
+      rect.width / -2,
+      rect.height / -2,
+      `${rect.x}/${rect.y}`,
+      {
+        fontFamily: 'serif',
+      }
+    );
+    this.debugContainer.add([rect, text]);
   }
 
   /**
@@ -97,8 +107,14 @@ export class GameScene extends Phaser.Scene {
     this.cityTile.update();
 
     // @TODO move to debug
-    this.rect.x = this.player.x;
-    this.rect.y = this.player.y;
+    if (this.debugContainer) {
+      console.log('wat')
+      (
+        this.debugContainer.getAt(1) as Phaser.GameObjects.Text
+      ).text = `${this.player.x}/${this.player.y}`;
+      this.debugContainer.x = this.player.x;
+      this.debugContainer.y = this.player.y;
+    }
   }
 
   /**

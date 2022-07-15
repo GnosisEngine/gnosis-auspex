@@ -103,6 +103,7 @@ export class CityTile {
       this.scene.cameras.main.worldView.y + this.fovHeight
     );
 
+    console.log(bounds);
     // @TODO load faster
     const tileCommands = [];
     // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
@@ -187,9 +188,9 @@ export class CityTile {
    */
   getBounds(x: number, y: number) {
     const left = x - TILE_WIDTH;
-    const right = x + VIEWPORT_WIDTH;
+    const right = x + this.fovWidth;
     const top = y - TILE_HEIGHT;
-    const bottom = y + VIEWPORT_HEIGHT;
+    const bottom = y + this.fovHeight;
 
     return {
       left,
