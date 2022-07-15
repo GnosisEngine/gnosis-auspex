@@ -17,11 +17,13 @@ export const TILE_WIDTH = 25;
 
 export const TILE_HEIGHT = 25;
 
-// export const VIEWPORT_WIDTH = 860;
-export const VIEWPORT_WIDTH = 430;
+export const VIEWPORT_WIDTH = 430 * 2;
 
-// export const VIEWPORT_HEIGHT = 600;
-export const VIEWPORT_HEIGHT = 300;
+export const VIEWPORT_HEIGHT = 300 * 2;
+
+export const FOV_WIDTH = 430; // VIEWPORT_WIDTH; @TODO
+
+export const FOV_HEIGHT = 300; // VIEWPORT_HEIGHT; @TODO
 
 export const CITY_RING_DEPTH_MULTIPLIER = 0.005;
 

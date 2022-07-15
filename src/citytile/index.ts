@@ -1,4 +1,6 @@
 import {
+  FOV_HEIGHT,
+  FOV_WIDTH,
   TILE_HEIGHT,
   TILE_WIDTH,
   VIEWPORT_HEIGHT,
@@ -48,8 +50,8 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = 475, //VIEWPORT_WIDTH * 3,
-    cityHeight: number = VIEWPORT_HEIGHT * 3
+    cityWidth: number = VIEWPORT_WIDTH, // @TODO
+    cityHeight: number = VIEWPORT_HEIGHT // @TODO
   ) {
     this.scene = scene;
     this.name = name;
@@ -207,12 +209,13 @@ export class CityTile {
    *
    */
   update() {
-    const cameraX = this.scene.cameras.main.worldView.x;
-    const cameraY = this.scene.cameras.main.worldView.y;
+    const cameraX = this.scene.cameras.main.worldView.x + FOV_WIDTH;
+    const cameraY = this.scene.cameras.main.worldView.y + FOV_HEIGHT;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
+    console.log([this.scene.cameras.main.worldView.x, cameraX, FOV_WIDTH]);
 
     const deleteTiles = [];
     const addTiles = [];

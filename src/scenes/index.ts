@@ -1,6 +1,8 @@
 import type { SceneConfig } from '../index.d';
 import * as Phaser from 'phaser';
 import {
+  FOV_HEIGHT,
+  FOV_WIDTH,
   TILE_HEIGHT,
   TILE_WIDTH,
   VIEWPORT_HEIGHT,
@@ -26,9 +28,11 @@ export class GameScene extends Phaser.Scene {
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   config: SceneConfig;
   cityTile: CityTile;
+  rect: Phaser.GameObjects.Rectangle;
 
   constructor(config: SceneConfig) {
     super(config);
+    console.log(config);
     this.config = config;
     this.layers = {};
     this.containers = {};
@@ -67,6 +71,10 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
 
     this.cityTile.create();
+
+    // @TODO move to debug
+    this.rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
+    this.rect.setStrokeStyle(2, 0x1a65ac);
   }
 
   /**
@@ -88,6 +96,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.cityTile.update();
+
+    // @TODO move to debug
+    this.rect.x = this.player.x;
+    this.rect.y = this.player.y;
   }
 
   /**

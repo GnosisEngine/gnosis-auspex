@@ -1,4 +1,5 @@
 import { GameScene } from '.';
+import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../config';
 
 export class ExampleScene extends GameScene {
   static key: string = 'example';
@@ -7,10 +8,10 @@ export class ExampleScene extends GameScene {
     super({
       key: ExampleScene.key,
       bounds: {
-        x: -1024,
-        y: -1024,
-        width: 1024 * 20,
-        height: 1024 * 20,
+        x: VIEWPORT_WIDTH / -2,
+        y: VIEWPORT_WIDTH / -2,
+        width: VIEWPORT_WIDTH * 3,
+        height: VIEWPORT_HEIGHT * 3,
       },
       defaultTilePaths: [
         'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
