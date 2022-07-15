@@ -75,14 +75,16 @@ export class GameScene extends Phaser.Scene {
     // @TODO move to debug
     const rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
     rect.setStrokeStyle(2, 0x1a65ac);
+
     const text = this.add.text(
-      rect.width / -2,
-      rect.height / -2,
-      `${rect.x}/${rect.y}`,
+      FOV_WIDTH / -2,
+      FOV_HEIGHT / -2,
+      `${FOV_WIDTH / -2}/${FOV_HEIGHT / -2}`,
       {
         fontFamily: 'serif',
       }
     );
+    this.debugContainer = this.add.container(0, 0);
     this.debugContainer.add([rect, text]);
   }
 
@@ -108,10 +110,9 @@ export class GameScene extends Phaser.Scene {
 
     // @TODO move to debug
     if (this.debugContainer) {
-      console.log('wat')
-      (
-        this.debugContainer.getAt(1) as Phaser.GameObjects.Text
-      ).text = `${this.player.x}/${this.player.y}`;
+      (this.debugContainer.getAt(1) as Phaser.GameObjects.Text).text = `${
+        FOV_WIDTH / -2 + this.player.x
+      }/${FOV_HEIGHT / -2 + this.player.y}`;
       this.debugContainer.x = this.player.x;
       this.debugContainer.y = this.player.y;
     }

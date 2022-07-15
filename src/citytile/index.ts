@@ -98,22 +98,29 @@ export class CityTile {
       this.blitterMap[index] = blitter;
     }
 
-    const bounds = this.getBounds(
-      this.scene.cameras.main.worldView.x + this.fovWidth,
-      this.scene.cameras.main.worldView.y + this.fovHeight
-    );
+    const bounds = this.getBounds(this.fovWidth / -2, this.fovHeight / -2);
 
     console.log(bounds);
     // @TODO load faster
     const tileCommands = [];
     // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
-    for (let y = bounds.top; y < bounds.bottom; y += TILE_HEIGHT) {
-      for (let x = bounds.left; x < bounds.right; x += TILE_WIDTH) {
+    for (let y = 0; y < this.cityHeight; y += TILE_HEIGHT) {
+      for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
               const tile = this.addTile(CityLayers.building, x, y, 'city1');
-              tile.visible = true;
+
+              if (
+                x >= bounds.left &&
+                x <= bounds.right &&
+                y >= bounds.top &&
+                y <= bounds.bottom
+              ) {
+                tile.visible = true;
+              } else {
+                tile.visible = false;
+              }
             });
           })(x, y)
         );
@@ -188,9 +195,9 @@ export class CityTile {
    */
   getBounds(x: number, y: number) {
     const left = x - TILE_WIDTH;
-    const right = x + this.fovWidth;
+    const right = x + this.fovWidth + TILE_WIDTH;
     const top = y - TILE_HEIGHT;
-    const bottom = y + this.fovHeight;
+    const bottom = y + this.fovHeight + TILE_HEIGHT;
 
     return {
       left,
