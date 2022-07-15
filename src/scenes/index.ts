@@ -1,6 +1,8 @@
 import type { SceneConfig } from '../index.d';
 import * as Phaser from 'phaser';
 import {
+  CAMERA_DEADZONE_HEIGHT,
+  CAMERA_DEADZONE_WIDTH,
   FOV_HEIGHT,
   FOV_WIDTH,
   TILE_HEIGHT,
@@ -68,7 +70,10 @@ export class GameScene extends Phaser.Scene {
       this.config.bounds.width,
       this.config.bounds.height
     );
-    this.cameras.main.setDeadzone(VIEWPORT_WIDTH * 0.3, VIEWPORT_HEIGHT * 0.6);
+    this.cameras.main.setDeadzone(
+      CAMERA_DEADZONE_WIDTH,
+      CAMERA_DEADZONE_HEIGHT
+    );
 
     this.cityTile.create();
 

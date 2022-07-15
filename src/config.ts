@@ -25,6 +25,10 @@ export const FOV_WIDTH = 430; // VIEWPORT_WIDTH; @TODO
 
 export const FOV_HEIGHT = 300; // VIEWPORT_HEIGHT; @TODO
 
+export const CAMERA_DEADZONE_WIDTH = 0; // VIEWPORT_WIDTH * 0.3;
+
+export const CAMERA_DEADZONE_HEIGHT = 0; // VIEWPORT_HEIGHT * 0.3;
+
 export const CITY_RING_DEPTH_MULTIPLIER = 0.005;
 
 export const LIVING_UNIT_DEPTH = 6;

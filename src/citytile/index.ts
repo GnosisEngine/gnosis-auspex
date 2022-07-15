@@ -217,8 +217,8 @@ export class CityTile {
    *
    */
   update() {
-    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / -2;
-    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / -2;
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
@@ -236,19 +236,20 @@ export class CityTile {
       const start =
         lastBounds.topLeftIndex < 0
           ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
-          : lastBounds.topLeftIndex - 1;
+          : lastBounds.topLeftIndex;
 
       const end =
         (lastBounds.bottomLeftIndex < 0
           ? -lastBounds.bottomLeftIndex
-          : lastBounds.bottomLeftIndex) + this.cityXIndexOffset;
+          : lastBounds.bottomLeftIndex) -
+        this.cityXIndexOffset * 2;
 
-      for (let i = start; i <= end; i += this.cityXIndexOffset) {
-        deleteTiles.push(i);
-
+      for (let i = start; i < end; i += this.cityXIndexOffset) {
         if (cameraX > lastCameraX) {
-          // addTiles.push(i + this.cityXIndexOffset - 3);
+          deleteTiles.push(i);
+        } else {
         }
+        addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
       }
     }
 
@@ -262,6 +263,7 @@ export class CityTile {
 
       for (const tileIndex of deleteTiles) {
         const tile = blitter.children.getAt(tileIndex);
+
         if (tile) {
           tile.visible = false;
         }
@@ -269,6 +271,7 @@ export class CityTile {
 
       for (const tileIndex of addTiles) {
         const tile = blitter.children.getAt(tileIndex);
+
         if (tile) {
           tile.visible = true;
         }
@@ -277,9 +280,12 @@ export class CityTile {
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
+    const date = new Date();
 
     document.getElementById('debug').innerHTML = `
-      <div>Last Update: ${new Date().toISOString()}</div>
+      <div>Last Update: ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}</div>
 
       <div>Camera X: ${cameraX}</div>
       <div>Camera Y: ${cameraY}</div>
