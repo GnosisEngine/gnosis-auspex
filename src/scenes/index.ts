@@ -32,7 +32,6 @@ export class GameScene extends Phaser.Scene {
 
   constructor(config: SceneConfig) {
     super(config);
-    console.log(config);
     this.config = config;
     this.layers = {};
     this.containers = {};

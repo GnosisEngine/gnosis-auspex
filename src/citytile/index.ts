@@ -44,6 +44,8 @@ export class CityTile {
   cityWidth: number;
   cityHeight: number;
   cityXIndexOffset: number;
+  fovWidth: number;
+  fovHeight: number;
 
   constructor(
     scene: GameScene,
@@ -51,7 +53,9 @@ export class CityTile {
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
     cityWidth: number = VIEWPORT_WIDTH, // @TODO
-    cityHeight: number = VIEWPORT_HEIGHT // @TODO
+    cityHeight: number = VIEWPORT_HEIGHT, // @TODO
+    fovWidth: number = FOV_WIDTH,
+    fovHeight: number = FOV_HEIGHT
   ) {
     this.scene = scene;
     this.name = name;
@@ -61,6 +65,8 @@ export class CityTile {
     this.cityWidth = cityWidth;
     this.cityHeight = cityHeight;
     this.cityXIndexOffset = Math.ceil(cityWidth / TILE_WIDTH);
+    this.fovWidth = fovWidth;
+    this.fovHeight = fovHeight;
   }
 
   /**
@@ -93,28 +99,20 @@ export class CityTile {
     }
 
     const bounds = this.getBounds(
-      this.scene.cameras.main.worldView.x,
-      this.scene.cameras.main.worldView.y
+      this.scene.cameras.main.worldView.x + this.fovWidth,
+      this.scene.cameras.main.worldView.y + this.fovHeight
     );
 
     // @TODO load faster
     const tileCommands = [];
-    const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
-    for (let y = 0, yLen = VIEWPORT_HEIGHT; y < yLen; y += TILE_HEIGHT) {
-      for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
+    // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
+    for (let y = bounds.top; y < bounds.bottom; y += TILE_HEIGHT) {
+      for (let x = bounds.left; x < bounds.right; x += TILE_WIDTH) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
               const tile = this.addTile(CityLayers.building, x, y, 'city1');
-
-              if (
-                tile.x <= bounds.right - TILE_WIDTH &&
-                tile.x >= bounds.left + TILE_WIDTH &&
-                tile.y <= bounds.bottom - TILE_HEIGHT &&
-                tile.y >= bounds.top + TILE_HEIGHT
-              ) {
-                tile.visible = true;
-              }
+              tile.visible = true;
             });
           })(x, y)
         );
@@ -209,13 +207,12 @@ export class CityTile {
    *
    */
   update() {
-    const cameraX = this.scene.cameras.main.worldView.x + FOV_WIDTH;
-    const cameraY = this.scene.cameras.main.worldView.y + FOV_HEIGHT;
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
     }
-    console.log([this.scene.cameras.main.worldView.x, cameraX, FOV_WIDTH]);
 
     const deleteTiles = [];
     const addTiles = [];
