@@ -98,9 +98,11 @@ export class CityTile {
       this.blitterMap[index] = blitter;
     }
 
-    const bounds = this.getBounds(this.fovWidth / -2, this.fovHeight / -2);
+    const fovWidthOffset = this.fovWidth / -2;
+    const fovHeightOffset = this.fovHeight / -2;
 
-    console.log(bounds);
+    const bounds = this.getBounds(fovWidthOffset, fovHeightOffset);
+
     // @TODO load faster
     const tileCommands = [];
     // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
@@ -133,8 +135,8 @@ export class CityTile {
 
     // Force the first cull
     this.scene.cameras.main.dirty = true;
-    this.lastCameraX = this.scene.cameras.main.worldView.x;
-    this.lastCameraY = this.scene.cameras.main.worldView.y;
+    this.lastCameraX = this.scene.cameras.main.x;
+    this.lastCameraY = this.scene.cameras.main.y;
   }
 
   /**
@@ -215,8 +217,8 @@ export class CityTile {
    *
    */
   update() {
-    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth;
-    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight;
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / -2;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / -2;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
       return;
@@ -277,6 +279,8 @@ export class CityTile {
     this.lastCameraY = cameraY;
 
     document.getElementById('debug').innerHTML = `
+      <div>Last Update: ${new Date().toISOString()}</div>
+
       <div>Camera X: ${cameraX}</div>
       <div>Camera Y: ${cameraY}</div>
       <div>Last Camera X: ${lastCameraX}</div>
@@ -292,6 +296,7 @@ export class CityTile {
       <div>Last Bottom Left Index: ${lastBounds.bottomLeftIndex}</div>
       <div>Last Bottom Right Index: ${lastBounds.bottomRightIndex}</div>
       <br />
+
       <div>Delete: ${JSON.stringify(deleteTiles)}</div>
       <div>Add: ${JSON.stringify(addTiles)}</div>
     `;
