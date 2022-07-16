@@ -236,21 +236,8 @@ export class CityTile {
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     // Left Bound
-
-    /*
-    const start =
-      lastBounds.topLeftIndex < 0
-        ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
-        : lastBounds.topLeftIndex;
-
-    const end =
-      (lastBounds.bottomLeftIndex < 0
-        ? -lastBounds.bottomLeftIndex
-        : lastBounds.bottomLeftIndex) -
-      this.cityXIndexOffset * 2;
-    */
     const start = lastBounds.topLeftIndex - 1;
-    const end = lastBounds.bottomLeftIndex - 1;
+    const end = lastBounds.bottomLeftIndex + 1;
     const diff = lastBounds.topRightIndex - lastBounds.topLeftIndex;
 
     for (let i = start; i < end; i += this.cityXIndexOffset) {
