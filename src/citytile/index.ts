@@ -245,10 +245,10 @@ export class CityTile {
         // Moving left
         deleteTiles.push(i);
 
-        const addIndex = i + diff;
+        const nextIndex = i + diff;
 
-        if (addIndex < i + this.cityXIndexOffset) {
-          addTiles.push(addIndex);
+        if (nextIndex % this.cityXIndexOffset < diff) {
+          addTiles.push(nextIndex);
         }
       } else {
         // Moving right\
