@@ -238,23 +238,28 @@ export class CityTile {
     const end = lastBounds.bottomLeftIndex + 1;
 
     // Left Bound
-    const diff = lastBounds.topRightIndex - lastBounds.topLeftIndex;
+    const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
+    let row = 1;
 
     for (let i = start; i < end; i += this.cityXIndexOffset) {
+      const nextLimit = true;
+
       if (cameraX > lastCameraX) {
         // Moving left
         deleteTiles.push(i);
 
-        const nextIndex = i + diff;
+        const nextIndex = i + diffTop;
 
-        if (nextIndex % this.cityXIndexOffset < diff) {
-          addTiles.push(nextIndex);
-        }
+        // if (nextIndex <= nextLimit) {
+        addTiles.push(nextIndex);
+        // }
       } else {
         // Moving right\
       }
       // addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
+      row += 1;
     }
+    row = 0;
 
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
