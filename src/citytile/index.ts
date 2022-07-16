@@ -239,11 +239,8 @@ export class CityTile {
 
     // Left Bound
     const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
-    let row = 1;
 
     for (let i = start; i < end; i += this.cityXIndexOffset) {
-      const nextLimit = true;
-
       if (cameraX > lastCameraX) {
         // Moving left
         deleteTiles.push(i);
@@ -257,9 +254,7 @@ export class CityTile {
         // Moving right\
       }
       // addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
-      row += 1;
     }
-    row = 0;
 
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
