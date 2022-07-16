@@ -5,10 +5,6 @@ import {
   CAMERA_DEADZONE_WIDTH,
   FOV_HEIGHT,
   FOV_WIDTH,
-  TILE_HEIGHT,
-  TILE_WIDTH,
-  VIEWPORT_HEIGHT,
-  VIEWPORT_WIDTH,
 } from '../config';
 import { CityTile } from '../citytile';
 

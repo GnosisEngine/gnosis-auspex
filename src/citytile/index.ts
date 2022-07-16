@@ -52,8 +52,8 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = VIEWPORT_WIDTH, // @TODO
-    cityHeight: number = VIEWPORT_HEIGHT, // @TODO
+    cityWidth: number = 800, // @TODO
+    cityHeight: number = 400, // @TODO
     fovWidth: number = FOV_WIDTH,
     fovHeight: number = FOV_HEIGHT
   ) {
@@ -196,10 +196,14 @@ export class CityTile {
    *
    */
   getBounds(x: number, y: number) {
-    const left = x - TILE_WIDTH;
-    const right = x + this.fovWidth + TILE_WIDTH;
-    const top = y - TILE_HEIGHT;
-    const bottom = y + this.fovHeight + TILE_HEIGHT;
+    const realX = x < 1 ? 1 : x;
+
+    const realY = y < 1 ? 1 : y;
+
+    const left = realX - TILE_WIDTH;
+    const right = realX + this.fovWidth + TILE_WIDTH;
+    const top = realY - TILE_HEIGHT;
+    const bottom = realY + this.fovHeight + TILE_HEIGHT;
 
     return {
       left,
@@ -232,25 +236,37 @@ export class CityTile {
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     // Left Bound
-    if (cameraX > -1) {
-      const start =
-        lastBounds.topLeftIndex < 0
-          ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
-          : lastBounds.topLeftIndex;
 
-      const end =
-        (lastBounds.bottomLeftIndex < 0
-          ? -lastBounds.bottomLeftIndex
-          : lastBounds.bottomLeftIndex) -
-        this.cityXIndexOffset * 2;
+    /*
+    const start =
+      lastBounds.topLeftIndex < 0
+        ? Math.floor(this.lastCameraX / TILE_WIDTH) - 1
+        : lastBounds.topLeftIndex;
 
-      for (let i = start; i < end; i += this.cityXIndexOffset) {
-        if (cameraX > lastCameraX) {
-          deleteTiles.push(i);
-        } else {
+    const end =
+      (lastBounds.bottomLeftIndex < 0
+        ? -lastBounds.bottomLeftIndex
+        : lastBounds.bottomLeftIndex) -
+      this.cityXIndexOffset * 2;
+    */
+    const start = lastBounds.topLeftIndex - 1;
+    const end = lastBounds.bottomLeftIndex - 1;
+    const diff = lastBounds.topRightIndex - lastBounds.topLeftIndex;
+
+    for (let i = start; i < end; i += this.cityXIndexOffset) {
+      if (cameraX > lastCameraX) {
+        // Moving left
+        deleteTiles.push(i);
+
+        const addIndex = i + diff;
+        console.log([i, addIndex, addIndex, this.cityWidth]);
+        if (addIndex * TILE_WIDTH <= this.cityWidth) {
+          addTiles.push(addIndex);
         }
-        addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
+      } else {
+        // Moving right\
       }
+      // addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
     }
 
     // Adjust Tile Visibility
