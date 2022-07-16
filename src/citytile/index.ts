@@ -196,14 +196,13 @@ export class CityTile {
    *
    */
   getBounds(x: number, y: number) {
-    const realX = x < 1 ? 1 : x;
+    const widthOffset = x - TILE_WIDTH;
+    const left = widthOffset <= -TILE_WIDTH ? 0 : widthOffset;
+    const right = x + this.fovWidth + TILE_WIDTH;
 
-    const realY = y < 1 ? 1 : y;
-
-    const left = realX - TILE_WIDTH;
-    const right = realX + this.fovWidth + TILE_WIDTH;
-    const top = realY - TILE_HEIGHT;
-    const bottom = realY + this.fovHeight + TILE_HEIGHT;
+    const heightOffset = y - TILE_HEIGHT;
+    const top = heightOffset <= -TILE_HEIGHT ? 0 : heightOffset;
+    const bottom = y + this.fovHeight + TILE_HEIGHT;
 
     return {
       left,
@@ -235,9 +234,10 @@ export class CityTile {
     const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
-    // Left Bound
     const start = lastBounds.topLeftIndex - 1;
     const end = lastBounds.bottomLeftIndex + 1;
+
+    // Left Bound
     const diff = lastBounds.topRightIndex - lastBounds.topLeftIndex;
 
     for (let i = start; i < end; i += this.cityXIndexOffset) {
@@ -246,8 +246,8 @@ export class CityTile {
         deleteTiles.push(i);
 
         const addIndex = i + diff;
-        console.log([i, addIndex, addIndex, this.cityWidth]);
-        if (addIndex * TILE_WIDTH <= this.cityWidth) {
+
+        if (addIndex < i + this.cityXIndexOffset) {
           addTiles.push(addIndex);
         }
       } else {
