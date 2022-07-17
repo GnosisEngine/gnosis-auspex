@@ -53,12 +53,15 @@ export class GameScene extends Phaser.Scene {
    *
    */
   async create() {
-    this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
     this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
-    this.physics.add.image(0, 0, 'null'); // @TODO remove
+    this.cameras.main.startFollow(this.player, true); // @TODO more flexible
+
+    this.cameras.main.setDeadzone(
+      CAMERA_DEADZONE_WIDTH,
+      CAMERA_DEADZONE_HEIGHT
+    );
 
     this.player.setCollideWorldBounds(true); // @TODO more flexible
-    this.cameras.main.startFollow(this.player, true); // @TODO more flexible
 
     this.physics.world.setBounds(
       this.config.bounds.x,
@@ -66,12 +69,9 @@ export class GameScene extends Phaser.Scene {
       this.config.bounds.width,
       this.config.bounds.height
     );
-    this.cameras.main.setDeadzone(
-      CAMERA_DEADZONE_WIDTH,
-      CAMERA_DEADZONE_HEIGHT
-    );
 
     this.cityTile.create();
+    this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
 
     // @TODO move to debug
     const rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
@@ -87,6 +87,8 @@ export class GameScene extends Phaser.Scene {
     );
     this.debugContainer = this.add.container(0, 0);
     this.debugContainer.add([rect, text]);
+
+    this.physics.add.image(0, 0, 'null'); // @TODO remove
   }
 
   /**

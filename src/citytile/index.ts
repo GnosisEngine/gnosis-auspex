@@ -46,8 +46,8 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = 800, // @TODO
-    cityHeight: number = 400, // @TODO
+    cityWidth: number = 600, // @TODO
+    cityHeight: number = 500, // @TODO
     fovWidth: number = FOV_WIDTH,
     fovHeight: number = FOV_HEIGHT
   ) {
@@ -97,6 +97,11 @@ export class CityTile {
 
     const bounds = this.getBounds(fovWidthOffset, fovHeightOffset);
 
+    // Force the first cull
+    this.scene.cameras.main.dirty = true;
+    this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
+    this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
+
     // @TODO load faster
     const tileCommands = [];
     // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
@@ -126,11 +131,6 @@ export class CityTile {
     Promise.all(tileCommands);
 
     this.showOnlyLayers([CityLayers.building]);
-
-    // Force the first cull
-    this.scene.cameras.main.dirty = true;
-    this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
-    this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
   }
 
   /**
@@ -230,7 +230,6 @@ export class CityTile {
     const addTiles = [];
     const lastCameraX = this.lastCameraX;
     const lastCameraY = this.lastCameraY;
-    const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     const baseRow = Math.ceil(lastBounds.top / TILE_HEIGHT);
@@ -255,8 +254,11 @@ export class CityTile {
         }
       } else {
         // Moving right
-        addTiles.push(i);
         deleteTiles.push(i + diffTop + 1);
+
+        if (i < lastBounds.bottomRightIndex) {
+          addTiles.push(i);
+        }
       }
       row += 1;
     }
