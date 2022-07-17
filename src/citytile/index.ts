@@ -39,6 +39,7 @@ export class CityTile {
   cityXIndexOffset: number;
   fovWidth: number;
   fovHeight: number;
+  cameraSynced: boolean = false;
 
   constructor(
     scene: GameScene,
@@ -108,9 +109,9 @@ export class CityTile {
 
               if (
                 x >= bounds.left &&
-                x <= bounds.right &&
+                x < bounds.right &&
                 y >= bounds.top &&
-                y <= bounds.bottom
+                y < bounds.bottom
               ) {
                 tile.visible = true;
               } else {
@@ -217,6 +218,11 @@ export class CityTile {
     const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
     if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
+      this.cameraSynced = true;
+      return;
+    }
+
+    if ((this.cameraSynced = false)) {
       return;
     }
 
@@ -249,6 +255,8 @@ export class CityTile {
         }
       } else {
         // Moving right
+        addTiles.push(i);
+        deleteTiles.push(i + diffTop + 1);
       }
       row += 1;
     }
@@ -292,16 +300,6 @@ export class CityTile {
       <div>Camera Y: ${cameraY}</div>
       <div>Last Camera X: ${lastCameraX}</div>
       <div>Last Camera Y: ${lastCameraY}</div>
-      <br />
-      <div>Top Left Index: ${bounds.topLeftIndex}</div>
-      <div>Top Right Index: ${bounds.topRightIndex}</div>
-      <div>Bottom Left Index: ${bounds.bottomLeftIndex}</div>
-      <div>Bottom Right Index: ${bounds.bottomRightIndex}</div>
-      <br />
-      <div>Last Top Left Index: ${lastBounds.topLeftIndex}</div>
-      <div>Last Top Right Index: ${lastBounds.topRightIndex}</div>
-      <div>Last Bottom Left Index: ${lastBounds.bottomLeftIndex}</div>
-      <div>Last Bottom Right Index: ${lastBounds.bottomRightIndex}</div>
       <br />
 
       <div>Delete: ${JSON.stringify(deleteTiles)}</div>
