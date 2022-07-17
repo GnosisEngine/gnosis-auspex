@@ -181,7 +181,7 @@ export class CityTile {
   getTileIndex(x: number, y: number) {
     return (
       Math.ceil(x / TILE_WIDTH) +
-      Math.ceil(y / TILE_HEIGHT) * this.cityXIndexOffset
+      (Math.ceil(y / TILE_HEIGHT) - 1) * this.cityXIndexOffset
     );
   }
 
@@ -227,13 +227,14 @@ export class CityTile {
     const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
+    const baseRow = Math.ceil(lastBounds.top / TILE_HEIGHT);
     const start = lastBounds.topLeftIndex - 1;
     const end = lastBounds.bottomLeftIndex + 1;
 
     // Left Bound
     const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
 
-    let row = 1;
+    let row = baseRow;
     for (let i = start; i < end; i += this.cityXIndexOffset) {
       const rowLimit = row * this.cityXIndexOffset;
 
@@ -247,12 +248,11 @@ export class CityTile {
           addTiles.push(nextIndex);
         }
       } else {
-        // Moving right\
+        // Moving right
       }
-      // addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
       row += 1;
     }
-    row = 0;
+    row = baseRow;
 
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
