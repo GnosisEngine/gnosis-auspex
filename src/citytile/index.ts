@@ -1,11 +1,4 @@
-import {
-  FOV_HEIGHT,
-  FOV_WIDTH,
-  TILE_HEIGHT,
-  TILE_WIDTH,
-  VIEWPORT_HEIGHT,
-  VIEWPORT_WIDTH,
-} from '../config';
+import { FOV_HEIGHT, FOV_WIDTH, TILE_HEIGHT, TILE_WIDTH } from '../config';
 import { GameScene } from '../scenes';
 
 export enum CityLayers {
@@ -135,8 +128,8 @@ export class CityTile {
 
     // Force the first cull
     this.scene.cameras.main.dirty = true;
-    this.lastCameraX = this.scene.cameras.main.x;
-    this.lastCameraY = this.scene.cameras.main.y;
+    this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
+    this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
   }
 
   /**
@@ -240,21 +233,26 @@ export class CityTile {
     // Left Bound
     const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
 
+    let row = 1;
     for (let i = start; i < end; i += this.cityXIndexOffset) {
+      const rowLimit = row * this.cityXIndexOffset;
+
       if (cameraX > lastCameraX) {
         // Moving left
         deleteTiles.push(i);
 
         const nextIndex = i + diffTop;
 
-        // if (nextIndex <= nextLimit) {
-        addTiles.push(nextIndex);
-        // }
+        if (nextIndex < rowLimit) {
+          addTiles.push(nextIndex);
+        }
       } else {
         // Moving right\
       }
       // addTiles.push(Math.ceil(i + this.fovWidth / TILE_WIDTH) - 1);
+      row += 1;
     }
+    row = 0;
 
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
