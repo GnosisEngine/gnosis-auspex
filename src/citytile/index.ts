@@ -41,6 +41,13 @@ export class CityTile {
   fovHeight: number;
   cameraSynced: boolean = false;
 
+  rects: {
+    topLeft: Phaser.GameObjects.Rectangle;
+    topRight: Phaser.GameObjects.Rectangle;
+    bottomLeft: Phaser.GameObjects.Rectangle;
+    bottomRight: Phaser.GameObjects.Rectangle;
+  };
+
   constructor(
     scene: GameScene,
     name: string,
@@ -131,6 +138,22 @@ export class CityTile {
     Promise.all(tileCommands);
 
     this.showOnlyLayers([CityLayers.building]);
+
+    // @TODO remove
+    this.rects = {
+      topLeft: this.scene.add
+        .rectangle(bounds.left, bounds.top, TILE_WIDTH, TILE_HEIGHT)
+        .setStrokeStyle(1, 0xff0000),
+      topRight: this.scene.add
+        .rectangle(bounds.right, bounds.top, TILE_WIDTH, TILE_HEIGHT)
+        .setStrokeStyle(1, 0xff0000),
+      bottomLeft: this.scene.add
+        .rectangle(bounds.left, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
+        .setStrokeStyle(1, 0xff0000),
+      bottomRight: this.scene.add
+        .rectangle(bounds.right, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
+        .setStrokeStyle(1, 0xff0000),
+    };
   }
 
   /**
@@ -153,6 +176,21 @@ export class CityTile {
     const blitter = this.blitterMap[layerIndex];
     const bob = blitter.create(x, y, name);
     bob.visible = false;
+
+    // @TODO remove
+    const rect = this.scene.add.rectangle(
+      x + 12.5,
+      y + 12.5,
+      TILE_WIDTH,
+      TILE_HEIGHT
+    );
+    rect.setStrokeStyle(1, 0x008f00);
+    const index = this.getTileIndex(x, y);
+    const text = this.scene.add.text(x, y, index.toString(), {
+      fontFamily: 'serif',
+    });
+    text.setFontSize(10);
+
     return bob;
   }
 
@@ -182,7 +220,7 @@ export class CityTile {
   getTileIndex(x: number, y: number) {
     return (
       Math.ceil(x / TILE_WIDTH) +
-      (Math.ceil(y / TILE_HEIGHT) - 1) * this.cityXIndexOffset
+      Math.ceil(y / TILE_HEIGHT) * this.cityXIndexOffset
     );
   }
 
@@ -222,10 +260,6 @@ export class CityTile {
       return;
     }
 
-    if ((this.cameraSynced = false)) {
-      return;
-    }
-
     const deleteTiles = [];
     const addTiles = [];
     const lastCameraX = this.lastCameraX;
@@ -235,6 +269,12 @@ export class CityTile {
     const baseRow = Math.ceil(lastBounds.top / TILE_HEIGHT);
     const start = lastBounds.topLeftIndex - 1;
     const end = lastBounds.bottomLeftIndex + 1;
+
+    // @TOOD remove
+    this.rects.topLeft.setPosition(lastBounds.left, lastBounds.top);
+    this.rects.topRight.setPosition(lastBounds.right, lastBounds.top);
+    this.rects.bottomLeft.setPosition(lastBounds.left, lastBounds.bottom);
+    this.rects.bottomRight.setPosition(lastBounds.right, lastBounds.bottom);
 
     // Left Bound
     const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
