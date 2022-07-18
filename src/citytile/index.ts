@@ -288,7 +288,7 @@ export class CityTile {
       if (cameraX > lastCameraX) {
         // Moving right
         if (
-          lastBounds.right > 0 &&
+          lastBounds.right >= 0 &&
           lastBounds.right + TILE_WIDTH < this.cityWidth
         ) {
           const index = lastBounds.topRightIndex + offset;
@@ -298,14 +298,21 @@ export class CityTile {
         if (lastBounds.left > 0 && lastBounds.left < this.cityWidth) {
           deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
         }
-      } else {
+      } else if (cameraX < lastCameraX) {
         // Moving left
-        if (lastBounds.left > 0 && lastBounds.left < this.cityWidth) {
-          const index = lastBounds.topLeftIndex + offset - 1;
+        if (
+          lastBounds.left >= 0 &&
+          lastBounds.left + TILE_WIDTH <= this.cityWidth &&
+          lastBounds.right > 0
+        ) {
+          const index = lastBounds.topLeftIndex + offset;
           addTiles.push(index);
         }
 
-        if (lastBounds.right > 0 && lastBounds.right < this.cityWidth) {
+        if (
+          lastBounds.right > -TILE_WIDTH &&
+          lastBounds.right < this.cityWidth
+        ) {
           deleteTiles.push(lastBounds.topRightIndex + offset);
         }
       }
