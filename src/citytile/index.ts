@@ -287,25 +287,27 @@ export class CityTile {
 
       if (cameraX > lastCameraX) {
         // Moving right
-        if (lastBounds.right + TILE_WIDTH < this.cityWidth) {
+        if (
+          lastBounds.right > 0 &&
+          lastBounds.right + TILE_WIDTH < this.cityWidth
+        ) {
           const index = lastBounds.topRightIndex + offset;
           addTiles.push(index);
         }
 
-        if (lastBounds.left < this.cityWidth) {
+        if (lastBounds.left > 0 && lastBounds.left < this.cityWidth) {
           deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
         }
       } else {
         // Moving left
-        if (lastBounds.left > 0) {
+        if (lastBounds.left > 0 && lastBounds.left < this.cityWidth) {
           const index = lastBounds.topLeftIndex + offset - 1;
           addTiles.push(index);
         }
-        /*
-        if (lastBounds.left < this.cityWidth) {
-          deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
+
+        if (lastBounds.right > 0 && lastBounds.right < this.cityWidth) {
+          deleteTiles.push(lastBounds.topRightIndex + offset);
         }
-*/
       }
     }
 
