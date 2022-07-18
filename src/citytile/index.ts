@@ -188,6 +188,7 @@ export class CityTile {
     const index = this.getTileIndex(x, y);
     const text = this.scene.add.text(x, y, index.toString(), {
       fontFamily: 'serif',
+      color: '#aaa',
     });
     text.setFontSize(10);
 
@@ -278,7 +279,27 @@ export class CityTile {
 
     // Left Bound
     const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
+    const rows =
+      (lastBounds.bottomLeftIndex - lastBounds.topLeftIndex) /
+      this.cityXIndexOffset;
+    const columns =
+      (lastBounds.topRightIndex - lastBounds.topLeftIndex) /
+      this.cityXIndexOffset;
 
+    for (let row = 0; row < rows; row++) {
+      const offset = row * this.cityXIndexOffset;
+
+      if (cameraX > lastCameraX) {
+        // Moving left
+        if (lastBounds.right + TILE_WIDTH < this.cityWidth) {
+          const removeIndex = lastBounds.topRightIndex + offset;
+          deleteTiles.push(removeIndex);
+        }
+      } else {
+        // Moving right
+      }
+    }
+    /*
     let row = baseRow;
     for (let i = start; i < end; i += this.cityXIndexOffset) {
       const rowLimit = row * this.cityXIndexOffset;
@@ -289,9 +310,9 @@ export class CityTile {
 
         const nextIndex = i + diffTop;
 
-        if (nextIndex < rowLimit) {
-          addTiles.push(nextIndex);
-        }
+        //if (nextIndex < rowLimit) {
+        addTiles.push(nextIndex);
+        //}
       } else {
         // Moving right
         deleteTiles.push(i + diffTop + 1);
@@ -303,7 +324,7 @@ export class CityTile {
       row += 1;
     }
     row = baseRow;
-
+*/
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
