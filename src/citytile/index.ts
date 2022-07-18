@@ -267,10 +267,6 @@ export class CityTile {
     const lastCameraY = this.lastCameraY;
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
-    const baseRow = Math.ceil(lastBounds.top / TILE_HEIGHT);
-    const start = lastBounds.topLeftIndex - 1;
-    const end = lastBounds.bottomLeftIndex + 1;
-
     // @TOOD remove
     this.rects.topLeft.setPosition(lastBounds.left, lastBounds.top);
     this.rects.topRight.setPosition(lastBounds.right, lastBounds.top);
@@ -278,7 +274,6 @@ export class CityTile {
     this.rects.bottomRight.setPosition(lastBounds.right, lastBounds.bottom);
 
     // Left Bound
-    const diffTop = lastBounds.topRightIndex - lastBounds.topLeftIndex;
     const rows =
       (lastBounds.bottomLeftIndex - lastBounds.topLeftIndex) /
       this.cityXIndexOffset;
@@ -286,45 +281,34 @@ export class CityTile {
       (lastBounds.topRightIndex - lastBounds.topLeftIndex) /
       this.cityXIndexOffset;
 
+    // Horizontal
     for (let row = 0; row < rows; row++) {
       const offset = row * this.cityXIndexOffset;
 
       if (cameraX > lastCameraX) {
-        // Moving left
+        // Moving right
         if (lastBounds.right + TILE_WIDTH < this.cityWidth) {
-          const removeIndex = lastBounds.topRightIndex + offset;
-          deleteTiles.push(removeIndex);
+          const index = lastBounds.topRightIndex + offset;
+          addTiles.push(index);
+        }
+
+        if (lastBounds.left < this.cityWidth) {
+          deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
         }
       } else {
-        // Moving right
-      }
-    }
-    /*
-    let row = baseRow;
-    for (let i = start; i < end; i += this.cityXIndexOffset) {
-      const rowLimit = row * this.cityXIndexOffset;
-
-      if (cameraX > lastCameraX) {
         // Moving left
-        deleteTiles.push(i);
-
-        const nextIndex = i + diffTop;
-
-        //if (nextIndex < rowLimit) {
-        addTiles.push(nextIndex);
-        //}
-      } else {
-        // Moving right
-        deleteTiles.push(i + diffTop + 1);
-
-        if (i < lastBounds.bottomRightIndex) {
-          addTiles.push(i);
+        if (lastBounds.left > 0) {
+          const index = lastBounds.topLeftIndex + offset - 1;
+          addTiles.push(index);
         }
-      }
-      row += 1;
-    }
-    row = baseRow;
+        /*
+        if (lastBounds.left < this.cityWidth) {
+          deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
+        }
 */
+      }
+    }
+
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {

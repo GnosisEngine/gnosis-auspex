@@ -26,6 +26,7 @@ export class GameScene extends Phaser.Scene {
   player: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
   config: SceneConfig;
   cityTile: CityTile;
+  ready: boolean;
 
   debugContainer: Phaser.GameObjects.Container;
 
@@ -40,6 +41,7 @@ export class GameScene extends Phaser.Scene {
       this.config.defaultTilePaths,
       this.config.defaultTileConfigPath
     );
+    this.ready = false;
   }
 
   /**
@@ -54,7 +56,17 @@ export class GameScene extends Phaser.Scene {
    */
   async create() {
     this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
-    this.cameras.main.startFollow(this.player, true); // @TODO more flexible
+
+    // Follow and wait for camera to follow
+    this.ready = await new Promise((resolve) => {
+      this.cameras.main.startFollow(this.player, true); // @TODO more flexible
+      this.cameras.main.on('followupdate', () => {
+        console.log('yep');
+        resolve(true);
+      });
+    });
+
+    this.cameras.main.off('followupdate');
 
     this.cameras.main.setDeadzone(
       CAMERA_DEADZONE_WIDTH,
@@ -95,6 +107,10 @@ export class GameScene extends Phaser.Scene {
    *
    */
   update() {
+    if (this.ready === false) {
+      return;
+    }
+
     this.player.setVelocity(0);
 
     if (this.cursors.left.isDown) {
