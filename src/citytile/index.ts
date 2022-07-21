@@ -314,10 +314,12 @@ export class CityTile {
     }
     */
     // Vertical
-    for (let column = 0; column <= columns; column++) {
+    for (let column = -1; column <= columns; column++) {
+      (column + lastBounds.topLeftIndex)
       if (
         // Column wrapping to the beginning of the city
-        (column + lastBounds.topLeftIndex) % this.cityXIndexOffset === 0 &&
+        (column + lastBounds.topLeftIndex) % (this.cityXIndexOffset + 1) ===
+          0 &&
         lastBounds.left - TILE_WIDTH > 0
       ) {
         break;
