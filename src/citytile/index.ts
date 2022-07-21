@@ -320,10 +320,16 @@ export class CityTile {
     for (let column = 0; column < columns; column++) {
       const offset = column - this.cityXIndexOffset;
       const isWrapping =
-        Number(column / this.cityXIndexOffset) !==
-        Number((column - 1) / this.cityXIndexOffset);
+        ~~(column / this.cityXIndexOffset) !==
+        ~~((column + 1) / this.cityXIndexOffset);
 
       if (isWrapping) {
+        console.log([
+          this.cityXIndexOffset,
+          ~~(column / this.cityXIndexOffset),
+          ~~((column + 1) / this.cityXIndexOffset),
+        ]);
+        throw new Error();
         break;
       }
 

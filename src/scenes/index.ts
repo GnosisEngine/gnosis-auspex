@@ -61,7 +61,6 @@ export class GameScene extends Phaser.Scene {
     this.ready = await new Promise((resolve) => {
       this.cameras.main.startFollow(this.player, true); // @TODO more flexible
       this.cameras.main.on('followupdate', () => {
-        console.log('yep');
         resolve(true);
       });
     });
