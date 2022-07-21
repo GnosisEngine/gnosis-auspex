@@ -318,57 +318,49 @@ export class CityTile {
 */
     // Vertical
     for (let column = 0; column < columns; column++) {
-      const offset = column - this.cityXIndexOffset;
-      const isWrapping =
-        ~~(column / this.cityXIndexOffset) !==
-        ~~((column + 1) / this.cityXIndexOffset);
-
-      if (isWrapping) {
-        console.log([
-          this.cityXIndexOffset,
-          ~~(column / this.cityXIndexOffset),
-          ~~((column + 1) / this.cityXIndexOffset),
-        ]);
-        throw new Error();
+      if (
+        (column + lastBounds.topLeftIndex) % this.cityXIndexOffset === 0 &&
+        lastBounds.left - TILE_WIDTH > 0
+      ) {
         break;
       }
 
-      if (column % this.cityXIndexOffset)
-        if (cameraY > lastCameraY) {
-          // Moving down
-          if (
-            lastBounds.bottom > -TILE_HEIGHT &&
-            lastBounds.bottom < this.cityHeight
-          ) {
-            const index = lastBounds.bottomLeftIndex + offset;
-            addTiles.push(index);
-          }
-
-          if (
-            lastBounds.top >= 0 &&
-            lastBounds.top <= this.cityHeight &&
-            lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT
-          ) {
-            deleteTiles.push(lastBounds.topLeftIndex + offset);
-          }
-        } else if (cameraY < lastCameraY) {
-          // Moving up
-          if (
-            lastBounds.top >= 0 &&
-            lastBounds.top <= this.cityHeight &&
-            lastBounds.bottom > 0
-          ) {
-            const index = lastBounds.topLeftIndex + offset;
-            addTiles.push(index);
-          }
-
-          if (
-            lastBounds.bottom > -TILE_HEIGHT &&
-            lastBounds.bottom < this.cityHeight
-          ) {
-            deleteTiles.push(lastBounds.bottomLeftIndex + offset);
-          }
+      const offset = column - this.cityXIndexOffset;
+      if (cameraY > lastCameraY) {
+        // Moving down
+        if (
+          lastBounds.bottom > -TILE_HEIGHT &&
+          lastBounds.bottom < this.cityHeight
+        ) {
+          const index = lastBounds.bottomLeftIndex + offset;
+          addTiles.push(index);
         }
+
+        if (
+          lastBounds.top >= 0 &&
+          lastBounds.top <= this.cityHeight &&
+          lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT
+        ) {
+          deleteTiles.push(lastBounds.topLeftIndex + offset);
+        }
+      } else if (cameraY < lastCameraY) {
+        // Moving up
+        if (
+          lastBounds.top >= 0 &&
+          lastBounds.top <= this.cityHeight &&
+          lastBounds.bottom > 0
+        ) {
+          const index = lastBounds.topLeftIndex + offset;
+          addTiles.push(index);
+        }
+
+        if (
+          lastBounds.bottom > -TILE_HEIGHT &&
+          lastBounds.bottom < this.cityHeight
+        ) {
+          deleteTiles.push(lastBounds.bottomLeftIndex + offset);
+        }
+      }
     }
 
     // Adjust Tile Visibility
