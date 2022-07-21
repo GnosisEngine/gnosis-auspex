@@ -284,32 +284,31 @@ export class CityTile {
     for (let row = 0; row < rows; row++) {
       const offset = row * this.cityXIndexOffset;
 
+      const adjustLeft =
+        lastBounds.left > 0 && lastBounds.left < this.cityWidth;
+      const adjustRight =
+        lastBounds.right > 0 && lastBounds.right <= this.cityWidth;
+
+      const leftIndex = lastBounds.topLeftIndex + offset - 1;
+      const rightIndex = lastBounds.topRightIndex + offset - 1;
+
       if (cameraX > lastCameraX) {
         // Moving right
-        if (lastBounds.right >= 0 && lastBounds.right <= this.cityWidth) {
-          const index = lastBounds.topRightIndex + offset - 1;
-          addTiles.push(index);
+        if (adjustRight) {
+          addTiles.push(rightIndex);
         }
 
-        if (lastBounds.left > 0 && lastBounds.left < this.cityWidth) {
-          deleteTiles.push(lastBounds.topLeftIndex + offset - 1);
+        if (adjustLeft) {
+          deleteTiles.push(leftIndex);
         }
       } else if (cameraX < lastCameraX) {
         // Moving left
-        if (
-          lastBounds.left - TILE_WIDTH >= 0 &&
-          lastBounds.left <= this.cityWidth &&
-          lastBounds.right >= TILE_WIDTH
-        ) {
-          const index = lastBounds.topLeftIndex + offset - 1;
-          addTiles.push(index);
+        if (adjustLeft) {
+          addTiles.push(leftIndex);
         }
 
-        if (
-          lastBounds.right > -TILE_WIDTH &&
-          lastBounds.right < this.cityWidth
-        ) {
-          deleteTiles.push(lastBounds.topRightIndex + offset);
+        if (adjustRight) {
+          deleteTiles.push(rightIndex);
         }
       }
     }
@@ -400,6 +399,12 @@ export class CityTile {
       <div>Camera Y: ${cameraY}</div>
       <div>Last Camera X: ${lastCameraX}</div>
       <div>Last Camera Y: ${lastCameraY}</div>
+      <br />
+
+      <div>Left: ${lastBounds.left}</div>
+      <div>Right: ${lastBounds.right}</div>
+      <div>Top: ${lastBounds.top}</div>
+      <div>Bottom: ${lastBounds.bottom}</div>
       <br />
 
       <div>Delete: ${JSON.stringify(deleteTiles)}</div>
