@@ -315,7 +315,7 @@ export class CityTile {
     */
     // Vertical
     for (let column = -1; column <= columns; column++) {
-      (column + lastBounds.topLeftIndex)
+/*
       if (
         // Column wrapping to the beginning of the city
         (column + lastBounds.topLeftIndex) % (this.cityXIndexOffset + 1) ===
@@ -326,8 +326,10 @@ export class CityTile {
       }
 
       const indexOffset = lastBounds.left === 0 ? 0 : 1;
+*/
+      if ((column + lastBounds.topLeftIndex) % this.cityXIndexOffset !== )
 
-      const offset = column - indexOffset - this.cityXIndexOffset;
+      const offset = column - this.cityXIndexOffset;
 
       const adjustTop =
         lastBounds.top >= 0 &&
