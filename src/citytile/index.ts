@@ -279,18 +279,18 @@ export class CityTile {
         this.cityXIndexOffset
     );
     const columns = lastBounds.topRightIndex - lastBounds.topLeftIndex;
-
+    /*
     // Horizontal
     for (let row = 0; row < rows; row++) {
-      const offset = row * this.cityXIndexOffset;
+      const offset = (row - 1) * this.cityXIndexOffset;
 
       const adjustLeft =
         lastBounds.left > 0 && lastBounds.left < this.cityWidth;
       const adjustRight =
         lastBounds.right > 0 && lastBounds.right <= this.cityWidth;
 
-      const leftIndex = lastBounds.topLeftIndex + offset - 1;
-      const rightIndex = lastBounds.topRightIndex + offset - 1;
+      const leftIndex = lastBounds.topLeftIndex + offset;
+      const rightIndex = lastBounds.topRightIndex + offset;
 
       if (cameraX > lastCameraX) {
         // Moving right
@@ -312,55 +312,53 @@ export class CityTile {
         }
       }
     }
-    /*
+    */
     // Vertical
     for (let column = 0; column <= columns; column++) {
       if (
+        // Column wrapping to the beginning of the city
         (column + lastBounds.topLeftIndex) % this.cityXIndexOffset === 0 &&
         lastBounds.left - TILE_WIDTH > 0
       ) {
         break;
       }
 
-      const offset = column - this.cityXIndexOffset - 1;
+      const indexOffset = lastBounds.left === 0 ? 0 : 1;
+
+      const offset = column - indexOffset - this.cityXIndexOffset;
+
+      const adjustTop =
+        lastBounds.top >= 0 &&
+        lastBounds.top <= this.cityHeight &&
+        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;
+
+      const adjustBottom =
+        lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
+
+      const topIndex = lastBounds.topLeftIndex + offset;
+      const bottomIndex = lastBounds.bottomLeftIndex + offset;
 
       if (cameraY > lastCameraY) {
         // Moving down
-        if (
-          lastBounds.bottom > -TILE_HEIGHT &&
-          lastBounds.bottom < this.cityHeight
-        ) {
-          const index = lastBounds.bottomLeftIndex + offset;
-          addTiles.push(index);
+        if (adjustBottom) {
+          addTiles.push(bottomIndex);
         }
 
-        if (
-          lastBounds.top >= 0 &&
-          lastBounds.top <= this.cityHeight &&
-          lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT
-        ) {
-          deleteTiles.push(lastBounds.topLeftIndex + offset);
+        if (adjustTop) {
+          deleteTiles.push(topIndex);
         }
       } else if (cameraY < lastCameraY) {
         // Moving up
-        if (
-          lastBounds.top >= 0 &&
-          lastBounds.top <= this.cityHeight &&
-          lastBounds.bottom > 0
-        ) {
-          const index = lastBounds.topLeftIndex + offset;
-          addTiles.push(index);
+        if (adjustTop) {
+          addTiles.push(topIndex);
         }
 
-        if (
-          lastBounds.bottom > -TILE_HEIGHT &&
-          lastBounds.bottom < this.cityHeight
-        ) {
-          deleteTiles.push(lastBounds.bottomLeftIndex + offset);
+        if (adjustBottom) {
+          deleteTiles.push(bottomIndex);
         }
       }
     }
-*/
+
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
