@@ -278,7 +278,7 @@ export class CityTile {
       (lastBounds.bottomLeftIndex - lastBounds.topLeftIndex) /
       this.cityXIndexOffset;
     const columns = lastBounds.topRightIndex - lastBounds.topLeftIndex;
-    /*
+
     // Horizontal
     for (let row = 0; row < rows; row++) {
       const offset = row * this.cityXIndexOffset;
@@ -315,7 +315,7 @@ export class CityTile {
         }
       }
     }
-*/
+
     // Vertical
     for (let column = 0; column < columns; column++) {
       if (
