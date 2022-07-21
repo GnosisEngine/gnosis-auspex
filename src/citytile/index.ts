@@ -274,9 +274,10 @@ export class CityTile {
     this.rects.bottomRight.setPosition(lastBounds.right, lastBounds.bottom);
 
     // Left Bound
-    const rows =
+    const rows = Math.ceil(
       (lastBounds.bottomLeftIndex - lastBounds.topLeftIndex) /
-      this.cityXIndexOffset;
+        this.cityXIndexOffset
+    );
     const columns = lastBounds.topRightIndex - lastBounds.topLeftIndex;
 
     // Horizontal
@@ -285,11 +286,8 @@ export class CityTile {
 
       if (cameraX > lastCameraX) {
         // Moving right
-        if (
-          lastBounds.right >= 0 &&
-          lastBounds.right + TILE_WIDTH < this.cityWidth
-        ) {
-          const index = lastBounds.topRightIndex + offset;
+        if (lastBounds.right >= 0 && lastBounds.right <= this.cityWidth) {
+          const index = lastBounds.topRightIndex + offset - 1;
           addTiles.push(index);
         }
 
@@ -299,11 +297,11 @@ export class CityTile {
       } else if (cameraX < lastCameraX) {
         // Moving left
         if (
-          lastBounds.left >= 0 &&
-          lastBounds.left + TILE_WIDTH <= this.cityWidth &&
-          lastBounds.right > 0
+          lastBounds.left - TILE_WIDTH >= 0 &&
+          lastBounds.left <= this.cityWidth &&
+          lastBounds.right >= TILE_WIDTH
         ) {
-          const index = lastBounds.topLeftIndex + offset;
+          const index = lastBounds.topLeftIndex + offset - 1;
           addTiles.push(index);
         }
 
@@ -315,9 +313,9 @@ export class CityTile {
         }
       }
     }
-
+    /*
     // Vertical
-    for (let column = 0; column < columns; column++) {
+    for (let column = 0; column <= columns; column++) {
       if (
         (column + lastBounds.topLeftIndex) % this.cityXIndexOffset === 0 &&
         lastBounds.left - TILE_WIDTH > 0
@@ -325,7 +323,8 @@ export class CityTile {
         break;
       }
 
-      const offset = column - this.cityXIndexOffset;
+      const offset = column - this.cityXIndexOffset - 1;
+
       if (cameraY > lastCameraY) {
         // Moving down
         if (
@@ -362,7 +361,7 @@ export class CityTile {
         }
       }
     }
-
+*/
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
