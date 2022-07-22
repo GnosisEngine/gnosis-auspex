@@ -343,7 +343,7 @@ export class CityTile {
       // Moving down
       const columns = lastBounds.indexes.topRight - lastBounds.indexes.topLeft;
 
-      for (let column = 0; column < columns; column++) {
+      for (let column = 0; column <= columns; column++) {
         const offset = column;
         const lastTopIndex = lastBounds.indexes.topLeft + offset;
         const newBottomIndex = bounds.indexes.bottomLeft + offset;
