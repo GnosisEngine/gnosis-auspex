@@ -245,7 +245,9 @@ export class CityTile {
         : widthOffset + this.fovWidth + this.halfTileWidth;
 
     const top =
-      heightOffset <= this.halfTileHeight ? this.halfTileHeight : heightOffset;
+      heightOffset <= this.halfTileHeight
+        ? this.halfTileHeight
+        : heightOffset + this.halfTileHeight;
 
     const bottom =
       heightOffset + this.fovHeight >= this.cityHeight - this.halfTileHeight
@@ -253,18 +255,28 @@ export class CityTile {
         : heightOffset + this.fovHeight + this.halfTileHeight;
 
     return {
-      left,
-      right,
-      top,
-      bottom,
-      topLeftIndex: this.getTileIndex(left, top),
-      topRightIndex: this.getTileIndex(right, top),
-      bottomLeftIndex: this.getTileIndex(left, bottom),
-      bottomRightIndex: this.getTileIndex(right, bottom),
-      onLeftEdge: left <= this.halfTileWidth,
-      onRightEdge: right >= bottomEdge,
-      onTopEdge: top <= this.halfTileHeight,
-      onBottomEdge: bottom >= bottomEdge,
+      left: {
+        value: left,
+        onEdge: left <= this.halfTileWidth,
+      },
+      right: {
+        value: right,
+        onEdge: right >= bottomEdge,
+      },
+      top: {
+        value: top,
+        onEdge: top <= this.halfTileHeight,
+      },
+      bottom: {
+        value: bottom,
+        onEdge: bottom >= bottomEdge,
+      },
+      indexes: {
+        topLeft: this.getTileIndex(left, top),
+        topRight: this.getTileIndex(right, top),
+        bottomLeft: this.getTileIndex(left, bottom),
+        bottomRight: this.getTileIndex(right, bottom),
+      },
     };
   }
 
@@ -284,14 +296,15 @@ export class CityTile {
     const addTiles = [];
     const lastCameraX = this.lastCameraX;
     const lastCameraY = this.lastCameraY;
+    const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
 
     // Left Bound
     const rows = Math.ceil(
-      (lastBounds.bottomLeftIndex - lastBounds.topLeftIndex) /
+      (lastBounds.indexes.bottomLeft - lastBounds.indexes.topLeft) /
         this.cityXIndexOffset
     );
-    const columns = lastBounds.topRightIndex - lastBounds.topLeftIndex;
+    const columns = lastBounds.indexes.topRight - lastBounds.indexes.topLeft;
 
     for (let row = 0; row < rows; row++) {}
 
@@ -391,10 +404,19 @@ export class CityTile {
     }
 
     // @TOOD remove
-    this.rects.topLeft.setPosition(lastBounds.left, lastBounds.top);
-    this.rects.topRight.setPosition(lastBounds.right, lastBounds.top);
-    this.rects.bottomLeft.setPosition(lastBounds.left, lastBounds.bottom);
-    this.rects.bottomRight.setPosition(lastBounds.right, lastBounds.bottom);
+    this.rects.topLeft.setPosition(lastBounds.left.value, lastBounds.top.value);
+    this.rects.topRight.setPosition(
+      lastBounds.right.value,
+      lastBounds.top.value
+    );
+    this.rects.bottomLeft.setPosition(
+      lastBounds.left.value,
+      lastBounds.bottom.value
+    );
+    this.rects.bottomRight.setPosition(
+      lastBounds.right.value,
+      lastBounds.bottom.value
+    );
 
     const date = new Date();
 
@@ -404,10 +426,10 @@ export class CityTile {
         ${date.getMinutes()}:
         ${date.getSeconds()}
       </div> 
-      <div>Left ${lastBounds.onLeftEdge}</div>
-      <div>Right ${lastBounds.onRightEdge}</div>
-      <div>top ${lastBounds.onTopEdge}</div>
-      <div>bottom ${lastBounds.onBottomEdge}</div>
+      <div>Left ${lastBounds.left.onEdge}</div>
+      <div>Right ${lastBounds.right.onEdge}</div>
+      <div>top ${lastBounds.top.onEdge}</div>
+      <div>bottom ${lastBounds.bottom.onEdge}</div>
     `;
 
     this.lastCameraX = cameraX;
