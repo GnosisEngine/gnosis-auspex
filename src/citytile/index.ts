@@ -320,7 +320,7 @@ export class CityTile {
     }
     */
     // Vertical
-    for (let column = -1; column < columns; column++) {
+    for (let column = 0; column < columns; column++) {
       /*
       if (
         // Column wrapping to the beginning of the city
@@ -333,51 +333,39 @@ export class CityTile {
 
       const indexOffset = lastBounds.left === 0 ? 0 : 1;
 */
-
-      const offset = column - this.cityXIndexOffset;
-
       const adjustTop =
         lastBounds.top >= 0 &&
         lastBounds.top <= this.cityHeight &&
-        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT; /*&&
-        (column + lastBounds.topLeftIndex) % this.cityXIndexOffset !==
-          lastBounds.topRightIndex % this.cityXIndexOffset;
-*/
+        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;
+
       const adjustBottom =
-        lastBounds.bottom > -TILE_HEIGHT &&
-        lastBounds.bottom < this.cityHeight; /*&&
-        (column + lastBounds.topRightIndex) % this.cityXIndexOffset !==
-          lastBounds.topLeftIndex % this.cityXIndexOffset;
-*/
-      const topIndex = lastBounds.topLeftIndex + offset;
-      const bottomIndex = lastBounds.bottomLeftIndex + offset;
+        lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
+
+      let topIndex;
+      let bottomIndex;
+
+      const offset = column - this.cityXIndexOffset
+
+      if (lastBounds.topLeftIndex % this.cityXIndexOffset === 0) {
+        topIndex = lastBounds.topLeftIndex + offset;
+        bottomIndex =
+          lastBounds.bottomLeftIndex + offset;
+      } else {
+        topIndex = lastBounds.topLeftIndex + offset - 1;
+        bottomIndex =
+          lastBounds.bottomLeftIndex + offset - 1;
+      }
 
       const date = new Date();
 
       document.getElementById('debug').innerHTML = `
-        <div>Last Update: ${date.getHours()}:
+        <div>Last Update: 
+          ${date.getHours()}:
           ${date.getMinutes()}:
-          ${date.getSeconds()}</div>
-  
-        <div>adjust: ${
-          (column + lastBounds.topLeftIndex) % this.cityXIndexOffset !==
-          lastBounds.topRightIndex % this.cityXIndexOffset
-        }</div>
-        <div>left: ${
-          (lastBounds.topLeftIndex - 1) % this.cityXIndexOffset
-        }</div>
-        <div>right: ${
-          (lastBounds.topRightIndex - 1) % this.cityXIndexOffset
-        }</div>
-        <div>diff ${
-          ((lastBounds.topRightIndex - 1) % this.cityXIndexOffset) -
-            ((lastBounds.topLeftIndex - 1) % this.cityXIndexOffset) >
-          this.cityXIndexOffset
-        }</div>
-        <div>lastBounds.topLeftIndex ${lastBounds.topLeftIndex}</div>
-        <div>lastBounds.topRightIndex ${lastBounds.topRightIndex}</div>
-        <br />
-  
+          ${date.getSeconds()}
+        </div> 
+        <div>yes ${lastBounds.topLeftIndex % this.cityXIndexOffset}</div>
+        <div>z ${topIndex % this.cityXIndexOffset}</div>
         <div>Delete: ${JSON.stringify(deleteTiles)}</div>
         <div>Add: ${JSON.stringify(addTiles)}</div>
       `;
