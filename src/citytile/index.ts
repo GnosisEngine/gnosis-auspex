@@ -55,7 +55,7 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = 600, // @TODO
+    cityWidth: number = 800, // @TODO
     cityHeight: number = 500, // @TODO
     fovWidth: number = FOV_WIDTH,
     fovHeight: number = FOV_HEIGHT
@@ -309,14 +309,9 @@ export class CityTile {
     const hideTiles = [];
     const lastCameraX = this.lastCameraX;
     const lastCameraY = this.lastCameraY;
-    const bounds = this.getBounds(cameraX, cameraY);
     const lastBounds = this.getBounds(lastCameraX, lastCameraY);
+    const bounds = this.getBounds(cameraX, cameraY);
 
-    // Left Bound
-    const rows = Math.ceil(
-      (lastBounds.indexes.bottomLeft - lastBounds.indexes.topLeft) /
-        this.tilesPerCityRow
-    );
     const columns = lastBounds.indexes.topRight - lastBounds.indexes.topLeft;
 
     if (cameraX > lastCameraX) {
@@ -328,33 +323,43 @@ export class CityTile {
 
       for (let row = 0; row < rows; row++) {
         const offset = row * this.tilesPerCityRow;
-        const lastFeftIndex = lastBounds.indexes.topLeft + offset;
+        const lastLeftIndex = lastBounds.indexes.topLeft + offset;
         const newRightIndex = bounds.indexes.topRight + offset;
 
         if (!lastBounds.left.onEdge) {
-          hideTiles.push(lastFeftIndex);
+          hideTiles.push(lastLeftIndex);
+          hideTiles.push(lastLeftIndex - 1);
         }
+
+        hideTiles.push(bounds.indexes.topRight - 1 - this.tilesPerCityRow);
 
         if (!bounds.right.onEdge && bounds.right.value > 0) {
           showTiles.push(newRightIndex);
         }
       }
+    }
 
-      const date = new Date();
-      document.getElementById('debug').innerHTML = `
-        <div>Last Update: 
-          ${date.getHours()}:
-          ${date.getMinutes()}:
-          ${date.getSeconds()}
-        </div> 
-        <div>row ${rows}</div>
-        <div>rows ${rows}</div>
-        <div>tilesPerCityRow ${this.tilesPerCityRow}</div>
-        <div>topLeft ${lastBounds.indexes.topLeft}</div>
-        <div>topRight ${lastBounds.indexes.topRight}</div>
-        <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
-        <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
-      `;
+    if (cameraY > lastCameraY) {
+      // Moving down
+      const columns = lastBounds.indexes.topRight - lastBounds.indexes.topLeft;
+
+      for (let column = 0; column < columns; column++) {
+        const offset = column;
+        const lastTopIndex = lastBounds.indexes.topLeft + offset;
+        const newBottomIndex = bounds.indexes.bottomLeft + offset;
+
+        if (!lastBounds.top.onEdge) {
+          hideTiles.push(lastTopIndex);
+        }
+
+        if (
+          !bounds.bottom.onEdge &&
+          bounds.bottom.value > 0 &&
+          bounds.right.value <= this.cityWidth
+        ) {
+          showTiles.push(newBottomIndex);
+        }
+      }
     }
 
     /*
@@ -464,6 +469,20 @@ export class CityTile {
       lastBounds.right.value,
       lastBounds.bottom.value
     );
+
+    const date = new Date();
+    document.getElementById('debug').innerHTML = `
+      <div>Last Update: 
+        ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}
+      </div> 
+      <div>tilesPerCityRow ${this.tilesPerCityRow}</div>
+      <div>topLeft ${lastBounds.indexes.topLeft}</div>
+      <div>topRight ${lastBounds.indexes.topRight}</div>
+      <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
+      <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
+    `;
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
