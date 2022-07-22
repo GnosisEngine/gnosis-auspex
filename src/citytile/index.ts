@@ -36,7 +36,7 @@ export class CityTile {
   };
   cityWidth: number;
   cityHeight: number;
-  cityXIndexOffset: number;
+  tilesPerCityRow: number;
   fovWidth: number;
   fovHeight: number;
   cameraSynced: boolean = false;
@@ -67,7 +67,7 @@ export class CityTile {
     this.blitterMap = {};
     this.cityWidth = cityWidth;
     this.cityHeight = cityHeight;
-    this.cityXIndexOffset = Math.ceil(cityWidth / TILE_WIDTH);
+    this.tilesPerCityRow = Math.ceil(cityWidth / TILE_WIDTH);
     this.fovWidth = fovWidth;
     this.fovHeight = fovHeight;
   }
@@ -122,14 +122,14 @@ export class CityTile {
               const tile = this.addTile(CityLayers.building, x, y, 'city1');
 
               if (
-                x >= bounds.left &&
-                x < bounds.right &&
-                y >= bounds.top &&
-                y < bounds.bottom
+                x + TILE_WIDTH >= bounds.left.value &&
+                x - TILE_WIDTH < bounds.right.value &&
+                y + TILE_HEIGHT >= bounds.top.value &&
+                y - TILE_HEIGHT < bounds.bottom.value
               ) {
-                tile.visible = true;
+                // tile.visible = true; @TODO bring this back
               } else {
-                tile.visible = false;
+                // tile.visible = false; @TODO bring this back
               }
             });
           })(x, y)
@@ -144,16 +144,31 @@ export class CityTile {
     // @TODO remove
     this.rects = {
       topLeft: this.scene.add
-        .rectangle(bounds.left, bounds.top, TILE_WIDTH, TILE_HEIGHT)
+        .rectangle(bounds.left.value, bounds.top.value, TILE_WIDTH, TILE_HEIGHT)
         .setStrokeStyle(1, 0xff0000),
       topRight: this.scene.add
-        .rectangle(bounds.right, bounds.top, TILE_WIDTH, TILE_HEIGHT)
+        .rectangle(
+          bounds.right.value,
+          bounds.top.value,
+          TILE_WIDTH,
+          TILE_HEIGHT
+        )
         .setStrokeStyle(1, 0xff0000),
       bottomLeft: this.scene.add
-        .rectangle(bounds.left, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
+        .rectangle(
+          bounds.left.value,
+          bounds.bottom.value,
+          TILE_WIDTH,
+          TILE_HEIGHT
+        )
         .setStrokeStyle(1, 0xff0000),
       bottomRight: this.scene.add
-        .rectangle(bounds.right, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
+        .rectangle(
+          bounds.right.value,
+          bounds.bottom.value,
+          TILE_WIDTH,
+          TILE_HEIGHT
+        )
         .setStrokeStyle(1, 0xff0000),
     };
   }
@@ -221,7 +236,7 @@ export class CityTile {
    *
    */
   getTileIndex(x: number, y: number) {
-    return ~~(x / TILE_WIDTH) + ~~(y / TILE_HEIGHT) * this.cityXIndexOffset;
+    return ~~(x / TILE_WIDTH) + ~~(y / TILE_HEIGHT) * this.tilesPerCityRow;
   }
 
   /**
@@ -292,8 +307,8 @@ export class CityTile {
       return;
     }
 
-    const deleteTiles = [];
-    const addTiles = [];
+    const showTiles = [];
+    const hideTiles = [];
     const lastCameraX = this.lastCameraX;
     const lastCameraY = this.lastCameraY;
     const bounds = this.getBounds(cameraX, cameraY);
@@ -302,18 +317,48 @@ export class CityTile {
     // Left Bound
     const rows = Math.ceil(
       (lastBounds.indexes.bottomLeft - lastBounds.indexes.topLeft) /
-        this.cityXIndexOffset
+        this.tilesPerCityRow
     );
     const columns = lastBounds.indexes.topRight - lastBounds.indexes.topLeft;
 
-    for (let row = 0; row < rows; row++) {}
+    if (cameraX > lastCameraX) {
+      // Moving right
+      const rows = Math.ceil(
+        (lastBounds.indexes.bottomLeft - lastBounds.indexes.topLeft) /
+          this.tilesPerCityRow
+      );
 
-    for (let column = 0; column < columns; column++) {}
+      for (let row = 0; row < rows; row++) {
+        //const lastFeftIndex =
+        //bounds.indexes.topLeft + row * this.tilesPerCityRow;
+        const newRightIndex =
+          bounds.indexes.topRight + row * this.tilesPerCityRow;
+
+        //hideTiles.push(lastFeftIndex);
+        showTiles.push(newRightIndex);
+      }
+
+      const date = new Date();
+      document.getElementById('debug').innerHTML = `
+        <div>Last Update: 
+          ${date.getHours()}:
+          ${date.getMinutes()}:
+          ${date.getSeconds()}
+        </div> 
+        <div>row ${rows}</div>
+        <div>rows ${rows}</div>
+        <div>tilesPerCityRow ${this.tilesPerCityRow}</div>
+        <div>topLeft ${lastBounds.indexes.topLeft}</div>
+        <div>topRight ${lastBounds.indexes.topRight}</div>
+        <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
+        <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
+      `;
+    }
 
     /*
     // Horizontal
     for (let row = 0; row < rows; row++) {
-      const offset = row * this.cityXIndexOffset;
+      const offset = row * this.tilesPerCityRow;
 
       const adjustLeft =
         lastBounds.left > 0 && lastBounds.left < this.cityWidth;
@@ -352,7 +397,7 @@ export class CityTile {
       const adjustBottom =
         lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
 
-      const offset = column - this.cityXIndexOffset;
+      const offset = column - this.tilesPerCityRow;
 
       let topIndex = lastBounds.topLeftIndex + offset;
       let bottomIndex = lastBounds.bottomLeftIndex + offset;
@@ -386,7 +431,7 @@ export class CityTile {
 
       const blitter = this.blitterMap[index];
 
-      for (const tileIndex of deleteTiles) {
+      for (const tileIndex of hideTiles) {
         const tile = blitter.children.getAt(tileIndex);
 
         if (tile) {
@@ -394,7 +439,7 @@ export class CityTile {
         }
       }
 
-      for (const tileIndex of addTiles) {
+      for (const tileIndex of showTiles) {
         const tile = blitter.children.getAt(tileIndex);
 
         if (tile) {
@@ -417,20 +462,6 @@ export class CityTile {
       lastBounds.right.value,
       lastBounds.bottom.value
     );
-
-    const date = new Date();
-
-    document.getElementById('debug').innerHTML = `
-      <div>Last Update: 
-        ${date.getHours()}:
-        ${date.getMinutes()}:
-        ${date.getSeconds()}
-      </div> 
-      <div>topLeft ${lastBounds.indexes.topLeft}</div>
-      <div>topRight ${lastBounds.indexes.topRight}</div>
-      <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
-      <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
-    `;
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
