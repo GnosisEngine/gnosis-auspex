@@ -230,12 +230,18 @@ export class CityTile {
    */
   getBounds(x: number, y: number) {
     const widthOffset = x - TILE_WIDTH;
-    const left = widthOffset <= -TILE_WIDTH ? 0 : widthOffset;
-    const right = x + this.fovWidth + TILE_WIDTH;
+    const left = widthOffset <= 0 ? 0 : widthOffset;
+    const right =
+      x + this.fovWidth >= this.cityWidth - TILE_WIDTH / 2
+        ? this.cityWidth
+        : x + this.fovWidth + TILE_WIDTH;
 
-    const heightOffset = y - TILE_HEIGHT;
-    const top = heightOffset <= -TILE_HEIGHT ? 0 : heightOffset;
-    const bottom = y + this.fovHeight + TILE_HEIGHT;
+    const heightOffset = y - TILE_HEIGHT / 2;
+    const top = heightOffset <= 0 ? 0 : heightOffset;
+    const bottom =
+      y + this.fovHeight >= this.cityHeight - TILE_HEIGHT / 2
+        ? this.cityHeight
+        : y + this.fovHeight + TILE_HEIGHT;
 
     return {
       left,
@@ -314,8 +320,8 @@ export class CityTile {
     }
     */
     // Vertical
-    for (let column = -1; column <= columns; column++) {
-/*
+    for (let column = -1; column < columns; column++) {
+      /*
       if (
         // Column wrapping to the beginning of the city
         (column + lastBounds.topLeftIndex) % (this.cityXIndexOffset + 1) ===
@@ -327,20 +333,54 @@ export class CityTile {
 
       const indexOffset = lastBounds.left === 0 ? 0 : 1;
 */
-      if ((column + lastBounds.topLeftIndex) % this.cityXIndexOffset !== )
 
       const offset = column - this.cityXIndexOffset;
 
       const adjustTop =
         lastBounds.top >= 0 &&
         lastBounds.top <= this.cityHeight &&
-        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;
-
+        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT; /*&&
+        (column + lastBounds.topLeftIndex) % this.cityXIndexOffset !==
+          lastBounds.topRightIndex % this.cityXIndexOffset;
+*/
       const adjustBottom =
-        lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
-
+        lastBounds.bottom > -TILE_HEIGHT &&
+        lastBounds.bottom < this.cityHeight; /*&&
+        (column + lastBounds.topRightIndex) % this.cityXIndexOffset !==
+          lastBounds.topLeftIndex % this.cityXIndexOffset;
+*/
       const topIndex = lastBounds.topLeftIndex + offset;
       const bottomIndex = lastBounds.bottomLeftIndex + offset;
+
+      const date = new Date();
+
+      document.getElementById('debug').innerHTML = `
+        <div>Last Update: ${date.getHours()}:
+          ${date.getMinutes()}:
+          ${date.getSeconds()}</div>
+  
+        <div>adjust: ${
+          (column + lastBounds.topLeftIndex) % this.cityXIndexOffset !==
+          lastBounds.topRightIndex % this.cityXIndexOffset
+        }</div>
+        <div>left: ${
+          (lastBounds.topLeftIndex - 1) % this.cityXIndexOffset
+        }</div>
+        <div>right: ${
+          (lastBounds.topRightIndex - 1) % this.cityXIndexOffset
+        }</div>
+        <div>diff ${
+          ((lastBounds.topRightIndex - 1) % this.cityXIndexOffset) -
+            ((lastBounds.topLeftIndex - 1) % this.cityXIndexOffset) >
+          this.cityXIndexOffset
+        }</div>
+        <div>lastBounds.topLeftIndex ${lastBounds.topLeftIndex}</div>
+        <div>lastBounds.topRightIndex ${lastBounds.topRightIndex}</div>
+        <br />
+  
+        <div>Delete: ${JSON.stringify(deleteTiles)}</div>
+        <div>Add: ${JSON.stringify(addTiles)}</div>
+      `;
 
       if (cameraY > lastCameraY) {
         // Moving down
@@ -390,28 +430,6 @@ export class CityTile {
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
-    const date = new Date();
-
-    document.getElementById('debug').innerHTML = `
-      <div>Last Update: ${date.getHours()}:
-        ${date.getMinutes()}:
-        ${date.getSeconds()}</div>
-
-      <div>Camera X: ${cameraX}</div>
-      <div>Camera Y: ${cameraY}</div>
-      <div>Last Camera X: ${lastCameraX}</div>
-      <div>Last Camera Y: ${lastCameraY}</div>
-      <br />
-
-      <div>Left: ${lastBounds.left}</div>
-      <div>Right: ${lastBounds.right}</div>
-      <div>Top: ${lastBounds.top}</div>
-      <div>Bottom: ${lastBounds.bottom}</div>
-      <br />
-
-      <div>Delete: ${JSON.stringify(deleteTiles)}</div>
-      <div>Add: ${JSON.stringify(addTiles)}</div>
-    `;
   }
 
   /**
