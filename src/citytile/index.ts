@@ -318,7 +318,7 @@ export class CityTile {
         }
       }
     }
-    /*
+
     // Vertical
     for (let column = 0; column < columns; column++) {
       const adjustTop =
@@ -352,7 +352,7 @@ export class CityTile {
         }
       }
     }
-*/
+
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
