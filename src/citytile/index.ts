@@ -250,9 +250,7 @@ export class CityTile {
     const bottomEdge = this.cityHeight - this.halfTileHeight;
 
     const left =
-      widthOffset <= this.halfTileWidth
-        ? this.halfTileWidth
-        : widthOffset + this.halfTileWidth;
+      widthOffset <= 0 ? this.halfTileWidth : widthOffset + this.halfTileWidth;
 
     const right =
       widthOffset + this.fovWidth >= rightEdge
@@ -260,7 +258,7 @@ export class CityTile {
         : widthOffset + this.fovWidth + this.halfTileWidth;
 
     const top =
-      heightOffset <= this.halfTileHeight
+      heightOffset <= 0
         ? this.halfTileHeight
         : heightOffset + this.halfTileHeight;
 
@@ -329,13 +327,17 @@ export class CityTile {
       );
 
       for (let row = 0; row < rows; row++) {
-        //const lastFeftIndex =
-        //bounds.indexes.topLeft + row * this.tilesPerCityRow;
-        const newRightIndex =
-          bounds.indexes.topRight + row * this.tilesPerCityRow;
+        const offset = row * this.tilesPerCityRow;
+        const lastFeftIndex = lastBounds.indexes.topLeft + offset;
+        const newRightIndex = bounds.indexes.topRight + offset;
 
-        //hideTiles.push(lastFeftIndex);
-        showTiles.push(newRightIndex);
+        if (!lastBounds.left.onEdge) {
+          hideTiles.push(lastFeftIndex);
+        }
+
+        if (!bounds.right.onEdge && bounds.right.value > 0) {
+          showTiles.push(newRightIndex);
+        }
       }
 
       const date = new Date();
