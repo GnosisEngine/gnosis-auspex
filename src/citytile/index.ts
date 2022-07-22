@@ -334,29 +334,31 @@ export class CityTile {
       const indexOffset = lastBounds.left === 0 ? 0 : 1;
 */
       const adjustTop =
-        lastBounds.top >= 0 &&
-        lastBounds.top <= this.cityHeight &&
-        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;
+        lastBounds.top >= 0 && lastBounds.top <= this.cityHeight; /*&&
+        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;*/
 
       const adjustBottom =
         lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
 
-      let topIndex;
-      let bottomIndex;
-
       const offset = column - this.cityXIndexOffset;
 
+      let topIndex = lastBounds.topLeftIndex + offset;
+      let bottomIndex = lastBounds.bottomLeftIndex + offset;
+
+      /*
       if (
         lastBounds.topLeftIndex % this.cityXIndexOffset === 0 ||
         lastBounds.topRightIndex % this.cityXIndexOffset >= 0
       ) {
+        // Prevents wrapping
         topIndex = lastBounds.topLeftIndex + offset;
         bottomIndex = lastBounds.bottomLeftIndex + offset;
       } else {
-        topIndex = lastBounds.topLeftIndex + offset - 1;
-        bottomIndex = lastBounds.bottomLeftIndex + offset - 1;
+        // Normal in range tiling
+        topIndex = lastBounds.topLeftIndex + offset;
+        bottomIndex = lastBounds.bottomLeftIndex + offset;
       }
-
+*/
       const date = new Date();
 
       document.getElementById('debug').innerHTML = `
