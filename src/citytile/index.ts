@@ -344,16 +344,17 @@ export class CityTile {
       let topIndex;
       let bottomIndex;
 
-      const offset = column - this.cityXIndexOffset
+      const offset = column - this.cityXIndexOffset;
 
-      if (lastBounds.topLeftIndex % this.cityXIndexOffset === 0) {
+      if (
+        lastBounds.topLeftIndex % this.cityXIndexOffset === 0 ||
+        lastBounds.topRightIndex % this.cityXIndexOffset >= 0
+      ) {
         topIndex = lastBounds.topLeftIndex + offset;
-        bottomIndex =
-          lastBounds.bottomLeftIndex + offset;
+        bottomIndex = lastBounds.bottomLeftIndex + offset;
       } else {
         topIndex = lastBounds.topLeftIndex + offset - 1;
-        bottomIndex =
-          lastBounds.bottomLeftIndex + offset - 1;
+        bottomIndex = lastBounds.bottomLeftIndex + offset - 1;
       }
 
       const date = new Date();
@@ -364,10 +365,9 @@ export class CityTile {
           ${date.getMinutes()}:
           ${date.getSeconds()}
         </div> 
-        <div>yes ${lastBounds.topLeftIndex % this.cityXIndexOffset}</div>
-        <div>z ${topIndex % this.cityXIndexOffset}</div>
-        <div>Delete: ${JSON.stringify(deleteTiles)}</div>
-        <div>Add: ${JSON.stringify(addTiles)}</div>
+        <div>lastBounds.topRightIndex ${lastBounds.topRightIndex}</div>
+        <div>% ${lastBounds.topRightIndex % this.cityXIndexOffset}</div>
+        <div>this.cityXIndexOffset ${this.cityXIndexOffset}</div>
       `;
 
       if (cameraY > lastCameraY) {
