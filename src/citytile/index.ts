@@ -285,18 +285,18 @@ export class CityTile {
         this.cityXIndexOffset
     );
     const columns = lastBounds.topRightIndex - lastBounds.topLeftIndex;
-    /*
+
     // Horizontal
     for (let row = 0; row < rows; row++) {
-      const offset = (row - 1) * this.cityXIndexOffset;
+      const offset = row * this.cityXIndexOffset;
 
       const adjustLeft =
         lastBounds.left > 0 && lastBounds.left < this.cityWidth;
       const adjustRight =
-        lastBounds.right > 0 && lastBounds.right <= this.cityWidth;
+        lastBounds.right > 0 && lastBounds.right < this.cityWidth;
 
-      const leftIndex = lastBounds.topLeftIndex + offset;
-      const rightIndex = lastBounds.topRightIndex + offset;
+      const leftIndex = lastBounds.topLeftIndex + offset - 1;
+      const rightIndex = lastBounds.topRightIndex + offset - 1;
 
       if (cameraX > lastCameraX) {
         // Moving right
@@ -318,24 +318,11 @@ export class CityTile {
         }
       }
     }
-    */
+    /*
     // Vertical
     for (let column = 0; column < columns; column++) {
-      /*
-      if (
-        // Column wrapping to the beginning of the city
-        (column + lastBounds.topLeftIndex) % (this.cityXIndexOffset + 1) ===
-          0 &&
-        lastBounds.left - TILE_WIDTH > 0
-      ) {
-        break;
-      }
-
-      const indexOffset = lastBounds.left === 0 ? 0 : 1;
-*/
       const adjustTop =
-        lastBounds.top >= 0 && lastBounds.top <= this.cityHeight; /*&&
-        lastBounds.bottom - lastBounds.top > this.fovHeight + TILE_HEIGHT;*/
+        lastBounds.top >= 0 && lastBounds.top <= this.cityHeight;
 
       const adjustBottom =
         lastBounds.bottom > -TILE_HEIGHT && lastBounds.bottom < this.cityHeight;
@@ -344,33 +331,6 @@ export class CityTile {
 
       let topIndex = lastBounds.topLeftIndex + offset;
       let bottomIndex = lastBounds.bottomLeftIndex + offset;
-
-      /*
-      if (
-        lastBounds.topLeftIndex % this.cityXIndexOffset === 0 ||
-        lastBounds.topRightIndex % this.cityXIndexOffset >= 0
-      ) {
-        // Prevents wrapping
-        topIndex = lastBounds.topLeftIndex + offset;
-        bottomIndex = lastBounds.bottomLeftIndex + offset;
-      } else {
-        // Normal in range tiling
-        topIndex = lastBounds.topLeftIndex + offset;
-        bottomIndex = lastBounds.bottomLeftIndex + offset;
-      }
-*/
-      const date = new Date();
-
-      document.getElementById('debug').innerHTML = `
-        <div>Last Update: 
-          ${date.getHours()}:
-          ${date.getMinutes()}:
-          ${date.getSeconds()}
-        </div> 
-        <div>lastBounds.topRightIndex ${lastBounds.topRightIndex}</div>
-        <div>% ${lastBounds.topRightIndex % this.cityXIndexOffset}</div>
-        <div>this.cityXIndexOffset ${this.cityXIndexOffset}</div>
-      `;
 
       if (cameraY > lastCameraY) {
         // Moving down
@@ -392,7 +352,7 @@ export class CityTile {
         }
       }
     }
-
+*/
     // Adjust Tile Visibility
     for (const index of CityLayerIndexes) {
       if (this.scene.getLayer(CityLayers[index]).visible === false) {
@@ -417,6 +377,19 @@ export class CityTile {
         }
       }
     }
+
+    const date = new Date();
+
+    document.getElementById('debug').innerHTML = `
+      <div>Last Update: 
+        ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}
+      </div> 
+      <div>lastBounds.topRightIndex ${lastBounds.topRightIndex}</div>
+      <div>% ${lastBounds.topRightIndex % this.cityXIndexOffset}</div>
+      <div>this.cityXIndexOffset ${this.cityXIndexOffset}</div>
+    `;
 
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
