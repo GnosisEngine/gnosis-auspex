@@ -240,7 +240,7 @@ export class CityTile {
         : widthOffset + this.halfTileWidth;
 
     const right =
-      widthOffset + this.fovWidth >= this.cityWidth - this.halfTileWidth
+      widthOffset + this.fovWidth >= rightEdge
         ? rightEdge
         : widthOffset + this.fovWidth + this.halfTileWidth;
 
@@ -250,7 +250,7 @@ export class CityTile {
         : heightOffset + this.halfTileHeight;
 
     const bottom =
-      heightOffset + this.fovHeight >= this.cityHeight - this.halfTileHeight
+      heightOffset + this.fovHeight >= bottomEdge
         ? bottomEdge
         : heightOffset + this.fovHeight + this.halfTileHeight;
 
@@ -261,7 +261,7 @@ export class CityTile {
       },
       right: {
         value: right,
-        onEdge: right >= bottomEdge,
+        onEdge: right >= rightEdge,
       },
       top: {
         value: top,
@@ -426,10 +426,10 @@ export class CityTile {
         ${date.getMinutes()}:
         ${date.getSeconds()}
       </div> 
-      <div>Left ${lastBounds.left.onEdge}</div>
-      <div>Right ${lastBounds.right.onEdge}</div>
-      <div>top ${lastBounds.top.onEdge}</div>
-      <div>bottom ${lastBounds.bottom.onEdge}</div>
+      <div>topLeft ${lastBounds.indexes.topLeft}</div>
+      <div>topRight ${lastBounds.indexes.topRight}</div>
+      <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
+      <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
     `;
 
     this.lastCameraX = cameraX;
