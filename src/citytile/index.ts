@@ -293,10 +293,102 @@ export class CityTile {
     };
   }
 
+  update () {
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
+
+    if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
+      this.cameraSynced = true;
+      return;
+    }
+
+    const showTiles = [];
+    const hideTiles = [];
+    const lastCameraX = this.lastCameraX;
+    const lastCameraY = this.lastCameraY;
+
+    const killZone = {
+      x: cameraX - TILE_WIDTH,
+      y: cameraY - TILE_HEIGHT,
+      width: this.fovWidth + (TILE_WIDTH * 2),
+      height: this.fovHeight + (TILE_HEIGHT * 2),
+      ranges: {}
+    }
+
+    killZone.ranges = {
+      left: {
+        x: killZone.x,
+        y: {
+          start: killZone.y + TILE_HEIGHT,
+          end: (killZone.y + killZone.height) - TILE_HEIGHT
+        }
+      }
+    }
+
+    // Adjust Tile Visibility
+    for (const index of CityLayerIndexes) {
+      if (this.scene.getLayer(CityLayers[index]).visible === false) {
+        continue;
+      }
+
+      const blitter = this.blitterMap[index];
+
+      for (const tileIndex of hideTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+
+        if (tile) {
+          tile.visible = false;
+        }
+      }
+
+      for (const tileIndex of showTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+
+        if (tile) {
+          tile.visible = true;
+        }
+      }
+    }
+
+
+    
+    // @TOOD remove
+    this.rects.topLeft.setPosition(lastBounds.left.value, lastBounds.top.value);
+    this.rects.topRight.setPosition(
+      lastBounds.right.value,
+      lastBounds.top.value
+    );
+    this.rects.bottomLeft.setPosition(
+      lastBounds.left.value,
+      lastBounds.bottom.value
+    );
+    this.rects.bottomRight.setPosition(
+      lastBounds.right.value,
+      lastBounds.bottom.value
+    );
+
+    const date = new Date();
+    document.getElementById('debug').innerHTML = `
+      <div>Last Update: 
+        ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}
+      </div> 
+      <div>tilesPerCityRow ${this.tilesPerCityRow}</div>
+      <div>topLeft ${lastBounds.indexes.topLeft}</div>
+      <div>topRight ${lastBounds.indexes.topRight}</div>
+      <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
+      <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
+    `;
+
+    this.lastCameraX = cameraX;
+    this.lastCameraY = cameraY;
+  }
+
   /**
    *
    */
-  update() {
+  update_old() {
     const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
     const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
