@@ -304,8 +304,6 @@ export class CityTile {
 
     const showTiles = [];
     const hideTiles = [];
-    const lastCameraX = this.lastCameraX;
-    const lastCameraY = this.lastCameraY;
 
     const killZone = {
       x: cameraX - TILE_WIDTH,
@@ -316,13 +314,14 @@ export class CityTile {
     }
 
     killZone.ranges = {
-      left: {
+      sides=--={
         x: killZone.x,
         y: {
           start: killZone.y + TILE_HEIGHT,
-          end: (killZone.y + killZone.height) - TILE_HEIGHT
+          end: killZone.y + killZone.height - TILE_HEIGHT
         }
-      }
+      }, 
+      right
     }
 
     // Adjust Tile Visibility
