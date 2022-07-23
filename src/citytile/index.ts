@@ -293,7 +293,7 @@ export class CityTile {
     };
   }
 
-  update () {
+  update() {
     const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
     const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
@@ -305,23 +305,65 @@ export class CityTile {
     const showTiles = [];
     const hideTiles = [];
 
-    const killZone = {
-      x: cameraX - TILE_WIDTH,
-      y: cameraY - TILE_HEIGHT,
-      width: this.fovWidth + (TILE_WIDTH * 2),
-      height: this.fovHeight + (TILE_HEIGHT * 2),
-      ranges: {}
-    }
+    const killZone: {
+      [key: string]: any;
+    } = {
+      x: cameraX - TILE_WIDTH > 0 ? cameraX - TILE_WIDTH : 0,
+      y: cameraY - TILE_HEIGHT > 0 ? cameraY - TILE_HEIGHT : 0,
+      width: this.fovWidth + TILE_WIDTH * 2,
+      height: this.fovHeight + TILE_HEIGHT * 2,
+      ranges: {},
+    };
+
+    const startY = killZone.y + TILE_HEIGHT;
+    const endY = killZone.y + killZone.height - TILE_HEIGHT;
+    const startX = killZone.x;
+    const endX = killZone.x + killZone.width;
 
     killZone.ranges = {
-      sides=--={
+      left: {
         x: killZone.x,
         y: {
-          start: killZone.y + TILE_HEIGHT,
-          end: killZone.y + killZone.height - TILE_HEIGHT
-        }
-      }, 
-      right
+          start: startY,
+          end: endY,
+        },
+      },
+      right: {
+        x:
+          killZone.x + killZone.width < this.cityWidth
+            ? killZone.x + killZone.width
+            : this.cityWidth,
+        y: {
+          start: startY,
+          end: endY,
+        },
+      },
+      top: {
+        x: {
+          start: startX,
+          end: endX,
+        },
+        y: killZone.y,
+      },
+      bottom: {
+        x: {
+          start: startX,
+          end: endX,
+        },
+        y: killZone.y + killZone.height,
+      },
+    };
+
+    if (cameraX > this.lastCameraX) {
+      // Moving right
+    } else if (cameraX < this.lastCameraX) {
+      // moving left
+    }
+
+    if (cameraY > this.lastCameraY) {
+      // Moving down
+    } else if (cameraY < this.lastCameraY) {
+      // moving up
     }
 
     // Adjust Tile Visibility
@@ -349,21 +391,22 @@ export class CityTile {
       }
     }
 
-
-    
     // @TOOD remove
-    this.rects.topLeft.setPosition(lastBounds.left.value, lastBounds.top.value);
+    this.rects.topLeft.setPosition(
+      killZone.ranges.left.x,
+      killZone.ranges.top.y
+    );
     this.rects.topRight.setPosition(
-      lastBounds.right.value,
-      lastBounds.top.value
+      killZone.ranges.right.x,
+      killZone.ranges.top.y
     );
     this.rects.bottomLeft.setPosition(
-      lastBounds.left.value,
-      lastBounds.bottom.value
+      killZone.ranges.left.x,
+      killZone.ranges.bottom.y
     );
     this.rects.bottomRight.setPosition(
-      lastBounds.right.value,
-      lastBounds.bottom.value
+      killZone.ranges.right.x,
+      killZone.ranges.bottom.y
     );
 
     const date = new Date();
@@ -373,11 +416,6 @@ export class CityTile {
         ${date.getMinutes()}:
         ${date.getSeconds()}
       </div> 
-      <div>tilesPerCityRow ${this.tilesPerCityRow}</div>
-      <div>topLeft ${lastBounds.indexes.topLeft}</div>
-      <div>topRight ${lastBounds.indexes.topRight}</div>
-      <div>bottomLeft ${lastBounds.indexes.bottomLeft}</div>
-      <div>bottomRight ${lastBounds.indexes.bottomRight}</div>
     `;
 
     this.lastCameraX = cameraX;
