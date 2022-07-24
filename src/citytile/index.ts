@@ -334,8 +334,8 @@ export class CityTile {
       },
       right: {
         x:
-          killZone.x + killZone.width < this.cityWidth + TILE_WIDTH
-            ? killZone.x + killZone.width
+          cameraX + killZone.width < this.cityWidth + TILE_WIDTH
+            ? cameraX + killZone.width
             : this.cityWidth + TILE_WIDTH,
         y: {
           start: startY,
@@ -355,37 +355,29 @@ export class CityTile {
           end: endX,
         },
         y:
-          killZone.y + killZone.height < this.cityHeight + TILE_HEIGHT
-            ? killZone.y + killZone.height
+          cameraY + killZone.height < this.cityHeight + TILE_HEIGHT
+            ? cameraY + killZone.height
             : this.cityHeight + TILE_HEIGHT,
       },
     };
 
     if (cameraX > this.lastCameraX) {
       // Moving right
-
       const x = killZone.ranges.right.x;
       const end = killZone.ranges.right.y.end;
       const limit = this.cityWidth;
       const iterate = TILE_HEIGHT;
+      let y = killZone.ranges.right.y.start;
 
-      for (
-        let y = killZone.ranges.right.y.start;
-        y < end && x < limit;
-        y += iterate
-      ) {
-        const index = this.getTileIndex(killZone.ranges.right.x, y);
-        showTiles.push(index);
+      for (; y < end; y += iterate) {
+        if (x < limit) {
+          const showIndex = this.getTileIndex(x, y);
+          showTiles.push(showIndex);
+        }
+
+        const hideIndex = this.getTileIndex(killZone.ranges.left.x, y);
+        hideTiles.push(hideIndex);
       }
-      const date = new Date();
-      document.getElementById('debug').innerHTML = `
-        <div>Last Update: 
-          ${date.getHours()}:
-          ${date.getMinutes()}:
-          ${date.getSeconds()}
-        </div> 
-        <div>show ${showTiles}</div>
-      `;
     } else if (cameraX < this.lastCameraX) {
       // moving left
     }
@@ -422,6 +414,17 @@ export class CityTile {
     }
 
     // @TOOD remove
+    const date = new Date();
+    document.getElementById('debug').innerHTML = `
+      <div>Last Update: 
+        ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}
+      </div> 
+      <div>show ${showTiles}</div>
+      <div>hide ${hideTiles}</div>
+    `;
+
     this.rects.topLeft.setPosition(
       killZone.ranges.left.x,
       killZone.ranges.top.y
