@@ -319,14 +319,14 @@ export class CityTile {
       ranges: {},
     };
 
-    const startX = killZone.x;
+    const startX = killZone.x > -TILE_WIDTH ? killZone.x : -TILE_WIDTH;
     const endX = killZone.x + killZone.width;
     const startY = killZone.y + TILE_HEIGHT;
     const endY = killZone.y + killZone.height;
 
     killZone.ranges = {
       left: {
-        x: killZone.x > TILE_WIDTH ? killZone.x : TILE_WIDTH,
+        x: killZone.x > -TILE_WIDTH ? killZone.x : -TILE_WIDTH,
         y: {
           start: startY,
           end: endY,
