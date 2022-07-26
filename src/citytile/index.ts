@@ -326,7 +326,7 @@ export class CityTile {
 
     killZone.ranges = {
       left: {
-        x: killZone.x,
+        x: killZone.x > TILE_WIDTH ? killZone.x : TILE_WIDTH,
         y: {
           start: startY,
           end: endY,
@@ -335,7 +335,7 @@ export class CityTile {
       right: {
         x:
           cameraX + killZone.width < this.cityWidth + TILE_WIDTH
-            ? cameraX + killZone.width
+            ? cameraX + killZone.width - TILE_WIDTH
             : this.cityWidth + TILE_WIDTH,
         y: {
           start: startY,
@@ -367,9 +367,8 @@ export class CityTile {
       const end = killZone.ranges.right.y.end;
       const limit = this.cityWidth;
       const iterate = TILE_HEIGHT;
-      let y = killZone.ranges.right.y.start;
 
-      for (; y < end; y += iterate) {
+      for (let y = killZone.ranges.right.y.start; y < end; y += iterate) {
         if (x < limit) {
           const showIndex = this.getTileIndex(x, y);
           showTiles.push(showIndex);
@@ -380,6 +379,20 @@ export class CityTile {
       }
     } else if (cameraX < this.lastCameraX) {
       // moving left
+      const x = killZone.ranges.left.x;
+      const end = killZone.ranges.left.y.end;
+      const limit = this.cityWidth;
+      const iterate = TILE_HEIGHT;
+
+      for (let y = killZone.ranges.left.y.start; y < end; y += iterate) {
+        if (x < limit) {
+          const showIndex = this.getTileIndex(x, y);
+          showTiles.push(showIndex);
+        }
+
+        const hideIndex = this.getTileIndex(killZone.ranges.right.x, y);
+        hideTiles.push(hideIndex);
+      }
     }
 
     if (cameraY > this.lastCameraY) {
