@@ -324,22 +324,28 @@ export class CityTile {
     const startY = killZone.y + TILE_HEIGHT;
     const endY = killZone.y + killZone.height;
 
+    const bottomY =
+      cameraY + killZone.height < this.cityHeight + TILE_HEIGHT
+        ? cameraY + killZone.height
+        : this.cityHeight + TILE_HEIGHT;
+    const rightX =
+      cameraX + killZone.width < this.cityWidth
+        ? cameraX + killZone.width - TILE_WIDTH * 2
+        : this.cityWidth;
+
     killZone.ranges = {
       left: {
         x: killZone.x > -TILE_WIDTH ? killZone.x : -TILE_WIDTH,
         y: {
           start: startY,
-          end: endY,
+          end: bottomY,
         },
       },
       right: {
-        x:
-          cameraX + killZone.width < this.cityWidth + TILE_WIDTH
-            ? cameraX + killZone.width - TILE_WIDTH
-            : this.cityWidth + TILE_WIDTH,
+        x: rightX,
         y: {
           start: startY,
-          end: endY,
+          end: bottomY,
         },
       },
       top: {
@@ -354,10 +360,7 @@ export class CityTile {
           start: startX,
           end: endX,
         },
-        y:
-          cameraY + killZone.height < this.cityHeight + TILE_HEIGHT
-            ? cameraY + killZone.height
-            : this.cityHeight + TILE_HEIGHT,
+        y: bottomY,
       },
     };
 
@@ -374,7 +377,10 @@ export class CityTile {
           showTiles.push(showIndex);
         }
 
-        const hideIndex = this.getTileIndex(killZone.ranges.left.x, y);
+        const hideIndex = this.getTileIndex(
+          killZone.ranges.left.x - TILE_WIDTH,
+          y
+        );
         hideTiles.push(hideIndex);
       }
     } else if (cameraX < this.lastCameraX) {
@@ -385,12 +391,15 @@ export class CityTile {
       const iterate = TILE_HEIGHT;
 
       for (let y = killZone.ranges.left.y.start; y < end; y += iterate) {
-        if (x < limit) {
+        if (x < limit && x > 0) {
           const showIndex = this.getTileIndex(x, y);
           showTiles.push(showIndex);
         }
 
-        const hideIndex = this.getTileIndex(killZone.ranges.right.x, y);
+        const hideIndex = this.getTileIndex(
+          killZone.ranges.right.x + TILE_WIDTH,
+          y
+        );
         hideTiles.push(hideIndex);
       }
     }
