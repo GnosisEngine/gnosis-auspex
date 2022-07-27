@@ -328,6 +328,7 @@ export class CityTile {
       cameraY + killZone.height < this.cityHeight + TILE_HEIGHT
         ? cameraY + killZone.height
         : this.cityHeight + TILE_HEIGHT;
+
     const rightX =
       cameraX + killZone.width < this.cityWidth
         ? cameraX + killZone.width
@@ -372,7 +373,7 @@ export class CityTile {
       const iterate = TILE_HEIGHT;
 
       for (let y = killZone.ranges.right.y.start; y < end; y += iterate) {
-        if (x < limit) {
+        if (killZone.ranges.right.x < limit) {
           const showIndex = this.getTileIndex(x, y);
           showTiles.push(showIndex);
         }
@@ -387,16 +388,14 @@ export class CityTile {
       // moving left
       const x = killZone.ranges.left.x;
       const limit = this.cityWidth;
+      const end = killZone.ranges.left.y.end;
+      const iterate = TILE_HEIGHT;
 
-      if (x < limit && x > 0) {
-        const end = killZone.ranges.left.y.end;
+      for (let y = killZone.ranges.left.y.start; y < end; y += iterate) {
+        const showIndex = this.getTileIndex(x, y);
+        showTiles.push(showIndex);
 
-        const iterate = TILE_HEIGHT;
-
-        for (let y = killZone.ranges.left.y.start; y < end; y += iterate) {
-          const showIndex = this.getTileIndex(x, y);
-          showTiles.push(showIndex);
-
+        if (rightX > 0 && rightX < limit) {
           const hideIndex = this.getTileIndex(
             killZone.ranges.right.x + TILE_WIDTH,
             y
