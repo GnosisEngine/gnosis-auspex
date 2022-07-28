@@ -382,6 +382,34 @@ export class CityTile {
 
     if (cameraX > this.lastCameraX) {
       // Moving right
+
+      // Show loop
+      for (
+        let y = deadZone.rightRange.start + TILE_HEIGHT;
+        y < deadZone.rightRange.end - TILE_HEIGHT;
+        y += TILE_HEIGHT
+      ) {
+        const x = deadZone.rightRange.fixed - TILE_WIDTH;
+
+        if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
+          const showIndex = this.getTileIndex(x, y);
+          showTiles.push(showIndex);
+        }
+      }
+
+      // hide loop
+      for (
+        let y = deadZone.leftRange.start;
+        y < deadZone.leftRange.end;
+        y += TILE_HEIGHT
+      ) {
+        const x = deadZone.leftRange.fixed;
+
+        if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
+          const hideIndex = this.getTileIndex(x, y);
+          hideTiles.push(hideIndex);
+        }
+      }
     } else if (cameraX < this.lastCameraX) {
       // moving left
     }
