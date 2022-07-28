@@ -294,44 +294,46 @@ export class CityTile {
   }
 
   update() {
-    const negativeTileWidth = -TILE_WIDTH;
-    const negativeTileHeight = -TILE_HEIGHT;
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
+
+    if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
+      this.cameraSynced = true;
+      return;
+    }
 
     const cityLeftLimit = -TILE_WIDTH;
     const cityTopLimit = -TILE_HEIGHT;
     const cityRightLimit = this.cityWidth + TILE_WIDTH;
     const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
 
-    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
-    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
-
     const deadZoneLeftX = cameraX - TILE_WIDTH;
     const deadZoneTopY = cameraY - TILE_WIDTH;
     const deadZoneRightX = cameraX + this.fovWidth + TILE_WIDTH;
     const deadZoneBottomY = cameraY + this.fovHeight + TILE_WIDTH;
 
-    const deadZoneLeft =
+    const left =
       deadZoneLeftX < cityLeftLimit
         ? cityLeftLimit
         : deadZoneLeftX > cityRightLimit
         ? cityRightLimit
         : deadZoneLeftX;
 
-    const deadZoneRight =
+    const right =
       deadZoneRightX < cityLeftLimit
         ? cityLeftLimit
         : deadZoneRightX > cityRightLimit
         ? cityRightLimit
         : deadZoneRightX;
 
-    const deadZoneTop =
+    const top =
       deadZoneTopY < cityTopLimit
         ? cityTopLimit
         : deadZoneTopY > cityBottomLimit
         ? cityBottomLimit
         : deadZoneTopY;
 
-    const deadZoneBottom =
+    const bottom =
       deadZoneBottomY < cityTopLimit
         ? cityTopLimit
         : deadZoneBottomY > cityBottomLimit
@@ -341,24 +343,39 @@ export class CityTile {
     const deadZone: {
       [key: string]: any;
     } = {
-      topLeftX: deadZoneLeft,
-      topLeftY: deadZoneTop,
-      topRightX: deadZoneRight,
-      topRightY: deadZoneTop,
-      bottomLeftX: deadZoneLeft,
-      bottomLeftY: deadZoneBottom,
-      bottomRightX: deadZoneRight,
-      bottomRightY: deadZoneBottom,
-      leftRange: 0,
-      rightRange: 0,
-      topRange: 0,
-      bottomRange: 0,
+      topLeftX: left,
+      topLeftY: top,
+      topRightX: right,
+      topRightY: top,
+      bottomLeftX: left,
+      bottomLeftY: bottom,
+      bottomRightX: right,
+      bottomRightY: bottom,
+      leftRange: {
+        start: top,
+        end: bottom,
+        fixed: left,
+        limit: cityLeftLimit,
+      },
+      rightRange: {
+        start: top,
+        end: bottom,
+        fixed: right,
+        limit: cityRightLimit,
+      },
+      topRange: {
+        start: left,
+        end: right,
+        fixed: top,
+        limit: cityTopLimit,
+      },
+      bottomRange: {
+        start: right,
+        end: left,
+        fixed: bottom,
+        limit: cityBottomLimit,
+      },
     };
-
-    if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
-      this.cameraSynced = true;
-      return;
-    }
 
     const showTiles = [];
     const hideTiles = [];
@@ -408,6 +425,7 @@ export class CityTile {
         ${date.getMinutes()}:
         ${date.getSeconds()}
       </div> 
+      <div>deadzone <pre>${JSON.stringify(deadZone, null, 2)}</pre></div>
       <div>show ${showTiles}</div>
       <div>hide ${hideTiles}</div>
     `;
