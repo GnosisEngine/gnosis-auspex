@@ -98,8 +98,6 @@ export class GameScene extends Phaser.Scene {
     );
     this.debugContainer = this.add.container(0, 0);
     this.debugContainer.add([rect, text]);
-
-    this.physics.add.image(0, 0, 'null'); // @TODO remove
   }
 
   /**

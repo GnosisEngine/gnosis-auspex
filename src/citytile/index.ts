@@ -294,6 +294,140 @@ export class CityTile {
   }
 
   update() {
+    const negativeTileWidth = -TILE_WIDTH;
+    const negativeTileHeight = -TILE_HEIGHT;
+
+    const cityLeftLimit = -TILE_WIDTH;
+    const cityTopLimit = -TILE_HEIGHT;
+    const cityRightLimit = this.cityWidth + TILE_WIDTH;
+    const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
+
+    const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
+    const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
+
+    const deadZoneLeftX = cameraX - TILE_WIDTH;
+    const deadZoneTopY = cameraY - TILE_WIDTH;
+    const deadZoneRightX = cameraX + this.fovWidth + TILE_WIDTH;
+    const deadZoneBottomY = cameraY + this.fovHeight + TILE_WIDTH;
+
+    const deadZoneLeft =
+      deadZoneLeftX < cityLeftLimit
+        ? cityLeftLimit
+        : deadZoneLeftX > cityRightLimit
+        ? cityRightLimit
+        : deadZoneLeftX;
+
+    const deadZoneRight =
+      deadZoneRightX < cityLeftLimit
+        ? cityLeftLimit
+        : deadZoneRightX > cityRightLimit
+        ? cityRightLimit
+        : deadZoneRightX;
+
+    const deadZoneTop =
+      deadZoneTopY < cityTopLimit
+        ? cityTopLimit
+        : deadZoneTopY > cityBottomLimit
+        ? cityBottomLimit
+        : deadZoneTopY;
+
+    const deadZoneBottom =
+      deadZoneBottomY < cityTopLimit
+        ? cityTopLimit
+        : deadZoneBottomY > cityBottomLimit
+        ? cityBottomLimit
+        : deadZoneBottomY;
+
+    const deadZone: {
+      [key: string]: any;
+    } = {
+      topLeftX: deadZoneLeft,
+      topLeftY: deadZoneTop,
+      topRightX: deadZoneRight,
+      topRightY: deadZoneTop,
+      bottomLeftX: deadZoneLeft,
+      bottomLeftY: deadZoneBottom,
+      bottomRightX: deadZoneRight,
+      bottomRightY: deadZoneBottom,
+      leftRange: 0,
+      rightRange: 0,
+      topRange: 0,
+      bottomRange: 0,
+    };
+
+    if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
+      this.cameraSynced = true;
+      return;
+    }
+
+    const showTiles = [];
+    const hideTiles = [];
+
+    if (cameraX > this.lastCameraX) {
+      // Moving right
+    } else if (cameraX < this.lastCameraX) {
+      // moving left
+    }
+
+    if (cameraY > this.lastCameraY) {
+      // Moving down
+    } else if (cameraY < this.lastCameraY) {
+      // moving up
+    }
+
+    // Adjust Tile Visibility
+    for (const index of CityLayerIndexes) {
+      if (this.scene.getLayer(CityLayers[index]).visible === false) {
+        continue;
+      }
+
+      const blitter = this.blitterMap[index];
+
+      for (const tileIndex of hideTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+
+        if (tile) {
+          tile.visible = false;
+        }
+      }
+
+      for (const tileIndex of showTiles) {
+        const tile = blitter.children.getAt(tileIndex);
+
+        if (tile) {
+          tile.visible = true;
+        }
+      }
+    }
+
+    // @TOOD remove
+    const date = new Date();
+    document.getElementById('debug').innerHTML = `
+      <div>Last Update: 
+        ${date.getHours()}:
+        ${date.getMinutes()}:
+        ${date.getSeconds()}
+      </div> 
+      <div>show ${showTiles}</div>
+      <div>hide ${hideTiles}</div>
+    `;
+
+    this.rects.topLeft.setPosition(deadZone.topLeftX, deadZone.topLeftY);
+    this.rects.topRight.setPosition(deadZone.topRightX, deadZone.topRightY);
+    this.rects.bottomLeft.setPosition(
+      deadZone.bottomLeftX,
+      deadZone.bottomLeftY
+    );
+    this.rects.bottomRight.setPosition(
+      deadZone.bottomRightX,
+      deadZone.bottomRightY
+    );
+
+    this.lastCameraX = cameraX;
+    this.lastCameraY = cameraY;
+  }
+
+  update_lame() {
     const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
     const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
@@ -304,6 +438,31 @@ export class CityTile {
 
     const showTiles = [];
     const hideTiles = [];
+
+    const killzone: {
+      [key: string]: any;
+    } = {
+      top: {
+        value: 0,
+        left: 0,
+        right: 0,
+      },
+      bottom: {
+        value: 0,
+        left: 0,
+        right: 0,
+      },
+      left: {
+        value: 0,
+        top: 0,
+        bottom: 0,
+      },
+      right: {
+        value: 0,
+        top: 0,
+        bottom: 0,
+      },
+    };
 
     const killZone: {
       [key: string]: any;
