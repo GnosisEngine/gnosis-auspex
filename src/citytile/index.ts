@@ -302,6 +302,9 @@ export class CityTile {
       return;
     }
 
+    const showTiles = [];
+    const hideTiles = [];
+
     const cityLeftLimit = -TILE_WIDTH;
     const cityTopLimit = -TILE_HEIGHT;
     const cityRightLimit = this.cityWidth + TILE_WIDTH;
@@ -373,16 +376,13 @@ export class CityTile {
       },
     };
 
-    const showTiles = [];
-    const hideTiles = [];
-
     if (cameraX > this.lastCameraX) {
       // Moving right
 
       // Show loop
       for (
         let y = deadZone.rightRange.start + TILE_HEIGHT;
-        y < deadZone.rightRange.end - TILE_HEIGHT;
+        y <= deadZone.rightRange.end - TILE_HEIGHT;
         y += TILE_HEIGHT
       ) {
         const x = deadZone.rightRange.fixed - TILE_WIDTH;
@@ -412,7 +412,7 @@ export class CityTile {
       // Show loop
       for (
         let y = deadZone.leftRange.start + TILE_HEIGHT;
-        y < deadZone.leftRange.end - TILE_HEIGHT;
+        y <= deadZone.leftRange.end - TILE_HEIGHT;
         y += TILE_HEIGHT
       ) {
         const x = deadZone.leftRange.fixed + TILE_WIDTH;
