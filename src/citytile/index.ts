@@ -55,8 +55,8 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = 800, // @TODO
-    cityHeight: number = 500, // @TODO
+    cityWidth: number = 800, // @TODO make this adjustable
+    cityHeight: number = 500, // @TODO make this adjustable
     fovWidth: number = FOV_WIDTH,
     fovHeight: number = FOV_HEIGHT
   ) {
@@ -113,7 +113,7 @@ export class CityTile {
 
     // @TODO load faster
     const tileCommands = [];
-    // const tileLength = Math.ceil(VIEWPORT_WIDTH / TILE_WIDTH);
+
     for (let y = 0; y < this.cityHeight; y += TILE_HEIGHT) {
       for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
         tileCommands.push(
@@ -122,14 +122,14 @@ export class CityTile {
               const tile = this.addTile(CityLayers.building, x, y, 'city1');
 
               if (
-                x + TILE_WIDTH >= bounds.left.value &&
-                x - TILE_WIDTH < bounds.right.value &&
-                y + TILE_HEIGHT >= bounds.top.value &&
-                y - TILE_HEIGHT < bounds.bottom.value
+                x >= bounds.left + TILE_WIDTH &&
+                x < bounds.right - TILE_WIDTH &&
+                y >= bounds.top + TILE_HEIGHT &&
+                y < bounds.bottom - TILE_HEIGHT
               ) {
-                // tile.visible = true; @TODO bring this back
+                tile.visible = true;
               } else {
-                // tile.visible = false; @TODO bring this back
+                tile.visible = false;
               }
             });
           })(x, y)
@@ -139,36 +139,21 @@ export class CityTile {
 
     Promise.all(tileCommands);
 
-    this.showOnlyLayers([CityLayers.building]);
+    this.showOnlyLayers([CityLayers.building]); // @TODO think about this
 
-    // @TODO remove
+    // @TODO move to debugger.ts
     this.rects = {
       topLeft: this.scene.add
-        .rectangle(bounds.left.value, bounds.top.value, TILE_WIDTH, TILE_HEIGHT)
+        .rectangle(bounds.left, bounds.top, TILE_WIDTH, TILE_HEIGHT)
         .setStrokeStyle(1, 0xff0000),
       topRight: this.scene.add
-        .rectangle(
-          bounds.right.value,
-          bounds.top.value,
-          TILE_WIDTH,
-          TILE_HEIGHT
-        )
+        .rectangle(bounds.right, bounds.top, TILE_WIDTH, TILE_HEIGHT)
         .setStrokeStyle(1, 0xff0000),
       bottomLeft: this.scene.add
-        .rectangle(
-          bounds.left.value,
-          bounds.bottom.value,
-          TILE_WIDTH,
-          TILE_HEIGHT
-        )
+        .rectangle(bounds.left, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
         .setStrokeStyle(1, 0xff0000),
       bottomRight: this.scene.add
-        .rectangle(
-          bounds.right.value,
-          bounds.bottom.value,
-          TILE_WIDTH,
-          TILE_HEIGHT
-        )
+        .rectangle(bounds.right, bounds.bottom, TILE_WIDTH, TILE_HEIGHT)
         .setStrokeStyle(1, 0xff0000),
     };
   }
@@ -243,53 +228,44 @@ export class CityTile {
    *
    */
   getBounds(x: number, y: number) {
-    const widthOffset = x - this.halfTileWidth;
-    const heightOffset = y - this.halfTileHeight;
+    const cityLeftLimit = -TILE_WIDTH;
+    const cityTopLimit = -TILE_HEIGHT;
+    const cityRightLimit = this.cityWidth + TILE_WIDTH;
+    const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
 
-    const rightEdge = this.cityWidth - this.halfTileWidth;
-    const bottomEdge = this.cityHeight - this.halfTileHeight;
-
-    const left =
-      widthOffset <= 0 ? this.halfTileWidth : widthOffset + this.halfTileWidth;
-
-    const right =
-      widthOffset + this.fovWidth >= rightEdge
-        ? rightEdge
-        : widthOffset + this.fovWidth + this.halfTileWidth;
-
-    const top =
-      heightOffset <= 0
-        ? this.halfTileHeight
-        : heightOffset + this.halfTileHeight;
-
-    const bottom =
-      heightOffset + this.fovHeight >= bottomEdge
-        ? bottomEdge
-        : heightOffset + this.fovHeight + this.halfTileHeight;
+    const deadZoneLeftX = x - TILE_WIDTH;
+    const deadZoneTopY = y - TILE_WIDTH;
+    const deadZoneRightX = x + this.fovWidth + TILE_WIDTH;
+    const deadZoneBottomY = y + this.fovHeight + TILE_WIDTH;
 
     return {
-      left: {
-        value: left,
-        onEdge: left <= this.halfTileWidth,
-      },
-      right: {
-        value: right,
-        onEdge: right >= rightEdge,
-      },
-      top: {
-        value: top,
-        onEdge: top <= this.halfTileHeight,
-      },
-      bottom: {
-        value: bottom,
-        onEdge: bottom >= bottomEdge,
-      },
-      indexes: {
-        topLeft: this.getTileIndex(left, top),
-        topRight: this.getTileIndex(right, top),
-        bottomLeft: this.getTileIndex(left, bottom),
-        bottomRight: this.getTileIndex(right, bottom),
-      },
+      left:
+        deadZoneLeftX < cityLeftLimit
+          ? cityLeftLimit
+          : deadZoneLeftX > cityRightLimit
+          ? cityRightLimit
+          : deadZoneLeftX,
+
+      right:
+        deadZoneRightX < cityLeftLimit
+          ? cityLeftLimit
+          : deadZoneRightX > cityRightLimit
+          ? cityRightLimit
+          : deadZoneRightX,
+
+      top:
+        deadZoneTopY < cityTopLimit
+          ? cityTopLimit
+          : deadZoneTopY > cityBottomLimit
+          ? cityBottomLimit
+          : deadZoneTopY,
+
+      bottom:
+        deadZoneBottomY < cityTopLimit
+          ? cityTopLimit
+          : deadZoneBottomY > cityBottomLimit
+          ? cityBottomLimit
+          : deadZoneBottomY,
     };
   }
 
@@ -315,67 +291,44 @@ export class CityTile {
     const deadZoneRightX = cameraX + this.fovWidth + TILE_WIDTH;
     const deadZoneBottomY = cameraY + this.fovHeight + TILE_WIDTH;
 
-    const left =
-      deadZoneLeftX < cityLeftLimit
-        ? cityLeftLimit
-        : deadZoneLeftX > cityRightLimit
-        ? cityRightLimit
-        : deadZoneLeftX;
-
-    const right =
-      deadZoneRightX < cityLeftLimit
-        ? cityLeftLimit
-        : deadZoneRightX > cityRightLimit
-        ? cityRightLimit
-        : deadZoneRightX;
-
-    const top =
-      deadZoneTopY < cityTopLimit
-        ? cityTopLimit
-        : deadZoneTopY > cityBottomLimit
-        ? cityBottomLimit
-        : deadZoneTopY;
-
-    const bottom =
-      deadZoneBottomY < cityTopLimit
-        ? cityTopLimit
-        : deadZoneBottomY > cityBottomLimit
-        ? cityBottomLimit
-        : deadZoneBottomY;
+    const bounds = this.getBounds(cameraX, cameraY);
 
     const deadZone: {
       [key: string]: any;
     } = {
-      topLeftX: left,
-      topLeftY: top,
-      topRightX: right,
-      topRightY: top,
-      bottomLeftX: left,
-      bottomLeftY: bottom,
-      bottomRightX: right,
-      bottomRightY: bottom,
+      // @TODO move to debugger.ts v
+      topLeftX: bounds.left,
+      topLeftY: bounds.top,
+      topRightX: bounds.right,
+      topRightY: bounds.top,
+      bottomLeftX: bounds.left,
+      bottomLeftY: bounds.bottom,
+      bottomRightX: bounds.right,
+      bottomRightY: bounds.bottom,
+      // @TODO move to debugger.ts ^
       leftRange: {
-        start: top,
-        end: bottom,
-        fixed: left,
+        start: bounds.top,
+        end: bounds.bottom,
+        fixed: bounds.left,
       },
       rightRange: {
-        start: top,
-        end: bottom,
-        fixed: right,
+        start: bounds.top,
+        end: bounds.bottom,
+        fixed: bounds.right,
       },
       topRange: {
-        start: left,
-        end: right,
-        fixed: top,
+        start: bounds.left,
+        end: bounds.right,
+        fixed: bounds.top,
       },
       bottomRange: {
-        start: left,
-        end: right,
-        fixed: bottom,
+        start: bounds.left,
+        end: bounds.right,
+        fixed: bounds.bottom,
       },
     };
 
+    // @TODO simplify?
     if (cameraX > this.lastCameraX) {
       // Moving right
 
@@ -537,7 +490,7 @@ export class CityTile {
       }
     }
 
-    // @TOOD remove
+    // @TOOD move to debugger.ts
     const date = new Date();
     document.getElementById('debug').innerHTML = `
     `;
