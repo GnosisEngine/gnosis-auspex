@@ -355,25 +355,21 @@ export class CityTile {
         start: top,
         end: bottom,
         fixed: left,
-        limit: cityLeftLimit,
       },
       rightRange: {
         start: top,
         end: bottom,
         fixed: right,
-        limit: cityRightLimit,
       },
       topRange: {
         start: left,
         end: right,
         fixed: top,
-        limit: cityTopLimit,
       },
       bottomRange: {
-        start: right,
-        end: left,
+        start: left,
+        end: right,
         fixed: bottom,
-        limit: cityBottomLimit,
       },
     };
 
@@ -444,8 +440,76 @@ export class CityTile {
 
     if (cameraY > this.lastCameraY) {
       // Moving down
+
+      // Show loop
+      for (
+        let x = deadZone.bottomRange.start + TILE_WIDTH;
+        x < deadZone.bottomRange.end - TILE_WIDTH;
+        x += TILE_WIDTH
+      ) {
+        const y = deadZone.bottomRange.fixed - TILE_WIDTH;
+
+        if (
+          y > cityTopLimit + TILE_HEIGHT &&
+          y < cityBottomLimit - TILE_HEIGHT
+        ) {
+          const showIndex = this.getTileIndex(x, y);
+          showTiles.push(showIndex);
+        }
+      }
+
+      // hide loop
+      for (
+        let x = deadZone.topRange.start;
+        x < deadZone.topRange.end;
+        x += TILE_WIDTH
+      ) {
+        const y = deadZone.topRange.fixed;
+
+        if (
+          y > cityTopLimit + TILE_HEIGHT &&
+          y < cityBottomLimit - TILE_HEIGHT
+        ) {
+          const hideIndex = this.getTileIndex(x, y);
+          hideTiles.push(hideIndex);
+        }
+      }
     } else if (cameraY < this.lastCameraY) {
       // moving up
+
+      // Show loop
+      for (
+        let x = deadZone.topRange.start + TILE_WIDTH;
+        x < deadZone.topRange.end - TILE_WIDTH;
+        x += TILE_WIDTH
+      ) {
+        const y = deadZone.topRange.fixed + TILE_WIDTH;
+
+        if (
+          y > cityTopLimit + TILE_HEIGHT &&
+          y < cityBottomLimit - TILE_HEIGHT
+        ) {
+          const showIndex = this.getTileIndex(x, y);
+          showTiles.push(showIndex);
+        }
+      }
+
+      // hide loop
+      for (
+        let x = deadZone.bottomRange.start;
+        x < deadZone.bottomRange.end;
+        x += TILE_WIDTH
+      ) {
+        const y = deadZone.bottomRange.fixed;
+
+        if (
+          y > cityTopLimit + TILE_HEIGHT &&
+          y < cityBottomLimit - TILE_HEIGHT
+        ) {
+          const hideIndex = this.getTileIndex(x, y);
+          hideTiles.push(hideIndex);
+        }
+      }
     }
 
     // Adjust Tile Visibility
