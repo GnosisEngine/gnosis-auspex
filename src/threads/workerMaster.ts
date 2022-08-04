@@ -6,6 +6,10 @@ import { spawn, Thread, Worker } from 'threads'
 export const ThisMaster = async () => {
   // @TODO change the worker path
   const worker = await spawn<ThisWorker>(new Worker('./workerExample'))
+
+  // Thread.events(worker).subscribe(event => console.log("Thread event:", event))
+  // Thread.errors(worker).subscribe(event => console.log("Thread event:", event))
+
   const result = []
   // @TODO do worker.*() method calls here the way you need to and accumulate a result
   
