@@ -1,7 +1,7 @@
 let id = 1;
 const noop = async () => {};
 
-export class Process<T, R> extends EventSource {
+export class Process<T, R> {
   readonly id: number;
   readonly name: string;
   progress: number = 0;
