@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "phaser": "^3.55.2",
+    "threads": "^1.7.0",
     "ts-node": "^10.9.1"
   }
 }
