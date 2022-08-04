@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/style.css"],
+  "sourcesContent": ["h1, h2 {\n  font-family: Lato;\n}"],
+  "mappings": ";AAAA;AAAA;AACE;AAAA;",
+  "names": []
+}

@@ -1,3 +1,3 @@
-import { startEngine } from './src';
+import { startEngine } from './src/index';
 
 startEngine(true);
