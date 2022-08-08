@@ -1,5 +1,5 @@
 // @OTOD copy this file to a desired folder and name it *Worker.ts
-import { expose } from "threads/worker"
+import { expose } from 'threads/worker'
 
 // @TODO Organize worker code here
 const worker = {}

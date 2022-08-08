@@ -10,14 +10,16 @@ export class ExampleScene extends GameScene {
       bounds: {
         x: VIEWPORT_WIDTH / -2,
         y: VIEWPORT_WIDTH / -2,
-        width: VIEWPORT_WIDTH * 3,
-        height: VIEWPORT_HEIGHT * 3,
+        width: Infinity,
+        height: Infinity,
       },
       defaultTilePaths: [
-        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
+        'assets/tiling.png',
+        // 'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png',
       ],
       defaultTileConfigPath:
-        'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json',
+        'assets/tiling.json',
+        // 'https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json',
     });
   }
 }

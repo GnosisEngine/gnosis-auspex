@@ -1,6 +1,6 @@
 // @OTOD copy this file to a desired folder and name it *Worker.ts
-import { Observable, Subject } from "threads/observable"
-import { expose } from "threads/worker"
+import { Observable, Subject } from 'threads/observable'
+import { expose } from 'threads/worker'
 
 let max = -Infinity
 let min = Infinity

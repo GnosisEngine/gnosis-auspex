@@ -73403,7 +73403,7 @@
     (key) => isNaN(Number(key)) === true
   );
   var CityTile = class {
-    constructor(scene, name, textureUrlsOrPaths, jsonPathOrUrl, cityWidth = 800, cityHeight = 500, fovWidth = FOV_WIDTH, fovHeight = FOV_HEIGHT) {
+    constructor(scene, name, textureUrlsOrPaths, jsonPathOrUrl, ringWidth = 1920, ringHeight = 1600, fovWidth = FOV_WIDTH, fovHeight = FOV_HEIGHT) {
       this.cameraSynced = false;
       this.halfTileWidth = TILE_WIDTH / 2;
       this.halfTileHeight = TILE_WIDTH / 2;
@@ -73412,9 +73412,9 @@
       this.textureUrlsOrPaths = textureUrlsOrPaths;
       this.jsonPathOrUrl = jsonPathOrUrl;
       this.blitterMap = {};
-      this.cityWidth = cityWidth;
-      this.cityHeight = cityHeight;
-      this.tilesPerCityRow = Math.ceil(cityWidth / TILE_WIDTH);
+      this.ringWidth = ringWidth;
+      this.ringHeight = ringHeight;
+      this.tilesPerCityRow = Math.ceil(ringWidth / TILE_WIDTH);
       this.fovWidth = fovWidth;
       this.fovHeight = fovHeight;
     }
@@ -73445,8 +73445,8 @@
       this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
       this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
       const tileCommands = [];
-      for (let y = 0; y < this.cityHeight; y += TILE_HEIGHT) {
-        for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
+      for (let y = 0; y < this.ringHeight; y += TILE_HEIGHT) {
+        for (let x = 0; x < this.ringWidth; x += TILE_WIDTH) {
           tileCommands.push(
             ((x2, y2) => {
               return new Promise(() => {
@@ -73483,19 +73483,6 @@
       const blitter = this.blitterMap[layerIndex];
       const bob = blitter.create(x, y, name);
       bob.visible = false;
-      const rect = this.scene.add.rectangle(
-        x + TILE_WIDTH / 2,
-        y + TILE_HEIGHT / 2,
-        TILE_WIDTH,
-        TILE_HEIGHT
-      );
-      rect.setStrokeStyle(1, 36608);
-      const index = this.getTileIndex(x, y);
-      const text = this.scene.add.text(x, y, index.toString(), {
-        fontFamily: "serif",
-        color: "#aaa"
-      });
-      text.setFontSize(10);
       return bob;
     }
     getBobCount() {
@@ -73516,13 +73503,15 @@
     getBounds(x, y) {
       const cityLeftLimit = -TILE_WIDTH;
       const cityTopLimit = -TILE_HEIGHT;
-      const cityRightLimit = this.cityWidth + TILE_WIDTH;
-      const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
+      const cityRightLimit = this.ringWidth + TILE_WIDTH;
+      const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
       const deadZoneLeftX = x - TILE_WIDTH;
       const deadZoneTopY = y - TILE_WIDTH;
       const deadZoneRightX = x + this.fovWidth + TILE_WIDTH;
       const deadZoneBottomY = y + this.fovHeight + TILE_WIDTH;
       return {
+        chunkX: ~~(x / this.fovWidth),
+        chunkY: ~~(y / this.fovHeight),
         left: deadZoneLeftX < cityLeftLimit ? cityLeftLimit : deadZoneLeftX > cityRightLimit ? cityRightLimit : deadZoneLeftX,
         right: deadZoneRightX < cityLeftLimit ? cityLeftLimit : deadZoneRightX > cityRightLimit ? cityRightLimit : deadZoneRightX,
         top: deadZoneTopY < cityTopLimit ? cityTopLimit : deadZoneTopY > cityBottomLimit ? cityBottomLimit : deadZoneTopY,
@@ -73540,8 +73529,8 @@
       const hideTiles = [];
       const cityLeftLimit = -TILE_WIDTH;
       const cityTopLimit = -TILE_HEIGHT;
-      const cityRightLimit = this.cityWidth + TILE_WIDTH;
-      const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
+      const cityRightLimit = this.ringWidth + TILE_WIDTH;
+      const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
       const deadZoneLeftX = cameraX - TILE_WIDTH;
       const deadZoneTopY = cameraY - TILE_WIDTH;
       const deadZoneRightX = cameraX + this.fovWidth + TILE_WIDTH;
@@ -73827,13 +73816,13 @@
         bounds: {
           x: VIEWPORT_WIDTH / -2,
           y: VIEWPORT_WIDTH / -2,
-          width: VIEWPORT_WIDTH * 3,
-          height: VIEWPORT_HEIGHT * 3
+          width: Infinity,
+          height: Infinity
         },
         defaultTilePaths: [
-          "https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.png"
+          "assets/tiling.png"
         ],
-        defaultTileConfigPath: "https://raw.githubusercontent.com/GnosisEngine/gnosis-auspex/main/assets/tiling.json"
+        defaultTileConfigPath: "assets/tiling.json"
       });
     }
   };

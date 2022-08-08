@@ -34,8 +34,8 @@ export class CityTile {
   blitterMap: {
     [key: number]: Phaser.GameObjects.Blitter;
   };
-  cityWidth: number;
-  cityHeight: number;
+  ringWidth: number;
+  ringHeight: number;
   tilesPerCityRow: number;
   fovWidth: number;
   fovHeight: number;
@@ -55,8 +55,8 @@ export class CityTile {
     name: string,
     textureUrlsOrPaths: string[],
     jsonPathOrUrl: string,
-    cityWidth: number = 800, // @TODO make this adjustable
-    cityHeight: number = 500, // @TODO make this adjustable
+    ringWidth: number = 1920, // @TODO make this adjustable
+    ringHeight: number = 1600, // @TODO make this adjustable
     fovWidth: number = FOV_WIDTH,
     fovHeight: number = FOV_HEIGHT
   ) {
@@ -65,9 +65,9 @@ export class CityTile {
     this.textureUrlsOrPaths = textureUrlsOrPaths;
     this.jsonPathOrUrl = jsonPathOrUrl;
     this.blitterMap = {};
-    this.cityWidth = cityWidth;
-    this.cityHeight = cityHeight;
-    this.tilesPerCityRow = Math.ceil(cityWidth / TILE_WIDTH);
+    this.ringWidth = ringWidth;
+    this.ringHeight = ringHeight;
+    this.tilesPerCityRow = Math.ceil(ringWidth / TILE_WIDTH);
     this.fovWidth = fovWidth;
     this.fovHeight = fovHeight;
   }
@@ -113,9 +113,12 @@ export class CityTile {
 
     // @TODO load faster
     const tileCommands = [];
+    // @REVIEW THIS
+    // We can make lots of blitters very fast, so the key is to create based on fov offsets
+    // Simple tricks aren't working on these two for loops, so more thinking is needed
 
-    for (let y = 0; y < this.cityHeight; y += TILE_HEIGHT) {
-      for (let x = 0; x < this.cityWidth; x += TILE_WIDTH) {
+    for (let y = 0; y < this.ringHeight; y += TILE_HEIGHT) {
+      for (let x = 0; x < this.ringWidth; x += TILE_WIDTH) {
         tileCommands.push(
           ((x: number, y: number) => {
             return new Promise(() => {
@@ -180,6 +183,7 @@ export class CityTile {
     bob.visible = false;
 
     // @TODO remove
+    /*
     const rect = this.scene.add.rectangle(
       x + TILE_WIDTH / 2,
       y + TILE_HEIGHT / 2,
@@ -193,7 +197,7 @@ export class CityTile {
       color: '#aaa',
     });
     text.setFontSize(10);
-
+*/
     return bob;
   }
 
@@ -230,8 +234,8 @@ export class CityTile {
   getBounds(x: number, y: number) {
     const cityLeftLimit = -TILE_WIDTH;
     const cityTopLimit = -TILE_HEIGHT;
-    const cityRightLimit = this.cityWidth + TILE_WIDTH;
-    const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
+    const cityRightLimit = this.ringWidth + TILE_WIDTH;
+    const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
 
     const deadZoneLeftX = x - TILE_WIDTH;
     const deadZoneTopY = y - TILE_WIDTH;
@@ -239,6 +243,8 @@ export class CityTile {
     const deadZoneBottomY = y + this.fovHeight + TILE_WIDTH;
 
     return {
+      chunkX: ~~(x / this.fovWidth),
+      chunkY: ~~(y / this.fovHeight),
       left:
         deadZoneLeftX < cityLeftLimit
           ? cityLeftLimit
@@ -283,8 +289,8 @@ export class CityTile {
 
     const cityLeftLimit = -TILE_WIDTH;
     const cityTopLimit = -TILE_HEIGHT;
-    const cityRightLimit = this.cityWidth + TILE_WIDTH;
-    const cityBottomLimit = this.cityHeight + TILE_HEIGHT;
+    const cityRightLimit = this.ringWidth + TILE_WIDTH;
+    const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
 
     const deadZoneLeftX = cameraX - TILE_WIDTH;
     const deadZoneTopY = cameraY - TILE_WIDTH;

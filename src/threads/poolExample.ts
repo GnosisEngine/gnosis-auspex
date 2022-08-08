@@ -1,9 +1,9 @@
-import { spawn, Pool, Worker } from "threads"
+import { spawn, Pool, Worker } from 'threads'
 
 // @TODO change name of ThisPool
 export const ThisPool = async () => {
   // @TODO change the worker path
-  const pool = Pool(() => spawn(new Worker("./workerExample")), {
+  const pool = Pool(() => spawn(new Worker('./workerExample')), {
     concurrency: 1, // number of tasks to run simultaneously per worker, defaults to one
     maxQueuedJobs: Infinity, // maximum number of tasks to queue before throwing on .queue(), defaults to unlimited
     name: 'thisPool', // give the pool a custom name to use in the debug log, so you can tell multiple pools apart when debugging
