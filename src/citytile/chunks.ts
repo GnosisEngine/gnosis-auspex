@@ -124,12 +124,18 @@ export class Chunks {
    */
   update (cameraX: number, cameraY: number) {
     const { x, y } = this.getChunk(cameraX, cameraY)
-
+/*
     if (this.lastChunkX === x || this.lastChunkY === y) {
       return
     }
-
+*/
     const chunks = this.getSurroudingChunks(x, y)
+    console.log('wee')
+    const date = new Date();
+    document.getElementById('debug').innerHTML = `
+      <pre>chunk: ${JSON.stringify(chunks, null, 2)}</pre>
+    `;
+
 
     if (x > this.lastChunkX) {
       // Moving right
@@ -225,7 +231,7 @@ export class Chunks {
         continue
       }
       
-      const createdChunk = this.createdChunks[createChunk.x]
+      let createdChunk = this.createdChunks[createChunk.x]
 
       if (createdChunk) {
         // Chunk X has already been created
@@ -234,6 +240,8 @@ export class Chunks {
           createdChunk[createChunk.y] = 0
         }
       } else {
+        this.createdChunks[createChunk.x] = {}
+        createdChunk = this.createdChunks[createChunk.x]
         // Create new chunk (marked as 0)
         createdChunk[createChunk.y] = 0
       }

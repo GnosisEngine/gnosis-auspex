@@ -73458,10 +73458,12 @@
     }
     update(cameraX, cameraY) {
       const { x, y } = this.getChunk(cameraX, cameraY);
-      if (this.lastChunkX === x || this.lastChunkY === y) {
-        return;
-      }
       const chunks = this.getSurroudingChunks(x, y);
+      console.log("wee");
+      const date = new Date();
+      document.getElementById("debug").innerHTML = `
+      <pre>chunk: ${JSON.stringify(chunks, null, 2)}</pre>
+    `;
       if (x > this.lastChunkX) {
         this.updateChunks([
           chunks.topLeft,
@@ -73529,12 +73531,14 @@
         if (createChunk.x < 0 || createChunk.y < 0) {
           continue;
         }
-        const createdChunk = this.createdChunks[createChunk.x];
+        let createdChunk = this.createdChunks[createChunk.x];
         if (createdChunk) {
           if (createdChunk[createChunk.y] === void 0) {
             createdChunk[createChunk.y] = 0;
           }
         } else {
+          this.createdChunks[createChunk.x] = {};
+          createdChunk = this.createdChunks[createChunk.x];
           createdChunk[createChunk.y] = 0;
         }
         if (createdChunk[createChunk.y] === 0) {
@@ -73830,9 +73834,6 @@
           }
         }
       }
-      const date = new Date();
-      document.getElementById("debug").innerHTML = `
-    `;
       this.rects.topLeft.setPosition(deadZone.topLeftX, deadZone.topLeftY);
       this.rects.topRight.setPosition(deadZone.topRightX, deadZone.topRightY);
       this.rects.bottomLeft.setPosition(

@@ -503,10 +503,6 @@ export class CityTile {
     }
 
     // @TOOD move to debugger.ts
-    const date = new Date();
-    document.getElementById('debug').innerHTML = `
-    `;
-
     this.rects.topLeft.setPosition(deadZone.topLeftX, deadZone.topLeftY);
     this.rects.topRight.setPosition(deadZone.topRightX, deadZone.topRightY);
     this.rects.bottomLeft.setPosition(
