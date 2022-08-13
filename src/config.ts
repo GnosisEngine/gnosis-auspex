@@ -70,3 +70,5 @@ export const MONTHS_PER_YEAR = 13;
 export const DAYS_PER_MONTH = 28;
 
 export const BLITTER_SORT_DELAY = 5000;
+
+export const CHUNK_DESTRUCT_DELAY = 5000;

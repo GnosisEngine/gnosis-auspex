@@ -73378,9 +73378,193 @@
   var FOV_HEIGHT = 300;
   var CAMERA_DEADZONE_WIDTH = 0;
   var CAMERA_DEADZONE_HEIGHT = 0;
+  var CHUNK_DESTRUCT_DELAY = 5e3;
 
   // src/scenes/index.ts
   var Phaser2 = __toESM(require_phaser());
+
+  // src/citytile/chunks.ts
+  var Chunks = class {
+    constructor(assetName, scene, fovWidth, fovHeight, cameraX, cameraY) {
+      this.blitterMap = {};
+      this.destructQueue = {};
+      this.createdChunks = {};
+      this.assetName = assetName;
+      this.scene = scene;
+      const { x, y } = this.getChunk(cameraX, cameraY);
+      this.fovWidth = fovWidth;
+      this.fovHeight = fovHeight;
+      this.lastChunkX = x;
+      this.lastChunkY = y;
+      for (const index of CityLayerIndexes) {
+        const layerName = CityLayers[index];
+        const layer = this.scene.addLayer(layerName);
+        const blitter = this.scene.make.blitter({
+          key: this.assetName,
+          add: false
+        });
+        layer.add(blitter);
+        this.blitterMap[index] = blitter;
+      }
+      console.log(this);
+    }
+    getChunk(cameraX, cameraY) {
+      return {
+        x: ~~(cameraX / this.fovWidth),
+        y: ~~(cameraY / this.fovHeight)
+      };
+    }
+    getXY(chunkX, chunkY) {
+      return {
+        x: (chunkX + 1) * (this.fovWidth / 2),
+        y: (chunkY + 1) * (this.fovHeight / 2)
+      };
+    }
+    getSurroudingChunks(chunkX, chunkY) {
+      return {
+        top: {
+          x: chunkX,
+          y: chunkY - 1
+        },
+        topRight: {
+          x: chunkX + 1,
+          y: chunkY - 1
+        },
+        right: {
+          x: chunkX + 1,
+          y: chunkY
+        },
+        bottomRight: {
+          x: chunkX + 1,
+          y: chunkY + 1
+        },
+        bottom: {
+          x: chunkX,
+          y: chunkY + 1
+        },
+        bottomLeft: {
+          x: chunkX - 1,
+          y: chunkY + 1
+        },
+        left: {
+          x: chunkX - 1,
+          y: chunkY
+        },
+        topLeft: {
+          x: chunkX - 1,
+          y: chunkY - 1
+        }
+      };
+    }
+    update(cameraX, cameraY) {
+      const { x, y } = this.getChunk(cameraX, cameraY);
+      if (this.lastChunkX === x || this.lastChunkY === y) {
+        return;
+      }
+      const chunks = this.getSurroudingChunks(x, y);
+      if (x > this.lastChunkX) {
+        this.updateChunks([
+          chunks.topLeft,
+          chunks.left,
+          chunks.bottomLeft
+        ], [
+          chunks.topRight,
+          chunks.right,
+          chunks.bottomRight
+        ]);
+      } else if (x < this.lastChunkX) {
+        this.updateChunks([
+          chunks.topRight,
+          chunks.right,
+          chunks.bottomRight
+        ], [
+          chunks.topLeft,
+          chunks.left,
+          chunks.bottomLeft
+        ]);
+      }
+      if (y > this.lastChunkY) {
+        this.updateChunks([
+          chunks.topLeft,
+          chunks.top,
+          chunks.topRight
+        ], [
+          chunks.bottomLeft,
+          chunks.bottom,
+          chunks.bottomRight
+        ]);
+      } else if (y < this.lastChunkY) {
+        this.updateChunks([
+          chunks.bottomLeft,
+          chunks.bottom,
+          chunks.bottomRight
+        ], [
+          chunks.topLeft,
+          chunks.top,
+          chunks.topRight
+        ]);
+      }
+    }
+    updateChunks(destructChunks, createChunks) {
+      const now = Date.now();
+      for (const destructChunk of destructChunks) {
+        if (destructChunk.x < 0 || destructChunk.y < 0) {
+          continue;
+        }
+        const destructQueue = this.destructQueue[destructChunk.x] === void 0 ? {} : this.destructQueue[destructChunk.x];
+        const chunkExpirationTime = destructQueue[destructChunk.y];
+        if (chunkExpirationTime === void 0) {
+          destructQueue[destructChunk.y] = now + CHUNK_DESTRUCT_DELAY;
+        } else if (now > chunkExpirationTime) {
+          this.modifyBobs(destructChunk.x, destructChunk.y, false);
+          if (this.destructQueue[destructChunk.x]) {
+            delete this.destructQueue[destructChunk.x][destructChunk.y];
+          }
+          if (this.createdChunks[destructChunk.x]) {
+            delete this.createdChunks[destructChunk.x][destructChunk.y];
+          }
+        }
+      }
+      for (const createChunk of createChunks) {
+        if (createChunk.x < 0 || createChunk.y < 0) {
+          continue;
+        }
+        const createdChunk = this.createdChunks[createChunk.x];
+        if (createdChunk) {
+          if (createdChunk[createChunk.y] === void 0) {
+            createdChunk[createChunk.y] = 0;
+          }
+        } else {
+          createdChunk[createChunk.y] = 0;
+        }
+        if (createdChunk[createChunk.y] === 0) {
+          this.modifyBobs(createChunk.x, createChunk.y, true);
+          createChunk[createChunk.y] = 1;
+        }
+        if (this.destructQueue[createChunk.x]) {
+          delete this.destructQueue[createChunk.x][createChunk.y];
+        }
+      }
+    }
+    modifyBobs(chunkX, chunkY, create) {
+      if (create === true) {
+        const x = 0;
+        const y = 0;
+        for (const index of CityLayerIndexes) {
+          const blitter = this.blitterMap[index];
+        }
+      } else {
+        const startIndex = 0;
+        const endIndex = 0;
+        for (const index of CityLayerIndexes) {
+          const blitter = this.blitterMap[index];
+          for (let i = startIndex; i < endIndex; i++) {
+            blitter.children.removeAt(i);
+          }
+        }
+      }
+    }
+  };
 
   // src/citytile/index.ts
   var CityLayers = /* @__PURE__ */ ((CityLayers2) => {
@@ -73430,10 +73614,8 @@
         const layerName = CityLayers[index];
         const layer = this.scene.addLayer(layerName);
         const blitter = this.scene.make.blitter({
-          x: 0,
-          y: 0,
           key: this.name,
-          add: true
+          add: false
         });
         layer.add(blitter);
         this.blitterMap[index] = blitter;
@@ -73444,6 +73626,7 @@
       this.scene.cameras.main.dirty = true;
       this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
       this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
+      this.chunks = new Chunks(this.name, this.scene, this.fovWidth, this.fovHeight, this.lastCameraX, this.lastCameraY);
       const tileCommands = [];
       for (let y = 0; y < this.ringHeight; y += TILE_HEIGHT) {
         for (let x = 0; x < this.ringWidth; x += TILE_WIDTH) {
@@ -73525,6 +73708,7 @@
         this.cameraSynced = true;
         return;
       }
+      this.chunks.update(cameraX, cameraY);
       const showTiles = [];
       const hideTiles = [];
       const cityLeftLimit = -TILE_WIDTH;

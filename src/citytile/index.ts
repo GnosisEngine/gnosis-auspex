@@ -1,5 +1,6 @@
 import { FOV_HEIGHT, FOV_WIDTH, TILE_HEIGHT, TILE_WIDTH } from '../config';
 import { GameScene } from '../scenes';
+import { Chunks } from './chunks';
 
 export enum CityLayers {
   sky,
@@ -42,6 +43,7 @@ export class CityTile {
   cameraSynced: boolean = false;
   halfTileWidth = TILE_WIDTH / 2;
   halfTileHeight = TILE_WIDTH / 2;
+  chunks: Chunks
 
   rects: {
     topLeft: Phaser.GameObjects.Rectangle;
@@ -92,10 +94,8 @@ export class CityTile {
       const layerName = CityLayers[index];
       const layer = this.scene.addLayer(layerName);
       const blitter = this.scene.make.blitter({
-        x: 0,
-        y: 0,
         key: this.name,
-        add: true,
+        add: false,
       });
       layer.add(blitter);
       this.blitterMap[index] = blitter;
@@ -110,6 +110,9 @@ export class CityTile {
     this.scene.cameras.main.dirty = true;
     this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
     this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
+
+    // @TODO this is now the chunk manager
+    this.chunks = new Chunks(this.name, this.scene, this.fovWidth, this.fovHeight, this.lastCameraX, this.lastCameraY)
 
     // @TODO load faster
     const tileCommands = [];
@@ -276,6 +279,7 @@ export class CityTile {
   }
 
   update() {
+    // @TODO should consider tile X and tile Y to be a modulus of tileWidthOffset so chunks can wrap around
     const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
     const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
 
@@ -283,6 +287,8 @@ export class CityTile {
       this.cameraSynced = true;
       return;
     }
+
+    this.chunks.update(cameraX, cameraY)
 
     const showTiles = [];
     const hideTiles = [];
