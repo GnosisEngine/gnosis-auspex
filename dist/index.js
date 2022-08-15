@@ -73389,13 +73389,14 @@
       this.blitterMap = {};
       this.destructQueue = {};
       this.createdChunks = {};
-      this.assetName = assetName;
-      this.scene = scene;
-      const { x, y } = this.getChunk(cameraX, cameraY);
+      this.debug = {};
       this.fovWidth = fovWidth;
       this.fovHeight = fovHeight;
+      const { x, y } = this.getChunk(cameraX, cameraY);
       this.lastChunkX = x;
       this.lastChunkY = y;
+      this.assetName = assetName;
+      this.scene = scene;
       for (const index of CityLayerIndexes) {
         const layerName = CityLayers[index];
         const layer = this.scene.addLayer(layerName);
@@ -73406,22 +73407,34 @@
         layer.add(blitter);
         this.blitterMap[index] = blitter;
       }
-      console.log(this);
+    }
+    debugRect(name, chunk) {
+      const xy = this.getXY(chunk.x, chunk.y);
+      if (this.debug[name] === void 0) {
+        this.debug[name] = this.scene.add.rectangle(xy.x, xy.y, this.fovWidth, this.fovHeight).setStrokeStyle(1, 34816);
+      } else {
+        this.debug[name].x = xy.x;
+        this.debug[name].y = xy.y;
+      }
     }
     getChunk(cameraX, cameraY) {
       return {
-        x: ~~(cameraX / this.fovWidth),
-        y: ~~(cameraY / this.fovHeight)
+        x: Math.floor(cameraX / this.fovWidth) + 1,
+        y: Math.floor(cameraY / this.fovHeight) + 1
       };
     }
     getXY(chunkX, chunkY) {
       return {
-        x: (chunkX + 1) * (this.fovWidth / 2),
-        y: (chunkY + 1) * (this.fovHeight / 2)
+        x: chunkX * this.fovWidth,
+        y: chunkY * this.fovHeight
       };
     }
     getSurroudingChunks(chunkX, chunkY) {
       return {
+        topLeft: {
+          x: chunkX - 1,
+          y: chunkY - 1
+        },
         top: {
           x: chunkX,
           y: chunkY - 1
@@ -73430,40 +73443,73 @@
           x: chunkX + 1,
           y: chunkY - 1
         },
+        left: {
+          x: chunkX - 1,
+          y: chunkY
+        },
         right: {
           x: chunkX + 1,
           y: chunkY
         },
-        bottomRight: {
-          x: chunkX + 1,
+        bottomLeft: {
+          x: chunkX - 1,
           y: chunkY + 1
         },
         bottom: {
           x: chunkX,
           y: chunkY + 1
         },
-        bottomLeft: {
-          x: chunkX - 1,
+        bottomRight: {
+          x: chunkX + 1,
           y: chunkY + 1
-        },
-        left: {
-          x: chunkX - 1,
-          y: chunkY
-        },
-        topLeft: {
-          x: chunkX - 1,
-          y: chunkY - 1
         }
       };
     }
     update(cameraX, cameraY) {
       const { x, y } = this.getChunk(cameraX, cameraY);
       const chunks = this.getSurroudingChunks(x, y);
-      console.log("wee");
-      const date = new Date();
+      this.debugRect("topLeft", chunks.topLeft);
+      this.debugRect("top", chunks.top);
+      this.debugRect("topRight", chunks.topRight);
+      this.debugRect("left", chunks.left);
+      this.debugRect("right", chunks.right);
+      this.debugRect("bottomLeft", chunks.bottomLeft);
+      this.debugRect("bottom", chunks.bottom);
+      this.debugRect("bottomRight", chunks.bottomRight);
       document.getElementById("debug").innerHTML = `
-      <pre>chunk: ${JSON.stringify(chunks, null, 2)}</pre>
+      <style>
+      table, td, th {
+        border: 1px solid;
+      }
+      </style>
+      <div>fovWidth: ${this.fovWidth}</div>
+      <div>cameraX: ${cameraX}</div>
+      <div>cameraY: ${cameraY}</div>
+      <div>chunkX: ${x}</div>
+      <div>chunkY: ${y}</div>
+      <div>lastChunkX: ${this.lastChunkX}</div>
+      <div>lastChunkY: ${this.lastChunkY}</div>
+      <table>
+        <tr>
+          <td>${chunks.topLeft.x}/${chunks.topLeft.y}</td>
+          <td>${chunks.top.x}/${chunks.top.y}</td>
+          <td>${chunks.topRight.x}/${chunks.topRight.y}</td>
+        </tr>
+        <tr>
+          <td>${chunks.left.x}/${chunks.left.y}</td>
+          <td>${x}/${y}</td>
+          <td>${chunks.right.x}/${chunks.right.y}</td>
+        </tr>
+        <tr>
+          <td>${chunks.bottomLeft.x}/${chunks.bottomLeft.y}</td>
+          <td>${chunks.bottom.x}/${chunks.bottom.y}</td>
+          <td>${chunks.bottomRight.x}/${chunks.bottomRight.y}</td>
+        </tr>
+      </table>
     `;
+      if (this.lastChunkX === x && this.lastChunkY === y) {
+        return;
+      }
       if (x > this.lastChunkX) {
         this.updateChunks([
           chunks.topLeft,
@@ -73506,6 +73552,8 @@
           chunks.topRight
         ]);
       }
+      this.lastChunkX = x;
+      this.lastChunkY = y;
     }
     updateChunks(destructChunks, createChunks) {
       const now = Date.now();
@@ -73549,6 +73597,8 @@
           delete this.destructQueue[createChunk.x][createChunk.y];
         }
       }
+      console.log("destructQueue", this.destructQueue);
+      console.log("createdChunks", this.createdChunks);
     }
     modifyBobs(chunkX, chunkY, create) {
       if (create === true) {

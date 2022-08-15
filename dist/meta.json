@@ -1,0 +1,187 @@
+{
+  "inputs": {
+    "src/style.css": {
+      "bytes": 31,
+      "imports": []
+    },
+    "node_modules/phaser/dist/phaser.js": {
+      "bytes": 6838115,
+      "imports": []
+    },
+    "src/performance.ts": {
+      "bytes": 5731,
+      "imports": []
+    },
+    "src/config.ts": {
+      "bytes": 1559,
+      "imports": []
+    },
+    "src/citytile/chunks.ts": {
+      "bytes": 9249,
+      "imports": [
+        {
+          "path": "src/citytile/index.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/citytile/index.ts": {
+      "bytes": 14881,
+      "imports": [
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/citytile/chunks.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/scenes/index.ts": {
+      "bytes": 5698,
+      "imports": [
+        {
+          "path": "node_modules/phaser/dist/phaser.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/citytile/index.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/scenes/example.ts": {
+      "bytes": 732,
+      "imports": [
+        {
+          "path": "src/scenes/index.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/game.ts": {
+      "bytes": 2087,
+      "imports": [
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/scenes/example.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/index.ts": {
+      "bytes": 1188,
+      "imports": [
+        {
+          "path": "src/style.css",
+          "kind": "import-statement"
+        },
+        {
+          "path": "node_modules/phaser/dist/phaser.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/performance.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/game.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/scenes/example.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "index.ts": {
+      "bytes": 63,
+      "imports": [
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement"
+        }
+      ]
+    }
+  },
+  "outputs": {
+    "dist/index.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 9011047
+    },
+    "dist/index.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "index.ts",
+      "inputs": {
+        "node_modules/phaser/dist/phaser.js": {
+          "bytesInOutput": 3056902
+        },
+        "src/style.css": {
+          "bytesInOutput": 0
+        },
+        "src/index.ts": {
+          "bytesInOutput": 948
+        },
+        "src/performance.ts": {
+          "bytesInOutput": 5192
+        },
+        "src/config.ts": {
+          "bytesInOutput": 260
+        },
+        "src/scenes/index.ts": {
+          "bytesInOutput": 3993
+        },
+        "src/citytile/chunks.ts": {
+          "bytesInOutput": 6634
+        },
+        "src/citytile/index.ts": {
+          "bytesInOutput": 12112
+        },
+        "src/scenes/example.ts": {
+          "bytesInOutput": 475
+        },
+        "src/game.ts": {
+          "bytesInOutput": 1695
+        },
+        "index.ts": {
+          "bytesInOutput": 21
+        }
+      },
+      "bytes": 3094695
+    },
+    "dist/index.css.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 167
+    },
+    "dist/index.css": {
+      "imports": [],
+      "inputs": {
+        "src/style.css": {
+          "bytesInOutput": 32
+        }
+      },
+      "bytes": 90
+    }
+  }
+}

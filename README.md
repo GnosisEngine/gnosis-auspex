@@ -12,6 +12,9 @@ The graphic engine for Gnosis
 
 Add your tests to the [`tests`](tests) folder, then import them in the [`tests/index.ts`](tests/index.ts) file.
 
+* [Upload meta.json here for a bundle analysis](https://www.bundle-buddy.com/esbuild)
+* [Reduce Phaser file size](https://github.com/photonstorm/phaser3-custom-build)
+
 ## CLI
 
 ### npm
