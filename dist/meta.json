@@ -17,7 +17,7 @@
       "imports": []
     },
     "src/citytile/chunks.ts": {
-      "bytes": 9249,
+      "bytes": 9503,
       "imports": [
         {
           "path": "src/citytile/index.ts",
@@ -125,7 +125,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9011047
+      "bytes": 9011605
     },
     "dist/index.js": {
       "imports": [],
@@ -151,7 +151,7 @@
           "bytesInOutput": 3993
         },
         "src/citytile/chunks.ts": {
-          "bytesInOutput": 6634
+          "bytesInOutput": 7054
         },
         "src/citytile/index.ts": {
           "bytesInOutput": 12112
@@ -166,7 +166,7 @@
           "bytesInOutput": 21
         }
       },
-      "bytes": 3094695
+      "bytes": 3095115
     },
     "dist/index.css.map": {
       "imports": [],

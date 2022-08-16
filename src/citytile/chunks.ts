@@ -1,16 +1,16 @@
-import { CityLayerIndexes, CityLayers } from ".";
-import { CHUNK_DESTRUCT_DELAY } from "../config"
-import { GameScene } from "../scenes";
+import { CityLayerIndexes, CityLayers } from '.'
+import { CHUNK_DESTRUCT_DELAY } from '../config'
+import { GameScene } from '../scenes'
 
 // At 1925 width and 950 height, we're looking at 2,926 tiles per chunk layer
 // At 12 layers, we're looking at 35,112 tiles per chunk
 // At 9 chunks, we're looking at 316,008 tiles
 
-type BlitterMap = {
-  [key: number]: Phaser.GameObjects.Blitter;
-};
+interface BlitterMap {
+  [key: number]: Phaser.GameObjects.Blitter
+}
 
-type ChunkCache = {
+interface ChunkCache {
   [key: number]: {
     [key: number]: number
   }
@@ -61,7 +61,7 @@ export class Chunks {
   }
 
   /**
-   * 
+   * @TODO remove this
    */
   debugRect (name: string, chunk: ChunkIndex) {
     const xy = this.getXY(chunk.x, chunk.y)
@@ -251,69 +251,58 @@ export class Chunks {
     const now = Date.now()
 
     // Destroy chunks
-    for (const destructChunk of destructChunks) {
-      if (destructChunk.x < 0 || destructChunk.y < 0) {
-        // Negative chunks can't be created or destroyed
-        continue
+    for (const chunk of destructChunks) {
+      if (this.destructQueue[chunk.x] === undefined) {
+        console.log('Create new Destruct Chunk X (marked as 0) at', chunk.x)
+        this.destructQueue[chunk.x] = {}
       }
 
-      const destructQueue = this.destructQueue[destructChunk.x] === undefined
-        ? {}
-        : this.destructQueue[destructChunk.x]
+      const destructQueue = this.destructQueue[chunk.x]
 
-      const chunkExpirationTime = destructQueue[destructChunk.y]
-
-      if (chunkExpirationTime === undefined) {
+      if (destructQueue[chunk.y] === undefined) {
         // This chunk is not scheduled for destruction, schedule it
-        destructQueue[destructChunk.y] = now + CHUNK_DESTRUCT_DELAY
-      } else if (now > chunkExpirationTime) {
+        destructQueue[chunk.y] = now + CHUNK_DESTRUCT_DELAY
+      } else if (now > destructQueue[chunk.y]) {
         // The current time is greater than te expiration time, expire the chunk
-        this.modifyBobs(destructChunk.x, destructChunk.y, false)
+        this.modifyBobs(chunk.x, chunk.y, false)
 
-        if (this.destructQueue[destructChunk.x]) {
-          delete this.destructQueue[destructChunk.x][destructChunk.y]
+        if (this.destructQueue[chunk.x]) {
+          delete this.destructQueue[chunk.x][chunk.y]
         }
     
-        if (this.createdChunks[destructChunk.x]) {
-          delete this.createdChunks[destructChunk.x][destructChunk.y]
+        if (this.createdChunks[chunk.x]) {
+          delete this.createdChunks[chunk.x][chunk.y]
         }
       }
     }
 
     // Create chunks
-    for (const createChunk of createChunks) {
-      if (createChunk.x < 0 || createChunk.y < 0) {
-        // Negative chunks can't be created or destroyed
-        continue
+    for (const chunk of createChunks) {
+      if (this.createdChunks[chunk.x] === undefined) {
+        console.log('Create new Chunk X (marked as 0) at', chunk.x)
+        this.createdChunks[chunk.x] = {}
       }
-      
-      let createdChunk = this.createdChunks[createChunk.x]
 
-      if (createdChunk) {
-        // Chunk X has already been created
-        if (createdChunk[createChunk.y] === undefined) {
-          // Create new Chunk Y (marked as 0)
-          createdChunk[createChunk.y] = 0
-        }
-      } else {
-        this.createdChunks[createChunk.x] = {}
-        createdChunk = this.createdChunks[createChunk.x]
-        // Create new chunk (marked as 0)
-        createdChunk[createChunk.y] = 0
+      const createdChunk = this.createdChunks[chunk.x]
+
+      if (createdChunk[chunk.y] === undefined) {
+        // Create new Chunk Y (marked as 0)
+        console.log('Create new Chunk Y (marked as 0) at', chunk.y)
+        createdChunk[chunk.y] = 0
       }
-  
-      if (createdChunk[createChunk.y] === 0) {
+
+      if (createdChunk[chunk.y] === 0) {
         // New chunk created, populate it's blitters
-
-        this.modifyBobs(createChunk.x, createChunk.y, true)
-  
+        console.log('Populate the chunks blitters', chunk.x, chunk.y)
+        this.modifyBobs(chunk.x, chunk.y, true)
         // ... then flag it as created (marked as 1)
-        createChunk[createChunk.y] = 1
+        createdChunk[chunk.y] = 1
       }
-  
-      // Delete the chunk from the destruct queue if it exists
-      if (this.destructQueue[createChunk.x]) {
-        delete this.destructQueue[createChunk.x][createChunk.y]
+
+      if (this.destructQueue[chunk.x]) {
+        // Delete the chunk from the destruct queue if it exists
+        console.log('Delete the chunk from the destruct queue if it exists')
+        delete this.destructQueue[chunk.x][chunk.y]
       }
     }
 
@@ -325,6 +314,7 @@ export class Chunks {
    * 
    */
    modifyBobs (chunkX: number, chunkY: number, create: boolean) {
+    // @TODO do this
     if (create === true) {
       // create bobs
       const x = 0 // @todo start of chunk

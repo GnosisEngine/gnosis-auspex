@@ -73557,44 +73557,42 @@
     }
     updateChunks(destructChunks, createChunks) {
       const now = Date.now();
-      for (const destructChunk of destructChunks) {
-        if (destructChunk.x < 0 || destructChunk.y < 0) {
-          continue;
+      for (const chunk of destructChunks) {
+        if (this.destructQueue[chunk.x] === void 0) {
+          console.log("Create new Destruct Chunk X (marked as 0) at", chunk.x);
+          this.destructQueue[chunk.x] = {};
         }
-        const destructQueue = this.destructQueue[destructChunk.x] === void 0 ? {} : this.destructQueue[destructChunk.x];
-        const chunkExpirationTime = destructQueue[destructChunk.y];
-        if (chunkExpirationTime === void 0) {
-          destructQueue[destructChunk.y] = now + CHUNK_DESTRUCT_DELAY;
-        } else if (now > chunkExpirationTime) {
-          this.modifyBobs(destructChunk.x, destructChunk.y, false);
-          if (this.destructQueue[destructChunk.x]) {
-            delete this.destructQueue[destructChunk.x][destructChunk.y];
+        const destructQueue = this.destructQueue[chunk.x];
+        if (destructQueue[chunk.y] === void 0) {
+          destructQueue[chunk.y] = now + CHUNK_DESTRUCT_DELAY;
+        } else if (now > destructQueue[chunk.y]) {
+          this.modifyBobs(chunk.x, chunk.y, false);
+          if (this.destructQueue[chunk.x]) {
+            delete this.destructQueue[chunk.x][chunk.y];
           }
-          if (this.createdChunks[destructChunk.x]) {
-            delete this.createdChunks[destructChunk.x][destructChunk.y];
+          if (this.createdChunks[chunk.x]) {
+            delete this.createdChunks[chunk.x][chunk.y];
           }
         }
       }
-      for (const createChunk of createChunks) {
-        if (createChunk.x < 0 || createChunk.y < 0) {
-          continue;
+      for (const chunk of createChunks) {
+        if (this.createdChunks[chunk.x] === void 0) {
+          console.log("Create new Chunk X (marked as 0) at", chunk.x);
+          this.createdChunks[chunk.x] = {};
         }
-        let createdChunk = this.createdChunks[createChunk.x];
-        if (createdChunk) {
-          if (createdChunk[createChunk.y] === void 0) {
-            createdChunk[createChunk.y] = 0;
-          }
-        } else {
-          this.createdChunks[createChunk.x] = {};
-          createdChunk = this.createdChunks[createChunk.x];
-          createdChunk[createChunk.y] = 0;
+        const createdChunk = this.createdChunks[chunk.x];
+        if (createdChunk[chunk.y] === void 0) {
+          console.log("Create new Chunk Y (marked as 0) at", chunk.y);
+          createdChunk[chunk.y] = 0;
         }
-        if (createdChunk[createChunk.y] === 0) {
-          this.modifyBobs(createChunk.x, createChunk.y, true);
-          createChunk[createChunk.y] = 1;
+        if (createdChunk[chunk.y] === 0) {
+          console.log("Populate the chunks blitters", chunk.x, chunk.y);
+          this.modifyBobs(chunk.x, chunk.y, true);
+          createdChunk[chunk.y] = 1;
         }
-        if (this.destructQueue[createChunk.x]) {
-          delete this.destructQueue[createChunk.x][createChunk.y];
+        if (this.destructQueue[chunk.x]) {
+          console.log("Delete the chunk from the destruct queue if it exists");
+          delete this.destructQueue[chunk.x][chunk.y];
         }
       }
       console.log("destructQueue", this.destructQueue);
