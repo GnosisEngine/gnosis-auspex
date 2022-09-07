@@ -517,41 +517,4 @@ export class CityTile {
     this.lastCameraX = cameraX;
     this.lastCameraY = cameraY;
   }
-
-  /**
-   *
-   */
-  makeBuilding(scene: GameScene, stories: number) {
-    const group = scene.add.group();
-    // const bob = this.addTile(0, 0, 'city0');
-
-    for (let i = 0; i < stories; i++) {
-      const story = this.makeStory;
-    }
-  }
-
-  /**
-   *
-   */
-  makeStory(scene: GameScene) {}
-
-  /**
-   *
-   */
-  makeRoom(scene: GameScene) {}
-
-  /**
-   *
-   */
-  makeStreetRoom(scene: GameScene) {}
-
-  /**
-   *
-   */
-  makeGround(scene: GameScene) {}
-
-  /**
-   *
-   */
-  makeTunnel(scene: GameScene) {}
 }

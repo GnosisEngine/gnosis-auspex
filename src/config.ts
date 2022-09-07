@@ -1,18 +1,3 @@
-export const GROUND_POSITION = 35;
-
-export const Z = {
-  horizon: 0,
-  city: 1,
-  ring: 2,
-  building: 3,
-  interior: 4,
-  workspace: 5,
-  exterior: 6,
-  outside: 7,
-  hero: 8,
-  vehicle: 9,
-};
-
 export const TILE_WIDTH = 25;
 
 export const TILE_HEIGHT = 25;
@@ -72,3 +57,5 @@ export const DAYS_PER_MONTH = 28;
 export const BLITTER_SORT_DELAY = 5000;
 
 export const CHUNK_DESTRUCT_DELAY = 5000;
+
+export const GROUND_Y = 1000

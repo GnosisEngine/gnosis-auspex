@@ -329,7 +329,7 @@ export class Chunks {
          */
         // @TODO Test this with repeating squares on two layers
         // const bob = blitter.create(x, y, 'city1');// @TODO pass name
-        // bob.visible = false;    
+        // bob.visible = false;
       }
     } else {
       // delete bobs
