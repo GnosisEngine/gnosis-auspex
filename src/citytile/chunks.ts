@@ -143,7 +143,7 @@ export class Chunks {
     const { x, y } = this.getChunk(cameraX, cameraY)
     const chunks = this.getSurroudingChunks(x, y)
 
-    // @TODO remove this
+    // @TODO remove these
     this.debugRect('topLeft', chunks.topLeft)
     this.debugRect('top', chunks.top)
     this.debugRect('topRight', chunks.topRight)

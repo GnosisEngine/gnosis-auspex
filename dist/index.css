@@ -1,6 +1,15 @@
 /* src/style.css */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(2, 8, 24);
+  color: rgb(227, 223, 240);
+}
 h1,
 h2 {
   font-family: Lato;
+}
+p {
+  color: red;
 }
 /*# sourceMappingURL=index.css.map */

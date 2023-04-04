@@ -73895,22 +73895,6 @@
       this.lastCameraX = cameraX;
       this.lastCameraY = cameraY;
     }
-    makeBuilding(scene, stories) {
-      const group = scene.add.group();
-      for (let i = 0; i < stories; i++) {
-        const story = this.makeStory;
-      }
-    }
-    makeStory(scene) {
-    }
-    makeRoom(scene) {
-    }
-    makeStreetRoom(scene) {
-    }
-    makeGround(scene) {
-    }
-    makeTunnel(scene) {
-    }
   };
 
   // src/scenes/index.ts

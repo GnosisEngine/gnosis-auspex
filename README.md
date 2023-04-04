@@ -17,16 +17,10 @@ Add your tests to the [`tests`](tests) folder, then import them in the [`tests/i
 
 ## CLI
 
-### npm
-
-- `npm run build`: Builds the source TypeScript to CommonJS, ESM, and IIFE JavaScript files in [`dist`](dist)
-- `npm run sb-watch`: Watches for changes for TypeScript files, builds the source on a change, then runs [`dist/index.js`](dist/index.js) (StackBlitz-friendly)
-- `npm run watch`: Watches for changes for TypeScript files, builds the source on a change, then runs [`dist/index.js`](dist/index.js) (Every other system)
-- `npm test`: Runs tests.
-
 ### yarn
 
-- `yarn build`: Builds the source TypeScript to CommonJS, ESM, and IIFE JavaScript files in [`dist`](dist)
-- `yarn sb-watch`: Watches for changes for TypeScript files, builds the source on a change, then runs [`dist/index.js`](dist/index.js) (StackBlitz-friendly)
-- `yarn watch`: Watches for changes for TypeScript files, builds the source on a change, then runs [`dist/index.js`](dist/index.js) (Every other system)
-- `yarn test`: Runs tests.
+- `"yarn prepare-assets"`: Prepares the `dist` folder
+- `"yarn compile"`: Compiles all TS to an unminified `dist/index.js` build.  (Run `dist/index.html` to test the code)
+- `"yarn build"`: Compiles all TS to a minified `dist/index.js` build.  (Run `dist/index.html` to test the code)
+- `"yarn dev"`: Compiles all TS to an unminified and watched `dist/index.js` build.  (Run `dist/index.html` to test the code)
+- `"yarn test"`: Runs all tests
