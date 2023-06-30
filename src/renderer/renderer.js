@@ -47,14 +47,14 @@ function getChunkBitmap (x, y) {
 /**
  * 
  */
-function setChunkBitmap (x, y, chunkBitmap) {
-  if (chunkBitmaps[x] === undefined) {
-    chunkBitmaps[x] = {}
+function setChunkBitmap (chunkBitmap) {
+  if (chunkBitmaps[chunkBitmap.chunkX] === undefined) {
+    chunkBitmaps[chunkBitmap.chunkX] = {}
   }
 
-  if (chunkBitmaps[x][y] === undefined) {
-    chunkBitmaps[x][y] = blitter
-    chunkIndex.push([x, y])
+  if (chunkBitmaps[chunkBitmap.chunkX][chunkBitmap.chunkY] === undefined) {
+    chunkBitmaps[chunkBitmap.chunkX][chunkBitmap.chunkY] = blitter
+    chunkIndex.push([chunkBitmap.chunkX, chunkBitmap.chunkY])
   }
 }
 
@@ -75,7 +75,7 @@ function getTextureOffsets(tileValue) {
  * 
  * @param {*} worker 
  */
-function createChunkBitmap (worker, loader, assetPath, tiles, buffer, uperrLeftX, upperLeftY) {
+function createChunkBitmap (worker, loader, assetPath, tiles, buffer, chunkX, chunkY) {
   const bigBlitter = new Phaser.GameObjects.Blitter(null, 0, 0, '')
   const blitters = [];
   const texture = TextureManager.get(assetPath);
@@ -95,12 +95,24 @@ function createChunkBitmap (worker, loader, assetPath, tiles, buffer, uperrLeftX
   }
 
   // populate the transferable object with the blitter pixels
-  const pixels = new Uint8Array(blitter.frame.width * blitter.frame.height * 4);
+  const pixels = new Uint8Array(bigBlitter.frame.width * bigBlitter.frame.height * 4);
   bigBlitter.frame.extract(pixels, 0, 0);
-  buffer.set(pixels);
+  bigBlitter.destroy()
+  texture.destroy()
+  const chunk = new chunkBitmap(assetPath, chunkX, chunkY, pixels)
+  setChunkBitmap(chunk)
+  return chunk
+}
+
+/**
+ * 
+ */
+function sendChunk(port, buffer, chunk) {
+   // populate the transferable object with the blitter pixels
+  buffer.set(chunk.bitmap);
 
   // post the transferable object back to the main thread
-  worker.port.postMessage(buffer, [buffer.buffer]);
+  port.postMessage(buffer, [buffer.buffer]); 
 }
 
 let invalidatingCache = false
@@ -112,36 +124,43 @@ const loadedAssets = []
  * set up an event listener for incoming messages from the main thread
  * @param {*} event 
  */
-self.addEventListener('message', function(event) {
-  const now = Date.now()
+self.onconnect = function(event) {
+  const port = event.ports[0];
+  port.onmessage = function(event) {
+    const now = Date.now()
 
-  // Delay this message until the cache has finished invalidating
-  if (invalidatingCache !== false) {
-    await new Promise(resolve => {
-      setTimeout(resolve, invalidatingCache - now + 1)
-    })
+    // Delay this message until the cache has finished invalidating
+    if (invalidatingCache !== false) {
+      await new Promise(resolve => {
+        setTimeout(resolve, invalidatingCache - now + 1)
+      })
+    }
+
+    const { assetPath, tiles, buffer, x, y } = event.data;
+    const loadedAsset = loadedAssets.find(asset => asset.assetPath === assetPath)
+
+    const chunk = getChunkBitmap(x, y)
+
+    if (chunk !== undefined) {
+      loadedAsset.expiresAt = now + loadedAsset.expiresAfter
+      return sendChunk(port, buffer, chunk)
+    } else if (loadedAsset === undefined) {
+      // Asset is novel, load it
+      const loader = new Phaser.Loader.LoaderPlugin(TextureManager);
+
+      loader.load.image(assetPath, assetPath);
+      loader.onLoadComplete.addOnce(() => {
+        // Stitch together the chunk bitmap
+        const chunk = createChunkBitmap(self, loader, assetPath, tiles, buffer)
+        loader.destroy()
+        sendChunk(port, buffer, chunk)
+      })
+      loader.start();
+    }
+
+    loadedAsset.expiresAt = now + loadedAsset.expiresAfter
   }
-
-  const { assetPath, tiles, buffer, x, y } = event.data;
-  const loadedAsset = loadedAssets.find(asset => asset.assetPath === assetPath)
-
-  if (loadedAsset === undefined) {
-    // Asset is novel, load it
-    const loader = new Phaser.Loader.LoaderPlugin(TextureManager);
-
-    loader.load.image(assetPath, assetPath);
-    loader.onLoadComplete.addOnce(() => {
-      // Stitch together the chunk bitmap
-      createChunkBitmap(self, loader, assetPath, tiles, buffer, x, y)
-      loader.destroy()
-    })
-    loader.start();
-  }
-
-  loadedAsset.expiresAt = now + loadedAsset.expiresAfter
-})
-
-worker.port.start();
+}
 
 //  Check caching for invalidation
 setInterval(() => {
@@ -164,12 +183,13 @@ setInterval(() => {
     }
   }
 
+/*
   for (let i = loadedAssets.length - 1; i >= 0; i--) {
     const asset = loadedAssets[i]
     if (Date.now() > asset.expiresAt) {
       loadedAssets.splice(i, 1)
     }
   }
-
+*/
   invalidatingCache = false
 }, CACHE_INVALIDATION_INTERVAL)
