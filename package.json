@@ -13,7 +13,7 @@
     "url": "git+https://github.com/GnosisEngine/auspex.git"
   },
   "scripts": {
-    "prepare-assets": "cp -r -p assets/* dist/assets && cp index.html dist/",
+    "prepare-assets": "cp -r -p assets/* dist/assets && cp index.html dist/ && cp node_modules/phaser/dist/phaser.min.js dist/phaser.js && cp src/renderer/worker.js dist/renderer.js",
     "compile": "yarn prepare-assets && ./node_modules/.bin/esbuild ./index.ts --metafile=dist/meta.json --bundle --sourcemap --target=chrome58,firefox57,safari11,edge79 --outfile=dist/index.js",
     "build": "yarn compile --minify",
     "dev": "yarn compile --watch",

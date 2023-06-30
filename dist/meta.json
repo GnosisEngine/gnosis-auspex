@@ -1,7 +1,7 @@
 {
   "inputs": {
     "src/style.css": {
-      "bytes": 116,
+      "bytes": 166,
       "imports": []
     },
     "node_modules/phaser/dist/phaser.js": {
@@ -17,7 +17,7 @@
       "imports": []
     },
     "src/citytile/chunks.ts": {
-      "bytes": 9202,
+      "bytes": 9549,
       "imports": [
         {
           "path": "src/citytile/index.ts",
@@ -111,7 +111,7 @@
       ]
     },
     "index.ts": {
-      "bytes": 63,
+      "bytes": 66,
       "imports": [
         {
           "path": "src/index.ts",
@@ -125,7 +125,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9010238
+      "bytes": 9010938
     },
     "dist/index.js": {
       "imports": [],
@@ -172,16 +172,16 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 302
+      "bytes": 371
     },
     "dist/index.css": {
       "imports": [],
       "inputs": {
         "src/style.css": {
-          "bytesInOutput": 115
+          "bytesInOutput": 152
         }
       },
-      "bytes": 173
+      "bytes": 210
     }
   }
 }

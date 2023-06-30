@@ -2,6 +2,10 @@ export const TILE_WIDTH = 25;
 
 export const TILE_HEIGHT = 25;
 
+export const TILESET_WIDTH = 525
+
+export const TILESET_HEIGTH = 300
+
 export const VIEWPORT_WIDTH = 430 * 2;
 
 export const VIEWPORT_HEIGHT = 300 * 2;

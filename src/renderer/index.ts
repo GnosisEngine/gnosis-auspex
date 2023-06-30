@@ -1,2 +1,2 @@
 // create a new shared worker
-const worker = new SharedWorker('worker.js');
+const worker = new SharedWorker('renderer.js');
