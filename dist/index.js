@@ -18575,7 +18575,7 @@
           },
           function(module2, exports2, __webpack_require__) {
             var BlendModes = __webpack_require__(35);
-            var Camera = __webpack_require__(133);
+            var Camera2 = __webpack_require__(133);
             var CanvasPool = __webpack_require__(31);
             var Class = __webpack_require__(0);
             var Components = __webpack_require__(11);
@@ -18646,7 +18646,7 @@
                 }
                 this.context = this.canvas.getContext("2d");
                 this._eraseMode = false;
-                this.camera = new Camera(0, 0, width, height);
+                this.camera = new Camera2(0, 0, width, height);
                 this.renderTarget = null;
                 var renderer = this.renderer;
                 if (!renderer) {
@@ -25402,14 +25402,14 @@
             var Linear = __webpack_require__(135);
             var Rectangle = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
-            var Camera = new Class({
+            var Camera2 = new Class({
               Extends: BaseCamera,
               Mixins: [
                 Components.Flip,
                 Components.Tint,
                 Components.Pipeline
               ],
-              initialize: function Camera2(x, y, width, height) {
+              initialize: function Camera3(x, y, width, height) {
                 BaseCamera.call(this, x, y, width, height);
                 this.postPipelines = [];
                 this.pipelineData = {};
@@ -25628,7 +25628,7 @@
                 this.deadzone = null;
               }
             });
-            module2.exports = Camera;
+            module2.exports = Camera2;
           },
           function(module2, exports2, __webpack_require__) {
             var Color = __webpack_require__(38);
@@ -51858,7 +51858,7 @@
             module2.exports = Zoom;
           },
           function(module2, exports2, __webpack_require__) {
-            var Camera = __webpack_require__(326);
+            var Camera2 = __webpack_require__(326);
             var Class = __webpack_require__(0);
             var GetFastValue = __webpack_require__(2);
             var PluginCache = __webpack_require__(24);
@@ -51884,7 +51884,7 @@
                   this.add();
                 }
                 this.main = this.cameras[0];
-                this.default = new Camera(0, 0, sys.scale.width, sys.scale.height).setScene(this.scene);
+                this.default = new Camera2(0, 0, sys.scale.width, sys.scale.height).setScene(this.scene);
                 sys.game.scale.on(ScaleEvents.RESIZE, this.onResize, this);
                 this.systems.events.once(SceneEvents.DESTROY, this.destroy, this);
               },
@@ -51921,7 +51921,7 @@
                 if (name === void 0) {
                   name = "";
                 }
-                var camera = new Camera(x, y, width, height);
+                var camera = new Camera2(x, y, width, height);
                 camera.setName(name);
                 camera.setScene(this.scene);
                 camera.setRoundPixels(this.roundPixels);
@@ -73897,6 +73897,79 @@
     }
   };
 
+  // src/camera/index.ts
+  var Camera = class {
+    constructor(camera, deadZoneWidth = CAMERA_DEADZONE_WIDTH, deadZoneHeight = CAMERA_DEADZONE_HEIGHT) {
+      this.camera = camera;
+      this.camera.off("followupdate");
+      this.camera.setDeadzone(
+        deadZoneWidth,
+        deadZoneHeight
+      );
+    }
+    async initialize(player) {
+      return new Promise((resolve) => {
+        this.camera.startFollow(player.sprite, true);
+        this.camera.on("followupdate", () => {
+          resolve(true);
+        });
+      });
+    }
+  };
+
+  // src/player/index.ts
+  var Player = class {
+    constructor(physics, config) {
+      this.physics = physics;
+      this.sprite = physics.add.image(0, 0, "null");
+      this.sprite.setCollideWorldBounds(true);
+      this.physics.world.setBounds(
+        config.bounds.x,
+        config.bounds.y,
+        config.bounds.width,
+        config.bounds.height
+      );
+    }
+    update(cursors) {
+      this.sprite.setVelocity(0);
+      if (cursors.left.isDown) {
+        this.sprite.setVelocityX(-300);
+      } else if (cursors.right.isDown) {
+        this.sprite.setVelocityX(300);
+      }
+      if (cursors.up.isDown) {
+        this.sprite.setVelocityY(-300);
+      } else if (cursors.down.isDown) {
+        this.sprite.setVelocityY(300);
+      }
+    }
+  };
+
+  // src/debugView/index.ts
+  var DebugView = class {
+    constructor(scene) {
+      const rect = scene.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
+      rect.setStrokeStyle(2, 1729964);
+      this.text = scene.add.text(
+        FOV_WIDTH / -2,
+        FOV_HEIGHT / -2,
+        `${FOV_WIDTH / -2}/${FOV_HEIGHT / -2}`,
+        {
+          fontFamily: "serif"
+        }
+      );
+      this.container = scene.add.container(0, 0);
+      this.container.add([rect, this.text]);
+    }
+    update(player) {
+      if (this.container) {
+        this.text.text = `${FOV_WIDTH / -2 + player.sprite.x}/${FOV_HEIGHT / -2 + player.sprite.y}`;
+        this.container.x = player.sprite.x;
+        this.container.y = player.sprite.y;
+      }
+    }
+  };
+
   // src/scenes/index.ts
   var GameScene = class extends Phaser2.Scene {
     constructor(config) {
@@ -73917,61 +73990,20 @@
       this.cityTile.preload();
     }
     async create() {
-      this.player = this.physics.add.image(0, 0, "null");
-      this.ready = await new Promise((resolve) => {
-        this.cameras.main.startFollow(this.player, true);
-        this.cameras.main.on("followupdate", () => {
-          resolve(true);
-        });
-      });
-      this.cameras.main.off("followupdate");
-      this.cameras.main.setDeadzone(
-        CAMERA_DEADZONE_WIDTH,
-        CAMERA_DEADZONE_HEIGHT
-      );
-      this.player.setCollideWorldBounds(true);
-      this.physics.world.setBounds(
-        this.config.bounds.x,
-        this.config.bounds.y,
-        this.config.bounds.width,
-        this.config.bounds.height
-      );
+      this.player = new Player(this.physics, this.config);
       this.cityTile.create();
       this.cursors = this.input.keyboard.createCursorKeys();
-      const rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
-      rect.setStrokeStyle(2, 1729964);
-      const text = this.add.text(
-        FOV_WIDTH / -2,
-        FOV_HEIGHT / -2,
-        `${FOV_WIDTH / -2}/${FOV_HEIGHT / -2}`,
-        {
-          fontFamily: "serif"
-        }
-      );
-      this.debugContainer = this.add.container(0, 0);
-      this.debugContainer.add([rect, text]);
+      this.debugContainer = new DebugView(this);
+      this.camera = new Camera(this.cameras.main);
+      this.ready = await this.camera.initialize(this.player);
     }
     update() {
       if (this.ready === false) {
         return;
       }
-      this.player.setVelocity(0);
-      if (this.cursors.left.isDown) {
-        this.player.setVelocityX(-300);
-      } else if (this.cursors.right.isDown) {
-        this.player.setVelocityX(300);
-      }
-      if (this.cursors.up.isDown) {
-        this.player.setVelocityY(-300);
-      } else if (this.cursors.down.isDown) {
-        this.player.setVelocityY(300);
-      }
+      this.player.update(this.cursors);
+      this.debugContainer.update(this.player);
       this.cityTile.update();
-      if (this.debugContainer) {
-        this.debugContainer.getAt(1).text = `${FOV_WIDTH / -2 + this.player.x}/${FOV_HEIGHT / -2 + this.player.y}`;
-        this.debugContainer.x = this.player.x;
-        this.debugContainer.y = this.player.y;
-      }
     }
     loadAtlas(name, texturePathsOrUrls, atlasJsonPathsOrUrls) {
       const result = this.load.atlas(

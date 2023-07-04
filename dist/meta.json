@@ -13,7 +13,7 @@
       "imports": []
     },
     "src/config.ts": {
-      "bytes": 1381,
+      "bytes": 1454,
       "imports": []
     },
     "src/citytile/chunks.ts": {
@@ -42,19 +42,49 @@
         }
       ]
     },
+    "src/camera/index.ts": {
+      "bytes": 734,
+      "imports": [
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/player/index.ts": {
+      "bytes": 920,
+      "imports": []
+    },
+    "src/debugView/index.ts": {
+      "bytes": 958,
+      "imports": [
+        {
+          "path": "src/config.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
     "src/scenes/index.ts": {
-      "bytes": 5698,
+      "bytes": 5747,
       "imports": [
         {
           "path": "node_modules/phaser/dist/phaser.js",
           "kind": "import-statement"
         },
         {
-          "path": "src/config.ts",
+          "path": "src/citytile/index.ts",
           "kind": "import-statement"
         },
         {
-          "path": "src/citytile/index.ts",
+          "path": "src/camera/index.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/player/index.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/debugView/index.ts",
           "kind": "import-statement"
         }
       ]
@@ -125,7 +155,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9010938
+      "bytes": 9014502
     },
     "dist/index.js": {
       "imports": [],
@@ -133,7 +163,7 @@
       "entryPoint": "index.ts",
       "inputs": {
         "node_modules/phaser/dist/phaser.js": {
-          "bytesInOutput": 3056902
+          "bytesInOutput": 3056909
         },
         "src/style.css": {
           "bytesInOutput": 0
@@ -148,13 +178,22 @@
           "bytesInOutput": 260
         },
         "src/scenes/index.ts": {
-          "bytesInOutput": 3993
+          "bytesInOutput": 2640
         },
         "src/citytile/chunks.ts": {
           "bytesInOutput": 7142
         },
         "src/citytile/index.ts": {
           "bytesInOutput": 11793
+        },
+        "src/camera/index.ts": {
+          "bytesInOutput": 518
+        },
+        "src/player/index.ts": {
+          "bytesInOutput": 733
+        },
+        "src/debugView/index.ts": {
+          "bytesInOutput": 707
         },
         "src/scenes/example.ts": {
           "bytesInOutput": 475
@@ -166,7 +205,7 @@
           "bytesInOutput": 21
         }
       },
-      "bytes": 3094884
+      "bytes": 3095577
     },
     "dist/index.css.map": {
       "imports": [],

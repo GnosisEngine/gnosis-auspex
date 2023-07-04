@@ -7,6 +7,10 @@ import {
   FOV_WIDTH,
 } from '../config';
 import { CityTile } from '../citytile';
+import Camera from '../camera'
+import Player from '../player'
+import Physics from '../physics'
+import DebugView from '../debugView'
 
 interface Layers {
   [key: string]: Phaser.GameObjects.Layer;
@@ -27,8 +31,8 @@ export class GameScene extends Phaser.Scene {
   config: SceneConfig;
   cityTile: CityTile;
   ready: boolean;
-
-  debugContainer: Phaser.GameObjects.Container;
+  mainCamera: Camera
+  debugContainer: DebugView;
 
   constructor(config: SceneConfig) {
     super(config);
@@ -55,49 +59,13 @@ export class GameScene extends Phaser.Scene {
    *
    */
   async create() {
-    this.player = this.physics.add.image(0, 0, 'null'); // @TODO more flexible
-
-    // Follow and wait for camera to follow
-    this.ready = await new Promise((resolve) => {
-      this.cameras.main.startFollow(this.player, true); // @TODO more flexible
-      this.cameras.main.on('followupdate', () => {
-        resolve(true);
-      });
-    });
-
-    this.cameras.main.off('followupdate');
-
-    this.cameras.main.setDeadzone(
-      CAMERA_DEADZONE_WIDTH,
-      CAMERA_DEADZONE_HEIGHT
-    );
-
-    this.player.setCollideWorldBounds(true); // @TODO more flexible
-
-    this.physics.world.setBounds(
-      this.config.bounds.x,
-      this.config.bounds.y,
-      this.config.bounds.width,
-      this.config.bounds.height
-    );
-
+    this.player = new Player(this.physics, this.config)
+    // @TODO: Renderer
     this.cityTile.create();
     this.cursors = this.input.keyboard.createCursorKeys(); // @TODO more flexible
-
-    // @TODO move to debug
-    const rect = this.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
-    rect.setStrokeStyle(2, 0x1a65ac);
-
-    const text = this.add.text(
-      FOV_WIDTH / -2,
-      FOV_HEIGHT / -2,
-      `${FOV_WIDTH / -2}/${FOV_HEIGHT / -2}`,
-      {
-        fontFamily: 'serif',
-      }
-    );
-    this.debugContainer = this.add.container(0, 0);
-    this.debugContainer.add([rect, text]);
+    this.debugContainer = new DebugView(this)
+    this.camera = new Camera(this.cameras.main)
+    this.ready = await this.camera.initialize(this.player)
   }
 
   /**
@@ -108,30 +76,9 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.player.setVelocity(0);
-
-    if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-300);
-    } else if (this.cursors.right.isDown) {
-      this.player.setVelocityX(300);
-    }
-
-    if (this.cursors.up.isDown) {
-      this.player.setVelocityY(-300);
-    } else if (this.cursors.down.isDown) {
-      this.player.setVelocityY(300);
-    }
-
+    this.player.update(this.cursors)
+    this.debugContainer.update(this.player)
     this.cityTile.update();
-
-    // @TODO move to debug
-    if (this.debugContainer) {
-      (this.debugContainer.getAt(1) as Phaser.GameObjects.Text).text = `${
-        FOV_WIDTH / -2 + this.player.x
-      }/${FOV_HEIGHT / -2 + this.player.y}`;
-      this.debugContainer.x = this.player.x;
-      this.debugContainer.y = this.player.y;
-    }
   }
 
   /**
