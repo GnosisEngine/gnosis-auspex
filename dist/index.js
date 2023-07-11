@@ -73222,153 +73222,6 @@
   // src/index.ts
   var import_phaser = __toESM(require_phaser());
 
-  // src/performance.ts
-  var Stats;
-  var Panel;
-  var customPanels = {};
-  function customPanel(name, panel) {
-    if (customPanels[name] === void 0) {
-      customPanels[name] = {
-        key: name,
-        highest: 0
-      };
-    }
-    const custom = customPanels[name];
-    const value = (globalThis.__debug || {})[name] || 0;
-    if (value > custom.highest) {
-      custom.highest = value;
-    }
-    panel.update(value, custom.highest);
-  }
-  var showPerformance = () => {
-    (function(f, e) {
-      Stats = e();
-    })(window, function() {
-      Panel = function(e, f2, l) {
-        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas");
-        q.width = r;
-        q.height = h;
-        q.style.cssText = "width:80px;height:48px";
-        var b = q.getContext("2d");
-        b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif";
-        b.textBaseline = "top";
-        b.fillStyle = l;
-        b.fillRect(0, 0, r, h);
-        b.fillStyle = f2;
-        b.fillText(e, t, v);
-        b.fillRect(d, m, n, p);
-        b.fillStyle = l;
-        b.globalAlpha = 0.9;
-        b.fillRect(d, m, n, p);
-        return {
-          dom: q,
-          update: function(h2, w) {
-            c = Math.min(c, h2);
-            k = Math.max(k, h2);
-            b.fillStyle = l;
-            b.globalAlpha = 1;
-            b.fillRect(0, 0, r, m);
-            b.fillStyle = f2;
-            b.fillText(g(h2) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v);
-            b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p);
-            b.fillRect(d + n - a, m, a, p);
-            b.fillStyle = l;
-            b.globalAlpha = 0.9;
-            b.fillRect(d + n - a, m, a, g((1 - h2 / w) * p));
-          }
-        };
-      };
-      var f = function(top = 0, left = 0, mode = 0) {
-        function e(a2) {
-          c.appendChild(a2.dom);
-          return a2;
-        }
-        function u(a2) {
-          for (var d = 0; d < c.children.length; d++)
-            c.children[d].style.display = d === a2 ? "block" : "none";
-          l = a2;
-        }
-        var l = 0, c = document.createElement("div");
-        c.style.cssText = "position:fixed;top:" + top + ";left:" + left + ";cursor:pointer;opacity:0.9;z-index:10000";
-        c.addEventListener(
-          "click",
-          function(a2) {
-            a2.preventDefault();
-            u(++l % c.children.length);
-          },
-          false
-        );
-        var k = (performance || Date).now(), g = k, a = 0, r = e(new Panel("FPS", "#0ff", "#002")), h = e(new Panel("MS", "#0f0", "#020"));
-        if (self.performance && self.performance.memory)
-          var t = e(new Panel("MB", "#f08", "#201"));
-        var totalGameObjects = e(new Panel("OBJ", "#0ff", "#002"));
-        var totalTextures = e(new Panel("TEX", "#0f0", "#020"));
-        var x = e(new Panel("X", "#f08", "#201"));
-        var y = e(new Panel("Y", "#0ff", "#002"));
-        var renderList = e(new Panel("REND", "#0f0", "#020"));
-        u(mode % c.children.length);
-        return {
-          REVISION: 16,
-          dom: c,
-          addPanel: e,
-          showPanel: u,
-          begin: function() {
-            k = (performance || Date).now();
-          },
-          end: function() {
-            a++;
-            var c2 = (performance || Date).now();
-            h.update(c2 - k, 200);
-            if (c2 >= g + 1e3 && (r.update(1e3 * a / (c2 - g), 100), g = c2, a = 0, t)) {
-              var d = performance.memory;
-              t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
-            }
-            customPanel("totalGameObjects", totalGameObjects);
-            customPanel("totalTextures", totalTextures);
-            customPanel("x", x);
-            customPanel("y", y);
-            customPanel("renderList", renderList);
-            return c2;
-          },
-          update: function() {
-            k = this.end();
-          },
-          domElement: c,
-          setMode: u
-        };
-      };
-      return f;
-    });
-    const topPosition = window.innerHeight - 50 + "px";
-    var stats1 = new Stats(topPosition, "5px", 0);
-    var stats2 = new Stats(topPosition, "85px", 1);
-    var stats3 = new Stats(topPosition, "165px", 2);
-    var stats4 = new Stats(topPosition, "245px", 3);
-    var stats5 = new Stats(topPosition, "325px", 4);
-    var stats6 = new Stats(topPosition, "405px", 5);
-    var stats7 = new Stats(topPosition, "485px", 6);
-    var stats8 = new Stats(topPosition, "565px", 7);
-    document.body.appendChild(stats1.dom);
-    document.body.appendChild(stats2.dom);
-    document.body.appendChild(stats3.dom);
-    document.body.appendChild(stats4.dom);
-    document.body.appendChild(stats5.dom);
-    document.body.appendChild(stats6.dom);
-    document.body.appendChild(stats7.dom);
-    document.body.appendChild(stats8.dom);
-    requestAnimationFrame(function loop() {
-      stats1.update();
-      stats2.update();
-      stats3.update();
-      stats4.update();
-      stats5.update();
-      stats6.update();
-      stats7.update();
-      stats8.update();
-      requestAnimationFrame(loop);
-    });
-  };
-
   // src/config.ts
   var TILE_WIDTH = 25;
   var TILE_HEIGHT = 25;
@@ -73379,6 +73232,7 @@
   var CAMERA_DEADZONE_WIDTH = 0;
   var CAMERA_DEADZONE_HEIGHT = 0;
   var CHUNK_DESTRUCT_DELAY = 5e3;
+  var DEBUG_MODE = true;
 
   // src/scenes/index.ts
   var Phaser2 = __toESM(require_phaser());
@@ -73945,9 +73799,157 @@
     }
   };
 
+  // src/debugView/performance.ts
+  var Stats;
+  var Panel;
+  var customPanels = {};
+  function customPanel(name, panel) {
+    if (customPanels[name] === void 0) {
+      customPanels[name] = {
+        key: name,
+        highest: 0
+      };
+    }
+    const custom = customPanels[name];
+    const value = (globalThis.__debug || {})[name] || 0;
+    if (value > custom.highest) {
+      custom.highest = value;
+    }
+    panel.update(value, custom.highest);
+  }
+  var showPerformance = () => {
+    (function(f, e) {
+      Stats = e();
+    })(window, function() {
+      Panel = function(e, f2, l) {
+        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas");
+        q.width = r;
+        q.height = h;
+        q.style.cssText = "width:80px;height:48px";
+        var b = q.getContext("2d");
+        b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif";
+        b.textBaseline = "top";
+        b.fillStyle = l;
+        b.fillRect(0, 0, r, h);
+        b.fillStyle = f2;
+        b.fillText(e, t, v);
+        b.fillRect(d, m, n, p);
+        b.fillStyle = l;
+        b.globalAlpha = 0.9;
+        b.fillRect(d, m, n, p);
+        return {
+          dom: q,
+          update: function(h2, w) {
+            c = Math.min(c, h2);
+            k = Math.max(k, h2);
+            b.fillStyle = l;
+            b.globalAlpha = 1;
+            b.fillRect(0, 0, r, m);
+            b.fillStyle = f2;
+            b.fillText(g(h2) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v);
+            b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p);
+            b.fillRect(d + n - a, m, a, p);
+            b.fillStyle = l;
+            b.globalAlpha = 0.9;
+            b.fillRect(d + n - a, m, a, g((1 - h2 / w) * p));
+          }
+        };
+      };
+      var f = function(top = 0, left = 0, mode = 0) {
+        function e(a2) {
+          c.appendChild(a2.dom);
+          return a2;
+        }
+        function u(a2) {
+          for (var d = 0; d < c.children.length; d++)
+            c.children[d].style.display = d === a2 ? "block" : "none";
+          l = a2;
+        }
+        var l = 0, c = document.createElement("div");
+        c.style.cssText = "position:fixed;top:" + top + ";left:" + left + ";cursor:pointer;opacity:0.9;z-index:10000";
+        c.addEventListener(
+          "click",
+          function(a2) {
+            a2.preventDefault();
+            u(++l % c.children.length);
+          },
+          false
+        );
+        var k = (performance || Date).now(), g = k, a = 0, r = e(new Panel("FPS", "#0ff", "#002")), h = e(new Panel("MS", "#0f0", "#020"));
+        if (self.performance && self.performance.memory)
+          var t = e(new Panel("MB", "#f08", "#201"));
+        var totalGameObjects = e(new Panel("OBJ", "#0ff", "#002"));
+        var totalTextures = e(new Panel("TEX", "#0f0", "#020"));
+        var x = e(new Panel("X", "#f08", "#201"));
+        var y = e(new Panel("Y", "#0ff", "#002"));
+        var renderList = e(new Panel("REND", "#0f0", "#020"));
+        u(mode % c.children.length);
+        return {
+          REVISION: 16,
+          dom: c,
+          addPanel: e,
+          showPanel: u,
+          begin: function() {
+            k = (performance || Date).now();
+          },
+          end: function() {
+            a++;
+            var c2 = (performance || Date).now();
+            h.update(c2 - k, 200);
+            if (c2 >= g + 1e3 && (r.update(1e3 * a / (c2 - g), 100), g = c2, a = 0, t)) {
+              var d = performance.memory;
+              t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
+            }
+            customPanel("totalGameObjects", totalGameObjects);
+            customPanel("totalTextures", totalTextures);
+            customPanel("x", x);
+            customPanel("y", y);
+            customPanel("renderList", renderList);
+            return c2;
+          },
+          update: function() {
+            k = this.end();
+          },
+          domElement: c,
+          setMode: u
+        };
+      };
+      return f;
+    });
+    const topPosition = window.innerHeight - 50 + "px";
+    var stats1 = new Stats(topPosition, "5px", 0);
+    var stats2 = new Stats(topPosition, "85px", 1);
+    var stats3 = new Stats(topPosition, "165px", 2);
+    var stats4 = new Stats(topPosition, "245px", 3);
+    var stats5 = new Stats(topPosition, "325px", 4);
+    var stats6 = new Stats(topPosition, "405px", 5);
+    var stats7 = new Stats(topPosition, "485px", 6);
+    var stats8 = new Stats(topPosition, "565px", 7);
+    document.body.appendChild(stats1.dom);
+    document.body.appendChild(stats2.dom);
+    document.body.appendChild(stats3.dom);
+    document.body.appendChild(stats4.dom);
+    document.body.appendChild(stats5.dom);
+    document.body.appendChild(stats6.dom);
+    document.body.appendChild(stats7.dom);
+    document.body.appendChild(stats8.dom);
+    requestAnimationFrame(function loop() {
+      stats1.update();
+      stats2.update();
+      stats3.update();
+      stats4.update();
+      stats5.update();
+      stats6.update();
+      stats7.update();
+      stats8.update();
+      requestAnimationFrame(loop);
+    });
+  };
+
   // src/debugView/index.ts
   var DebugView = class {
-    constructor(scene) {
+    constructor(scene, active = DEBUG_MODE) {
+      this.active = active;
       const rect = scene.add.rectangle(0, 0, FOV_WIDTH, FOV_HEIGHT);
       rect.setStrokeStyle(2, 1729964);
       this.text = scene.add.text(
@@ -73960,9 +73962,39 @@
       );
       this.container = scene.add.container(0, 0);
       this.container.add([rect, this.text]);
+      if (this.active === true) {
+        showPerformance();
+        globalThis.__debug = {
+          totalGameObjects: 0,
+          totalTextures: 0
+        };
+        scene.game.events.addListener("step", () => {
+          let totalGameObjects = 0;
+          let totalTextures = 0;
+          let renderList = 0;
+          let x = 0;
+          let y = 0;
+          totalGameObjects += scene.children.length;
+          if (scene.cityTile) {
+            renderList += scene.cityTile.getBobCount();
+          }
+          scene.textures.each(() => {
+            totalTextures += 1;
+          }, scene);
+          if (scene.player) {
+            x = scene.player.x;
+            y = scene.player.y;
+          }
+          globalThis.__debug.totalGameObjects = totalGameObjects;
+          globalThis.__debug.totalTextures = totalTextures;
+          globalThis.__debug.x = x;
+          globalThis.__debug.y = y;
+          globalThis.__debug.renderList = renderList;
+        });
+      }
     }
     update(player) {
-      if (this.container) {
+      if (this.active && this.container) {
         this.text.text = `${FOV_WIDTH / -2 + player.sprite.x}/${FOV_HEIGHT / -2 + player.sprite.y}`;
         this.container.x = player.sprite.x;
         this.container.y = player.sprite.y;
@@ -74095,45 +74127,13 @@
     backgroundColor: "#000033",
     pixelArt: true,
     roundPixels: false,
-    antialias: false,
-    debug: true
+    antialias: false
   };
   var GnosisGame = class extends Phaser.Game {
     constructor(config = gameConfig, onReady) {
       super(config);
       this.onReady = onReady;
       this.events.once("ready", this.onReady, this);
-      if (gameConfig.debug) {
-        globalThis.__debug = {
-          totalGameObjects: 0,
-          totalTextures: 0
-        };
-        this.events.addListener("step", () => {
-          let totalGameObjects = 0;
-          let totalTextures = 0;
-          let renderList = 0;
-          let x = 0;
-          let y = 0;
-          for (const scene of this.scene.scenes) {
-            totalGameObjects += scene.children.length;
-            if (scene.cityTile) {
-              renderList += scene.cityTile.getBobCount();
-            }
-            scene.textures.each(() => {
-              totalTextures += 1;
-            }, scene);
-            if (scene.player) {
-              x = scene.player.x;
-              y = scene.player.y;
-            }
-          }
-          globalThis.__debug.totalGameObjects = totalGameObjects;
-          globalThis.__debug.totalTextures = totalTextures;
-          globalThis.__debug.x = x;
-          globalThis.__debug.y = y;
-          globalThis.__debug.renderList = renderList;
-        });
-      }
     }
     getScene(sceneKey) {
       return this.scene.getScene(sceneKey);
@@ -74154,18 +74154,15 @@
     });
   }
   var startEngine = async (loadCanvas = false) => {
-    if (gameConfig.debug) {
-      showPerformance();
-    }
     console.log("Starting engine...");
     if (loadCanvas) {
       await onLoad();
     } else if (window.addEventListener) {
-      window.addEventListener("load", async () => onLoad(), false);
+      window.addEventListener("load", onLoad, false);
     } else if (window.attachEvent) {
-      window.attachEvent("onload", async () => onLoad());
+      window.attachEvent("onload", onLoad);
     } else {
-      window.onload = async () => onLoad();
+      window.onload = onLoad;
     }
   };
 

@@ -63,3 +63,5 @@ export const BLITTER_SORT_DELAY = 5000;
 export const CHUNK_DESTRUCT_DELAY = 5000;
 
 export const GROUND_Y = 1000
+
+export const DEBUG_MODE = true

@@ -65,7 +65,7 @@
       ]
     },
     "src/scenes/index.ts": {
-      "bytes": 5747,
+      "bytes": 4298,
       "imports": [
         {
           "path": "node_modules/phaser/dist/phaser.js",
@@ -116,7 +116,7 @@
       ]
     },
     "src/index.ts": {
-      "bytes": 1188,
+      "bytes": 1148,
       "imports": [
         {
           "path": "src/style.css",
@@ -155,7 +155,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9014502
+      "bytes": 9012879
     },
     "dist/index.js": {
       "imports": [],
@@ -169,7 +169,7 @@
           "bytesInOutput": 0
         },
         "src/index.ts": {
-          "bytesInOutput": 948
+          "bytesInOutput": 906
         },
         "src/performance.ts": {
           "bytesInOutput": 5192
@@ -205,7 +205,7 @@
           "bytesInOutput": 21
         }
       },
-      "bytes": 3095577
+      "bytes": 3095535
     },
     "dist/index.css.map": {
       "imports": [],
