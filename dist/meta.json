@@ -8,12 +8,8 @@
       "bytes": 6838115,
       "imports": []
     },
-    "src/performance.ts": {
-      "bytes": 5731,
-      "imports": []
-    },
     "src/config.ts": {
-      "bytes": 1454,
+      "bytes": 1486,
       "imports": []
     },
     "src/citytile/chunks.ts": {
@@ -55,11 +51,19 @@
       "bytes": 920,
       "imports": []
     },
+    "src/debugView/performance.ts": {
+      "bytes": 5731,
+      "imports": []
+    },
     "src/debugView/index.ts": {
-      "bytes": 958,
+      "bytes": 2091,
       "imports": [
         {
           "path": "src/config.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/debugView/performance.ts",
           "kind": "import-statement"
         }
       ]
@@ -103,7 +107,7 @@
       ]
     },
     "src/game.ts": {
-      "bytes": 2087,
+      "bytes": 1011,
       "imports": [
         {
           "path": "src/config.ts",
@@ -116,7 +120,7 @@
       ]
     },
     "src/index.ts": {
-      "bytes": 1148,
+      "bytes": 1040,
       "imports": [
         {
           "path": "src/style.css",
@@ -124,10 +128,6 @@
         },
         {
           "path": "node_modules/phaser/dist/phaser.js",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/performance.ts",
           "kind": "import-statement"
         },
         {
@@ -155,7 +155,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9012879
+      "bytes": 9012842
     },
     "dist/index.js": {
       "imports": [],
@@ -169,13 +169,10 @@
           "bytesInOutput": 0
         },
         "src/index.ts": {
-          "bytesInOutput": 906
-        },
-        "src/performance.ts": {
-          "bytesInOutput": 5192
+          "bytesInOutput": 847
         },
         "src/config.ts": {
-          "bytesInOutput": 260
+          "bytesInOutput": 285
         },
         "src/scenes/index.ts": {
           "bytesInOutput": 2640
@@ -192,20 +189,23 @@
         "src/player/index.ts": {
           "bytesInOutput": 733
         },
+        "src/debugView/performance.ts": {
+          "bytesInOutput": 5192
+        },
         "src/debugView/index.ts": {
-          "bytesInOutput": 707
+          "bytesInOutput": 1749
         },
         "src/scenes/example.ts": {
           "bytesInOutput": 475
         },
         "src/game.ts": {
-          "bytesInOutput": 1695
+          "bytesInOutput": 652
         },
         "index.ts": {
           "bytesInOutput": 21
         }
       },
-      "bytes": 3095535
+      "bytes": 3095510
     },
     "dist/index.css.map": {
       "imports": [],
