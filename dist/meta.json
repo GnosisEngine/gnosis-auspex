@@ -107,7 +107,7 @@
       ]
     },
     "src/game.ts": {
-      "bytes": 1011,
+      "bytes": 2449,
       "imports": [
         {
           "path": "src/config.ts",
@@ -120,7 +120,7 @@
       ]
     },
     "src/index.ts": {
-      "bytes": 1040,
+      "bytes": 1210,
       "imports": [
         {
           "path": "src/style.css",
@@ -155,7 +155,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9012842
+      "bytes": 9017223
     },
     "dist/index.js": {
       "imports": [],
@@ -163,7 +163,7 @@
       "entryPoint": "index.ts",
       "inputs": {
         "node_modules/phaser/dist/phaser.js": {
-          "bytesInOutput": 3056909
+          "bytesInOutput": 3058361
         },
         "src/style.css": {
           "bytesInOutput": 0
@@ -175,7 +175,7 @@
           "bytesInOutput": 285
         },
         "src/scenes/index.ts": {
-          "bytesInOutput": 2640
+          "bytesInOutput": 2653
         },
         "src/citytile/chunks.ts": {
           "bytesInOutput": 7142
@@ -187,7 +187,7 @@
           "bytesInOutput": 518
         },
         "src/player/index.ts": {
-          "bytesInOutput": 733
+          "bytesInOutput": 738
         },
         "src/debugView/performance.ts": {
           "bytesInOutput": 5192
@@ -199,13 +199,13 @@
           "bytesInOutput": 475
         },
         "src/game.ts": {
-          "bytesInOutput": 652
+          "bytesInOutput": 1553
         },
         "index.ts": {
           "bytesInOutput": 21
         }
       },
-      "bytes": 3095510
+      "bytes": 3097881
     },
     "dist/index.css.map": {
       "imports": [],

@@ -20,14 +20,14 @@ export default class ChunkManager {
   lastChunkY: number
   chunks: ChunkInstance = {}
 
-  constructor (scene: GameScene, fovWidth: number, fovHeight: number) {
+  constructor (scene: GameScene, fovWidth: number, fovHeight: number, startX: number, startY: number) {
     this.fovWidth = fovWidth
     this.fovHeight = fovHeight
     this.scene = scene
     this.maxHorizontalChunks = 10 // @TODO: fancy math
     this.maxVerticalChunks = 4 // @TODO: fancy math
 
-    const { x, y } = this.getChunk(cameraX, cameraY)
+    const { x, y } = this.getChunk(startX, startY)
 
     this.lastChunkX = x
     this.lastChunkY = y
@@ -71,27 +71,27 @@ export default class ChunkManager {
     const topRight = {
       x: chunkX + 1,
       y: chunkY - 1
-    },
+    }
     
     const left = {
       x: chunkX - 1,
       y: chunkY
-    },
+    }
     
     const right = {
       x: chunkX + 1,
       y: chunkY
-    },
+    }
     
     const bottomLeft = {
       x: chunkX - 1,
       y: chunkY + 1
-    },
+    }
     
     const bottom = {
       x: chunkX,
       y: chunkY + 1
-    },
+    }
     
     const bottomRight = {
       x: chunkX + 1,
@@ -129,7 +129,7 @@ export default class ChunkManager {
           // Schedule chunk for creation
           const chunkCoords = this.getXY(x, y)
           const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y) // @TODO
-          await chunk.load(400, 200, tileLayers, objects) //@TODO coords
+          chunk.load(400, 200, tileLayers, objects) //@TODO coords
           this.chucks[key] === chunk
         } else {
           // Schedule chunks for destruction
