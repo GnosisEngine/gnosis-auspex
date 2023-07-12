@@ -1,5 +1,6 @@
 export interface GameConfig extends Phaser.Types.Core.GameConfig {
   debug: true;
+  initialCity: string
 }
 
 export interface SceneConfig extends Phaser.Types.Scenes.SettingsConfig {
