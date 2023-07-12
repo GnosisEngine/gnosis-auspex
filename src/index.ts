@@ -8,7 +8,7 @@ import { ExampleScene } from './scenes/example';
  */
 // async function onLoad (onReady: () => Promise<void> = async () => undefined) {
 //   const game = new GnosisGame(gameConfig, onReady)
-//   await game.start()
+//   await game.startEngine()
 //   console.log('Engine started.');
 // }
 
