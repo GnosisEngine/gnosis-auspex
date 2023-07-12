@@ -74110,11 +74110,166 @@
   var ExampleScene = _ExampleScene;
   ExampleScene.key = "example";
 
+  // src/city/chunkManager.ts
+  var newChunkId = 1;
+  var ChunkManager = class {
+    constructor(scene, fovWidth, fovHeight, startX, startY) {
+      this.chunks = {};
+      this.fovWidth = fovWidth;
+      this.fovHeight = fovHeight;
+      this.scene = scene;
+      this.maxHorizontalChunks = 10;
+      this.maxVerticalChunks = 4;
+      const { x, y } = this.getChunk(startX, startY);
+      this.lastChunkX = x;
+      this.lastChunkY = y;
+    }
+    getChunk(cameraX, cameraY) {
+      return {
+        x: Math.floor(cameraX / this.fovWidth) + 1,
+        y: Math.floor(cameraY / this.fovHeight) + 1
+      };
+    }
+    getXY(chunkX, chunkY) {
+      return {
+        x: chunkX * this.fovWidth,
+        y: chunkY * this.fovHeight
+      };
+    }
+    getSurroudingChunks(chunkX, chunkY) {
+      const topLeft = {
+        x: chunkX - 1,
+        y: chunkY - 1
+      };
+      const top = {
+        x: chunkX,
+        y: chunkY - 1
+      };
+      const topRight = {
+        x: chunkX + 1,
+        y: chunkY - 1
+      };
+      const left = {
+        x: chunkX - 1,
+        y: chunkY
+      };
+      const right = {
+        x: chunkX + 1,
+        y: chunkY
+      };
+      const bottomLeft = {
+        x: chunkX - 1,
+        y: chunkY + 1
+      };
+      const bottom = {
+        x: chunkX,
+        y: chunkY + 1
+      };
+      const bottomRight = {
+        x: chunkX + 1,
+        y: chunkY + 1
+      };
+      return [
+        top,
+        topRight,
+        right,
+        bottomRight,
+        bottom,
+        bottomLeft,
+        left,
+        topLeft
+      ];
+    }
+    update(cameraX, cameraY) {
+      const { x, y } = this.getChunk(cameraX, cameraY);
+      if (x !== this.lastChunkX || y !== this.lastChunkY) {
+        const chunkIndexs = this.getSurroundingChunks(x, y);
+        for (const chunkIndex in chunkIndexs) {
+          const key = `${chunkIndex.x}-${chunkIndex.y}`;
+          const chunk = this.chunks[key] || new ChunkManager(this.scene, chunkIndex.x, chunkIndex.y, newChunkId);
+          newChunkId += 1;
+          if (chunk.loaded === false) {
+            const chunkCoords = this.getXY(x, y);
+            const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y);
+            chunk.load(400, 200, tileLayers, objects);
+            this.chucks[key] === chunk;
+          } else {
+            const purge = [];
+            if (chunkKey.x < x - 1) {
+              purge.push(chunk);
+            } else if (chunkKey.x > x + 1) {
+              purge.push(chunk);
+            } else if (chunkKey.y < y - 1) {
+              purge.push(chunk);
+            } else if (chunkKey.y > y + 1) {
+              purge.push(chunk);
+            }
+            for (const purgeChunk of purge) {
+              purgeChunk.destroy();
+            }
+          }
+        }
+        this.lastChunkX = x;
+        this.lastChunkY = y;
+      }
+    }
+  };
+
+  // src/city/index.ts
+  var City = class {
+    constructor(scene, fovWidth, fovHeight) {
+      this.scene = scene;
+      this.fovWidth = fovWidth === void 0 ? scene.game.config.width : fovWidth;
+      this.fovHeight = fovHeight === void 0 ? scene.game.config.height : fovHeight;
+      this.chunks = new ChunkManager(this.scene, this.fovWidth, this.fovHeight);
+    }
+    getChunk(chunkX, chunkY) {
+      return [
+        [
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+        ],
+        [
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+        ],
+        [
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+        ]
+      ];
+    }
+  };
+
   // src/game.ts
   var gameConfig = {
     title: "Gnosis",
-    width: VIEWPORT_WIDTH || window.innerWidth,
-    height: VIEWPORT_HEIGHT || window.innerHeight,
+    width: VIEWPORT_WIDTH,
+    height: VIEWPORT_HEIGHT,
     mode: Phaser.Scale.NONE,
     parent: "viewport",
     type: Phaser.WEBGL,
@@ -74139,13 +74294,17 @@
       this.onReady = onReady;
       this.events.once("ready", this.onReady, this);
     }
-    start() {
+    startEngine() {
       return new Promise(async (resolve) => {
         this.events.once("ready", async () => {
           const scene = this.getScene(ExampleScene.key || config.initialCity);
           this.currentScene = scene;
+          const initialCity = new City(scene, this.config.width, this.config.height, this.config.startX, this.config.startY);
+          this.cities = [initialCity];
           const layer = scene.addLayer("test");
           const container = scene.addContainer("box", "test", 0, 0);
+          window.addEventListener("resize", () => this.resizeGameCanvas());
+          this.resizeGameCanvas();
           await this.onReady();
           this.canvas.getContext("2d", { willReadFrequently: true });
           resolve(this);
@@ -74166,16 +74325,9 @@
 
   // src/index.ts
   async function onLoad(onReady = async () => void 0) {
-    return new Promise((resolve) => {
-      const game = new GnosisGame(gameConfig, async () => {
-        const scene = game.getScene(ExampleScene.key);
-        const layer = scene.addLayer("test");
-        const container = scene.addContainer("box", "test", 0, 0);
-        await onReady();
-        resolve(game);
-        console.log("Engine started.");
-      });
-    });
+    const game = new GnosisGame(gameConfig, onReady);
+    await game.startEngine();
+    console.log("Engine started.");
   }
   var startEngine = async (loadCanvas = false) => {
     console.log("Starting engine...");

@@ -107,7 +107,7 @@
       ]
     },
     "src/game.ts": {
-      "bytes": 2449,
+      "bytes": 2458,
       "imports": [
         {
           "path": "src/config.ts",
@@ -120,7 +120,7 @@
       ]
     },
     "src/index.ts": {
-      "bytes": 1210,
+      "bytes": 1215,
       "imports": [
         {
           "path": "src/style.css",
@@ -155,7 +155,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9017223
+      "bytes": 9017142
     },
     "dist/index.js": {
       "imports": [],
@@ -199,13 +199,13 @@
           "bytesInOutput": 475
         },
         "src/game.ts": {
-          "bytesInOutput": 1553
+          "bytesInOutput": 1431
         },
         "index.ts": {
           "bytesInOutput": 21
         }
       },
-      "bytes": 3097881
+      "bytes": 3097759
     },
     "dist/index.css.map": {
       "imports": [],
