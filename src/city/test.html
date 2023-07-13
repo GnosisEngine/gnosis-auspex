@@ -30,16 +30,30 @@
         const buildings = []
 
         // Prepare building width dimensions
-        for (let position = 0; position < cityLength; position += getRandomNumber(minBuildingDistance, maxBuildingDistance)) {
+        let position = 0
+        for (; position < cityLength; position += getRandomNumber(minBuildingDistance, maxBuildingDistance)) {
           const width = getRandomNumber(minBuildingWidth, maxBuildingWidth)
 
           if (position + width > cityLength) {
+            // we're out of bounds
+            if (cityLength - position < minBuildingWidth ) {
+              // stretch the last building to the end
+              const building = buildings[buildings.length - 1]
+              building[1] = cityLength - building[0]
+              position = cityLength
+            }
             break
           }
 
           buildings.push([position, width])
           position += width
         }
+
+        if (position < cityLength) {
+          // If there is a gap, fill it
+          buildings.push([position, cityLength - position])
+        }
+
 
         // Generate the road
         var road = {
@@ -129,7 +143,7 @@
       const minBuildingWidth = 5
       const maxBuildingWidth = 10
       const minBuildingDistance = 0
-      const maxBuildingDistance = 0
+      const maxBuildingDistance = 5
       const subwayHeight = 2;
       
 
