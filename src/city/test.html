@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Random City Generator</title>
+    <style>
+      #cityCanvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="cityCanvas" width="500" height="300"></canvas>
+
+    <script>
+      // Function to generate a random number within a range
+      function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // Function to generate a random city
+      function generateRandomCity(cityLength, cityHeight, numBuildings, minHeight, subwayHeight) {
+        // Array to store the city layout
+        var cityLayout = [];
+        const roadPosition = Math.floor(cityHeight / 2)
+
+        // Generate the road
+        var road = {
+          type: 'road',
+          x: 0,
+          y: roadPosition,
+          width: cityLength,
+          height: 1
+        };
+        cityLayout.push(road);
+
+        // Generate the subway
+        var subway = {
+          type: 'subway',
+          x: 0,
+          y: roadPosition + 1,
+          width: cityLength,
+          height: subwayHeight
+        };
+        cityLayout.push(subway);
+
+        // Generate the buildings
+        for (var i = 0; i < numBuildings; i++) {
+          var buildingHeight = getRandomNumber(minHeight, cityLength);
+		  const buildingWidth = 1
+          var building = {
+            type: 'building',
+            x: getRandomNumber(0, cityLength - 1),
+            y: roadPosition - buildingHeight,
+            width: buildingWidth,
+            height: buildingHeight
+          };
+          cityLayout.push(building);
+
+          // Generate the connecting rectangle to the subway
+
+          var connectingRectangle = {
+            type: 'connecting',
+            x: building.x + (buildingWidth * 0.25),
+            y: roadPosition - buildingHeight,
+            width: 1 - (buildingWidth * 0.50),
+            height: buildingHeight + subwayHeight
+          };
+          cityLayout.push(connectingRectangle);
+        }
+
+
+
+        return cityLayout;
+      }
+
+      // Draw the city layout on the canvas
+      function drawCityLayout(cityLayout, pixelPerUnit) {
+        var canvas = document.getElementById('cityCanvas');
+        var ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = 0; i < cityLayout.length; i++) {
+          var shape = cityLayout[i];
+
+          switch (shape.type) {
+            case 'road':
+              ctx.fillStyle = '#808080'; // gray
+              break;
+            case 'building':
+              ctx.fillStyle = '#ff0000'; // red
+              break;
+            case 'connecting':
+              ctx.fillStyle = '#0000ff'; // blue
+              break;
+            case 'subway':
+              ctx.fillStyle = '#00ff00'; // green
+              break;
+          }
+
+          ctx.fillRect(shape.x * pixelPerUnit, shape.y * pixelPerUnit, shape.width * pixelPerUnit, shape.height * pixelPerUnit);
+        }
+      }
+
+      // Example usage
+      var cityLength = 10;
+      var cityHeight = 6
+      var numBuildings = 5;
+      var minHeight = 3;
+      var subwayHeight = 2;
+      const pixelPerUnit = 50
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var randomCity = generateRandomCity(cityLength, cityHeight, numBuildings, minHeight, subwayHeight);
+        drawCityLayout(randomCity, pixelPerUnit);
+      });
+    </script>
+  </body>
+</html>

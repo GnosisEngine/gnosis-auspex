@@ -64,10 +64,10 @@ export class GnosisGame extends Phaser.Game {
         window.addEventListener('resize', () => this.resizeGameCanvas());
         this.resizeGameCanvas()
 
+        this.canvas.getContext('2d', { willReadFrequently: true });
+
         // Run custom functions
         await this.onReady()
-
-        this.canvas.getContext('2d', { willReadFrequently: true });
 
         // Start the game
         resolve(this)

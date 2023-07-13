@@ -74305,8 +74305,8 @@
           const container = scene.addContainer("box", "test", 0, 0);
           window.addEventListener("resize", () => this.resizeGameCanvas());
           this.resizeGameCanvas();
-          await this.onReady();
           this.canvas.getContext("2d", { willReadFrequently: true });
+          await this.onReady();
           resolve(this);
         }, this);
       });
