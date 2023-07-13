@@ -9,7 +9,7 @@
     </style>
   </head>
   <body>
-    <canvas id="cityCanvas" width="500" height="300"></canvas>
+    <canvas id="cityCanvas" width="800" height="500"></canvas>
 
     <script>
       const canvas = document.getElementById('cityCanvas');
@@ -22,7 +22,7 @@
       }
 
       // Function to generate a random city
-      function generateRandomCity(cityLength, cityHeight, minBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
+      function generateRandomCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
         // Array to store the city layout
         var cityLayout = [];
 
@@ -34,10 +34,16 @@
         // Prepare building width dimensions
         let position = 0
         for (; position < cityLength; position += getRandomNumber(minBuildingDistance, maxBuildingDistance)) {
-          const width = getRandomNumber(minBuildingWidth, maxBuildingWidth)
+          // Generate a random building width
+          let width = getRandomNumber(minBuildingWidth, maxBuildingWidth)
+
+          if (width % 2 === 1) {
+            // Don't allow odd number building widths, this makes elevator generation easier
+            width += 1
+          }
 
           if (position + width > cityLength) {
-            // we're out of bounds
+            // The next buidling size is out of bounds of the city
             if (cityLength - position < minBuildingWidth ) {
               // stretch the last building to the end
               const building = buildings[buildings.length - 1]
@@ -47,15 +53,15 @@
             break
           }
 
+          // Add the building to the queue
           buildings.push([position, width])
           position += width
         }
 
         if (position < cityLength) {
-          // If there is a gap, fill it
+          // If there is a gap, fill it with a building
           buildings.push([position, cityLength - position])
         }
-
 
         // Generate the road
         var road = {
@@ -77,9 +83,13 @@
         };
         cityLayout.push(subway);
 
+        const actualMaxBuildingHeight = maxBuildingHeight > cityHeight
+          ? cityHeight
+          : maxBuildingHeight
+
         // Generate the buildings
         for (const buildingData of buildings) {
-          const buildingHeight = getRandomNumber(minBuildingHeight, cityHeight * 0.20);
+          const buildingHeight = getRandomNumber(minBuildingHeight, actualMaxBuildingHeight);
 		      const x = buildingData[0]
           const buildingWidth = buildingData[1]
 
@@ -93,10 +103,10 @@
           cityLayout.push(building);
 
           // Generate the connecting rectangle to the subway
-
+          console.log(building.x + (buildingWidth / 2))
           const elevator = {
             type: 'elevator',
-            x: building.x + (buildingWidth / 2) - (0.5),
+            x: building.x + (buildingWidth / 2),
             y: roadPosition - buildingHeight,
             width: 1,
             height: buildingHeight + subwayHeight
@@ -180,22 +190,24 @@
       }
 
       // Example usage
-      const metersPerUnit = 3
-      const pixelPerUnit = 5
+      const metersPerUnit = 1
+      const pixelPerUnit = 20
       const cityLength = canvasWidth / pixelPerUnit
       const cityHeight = canvasHeight / pixelPerUnit
-      const minBuildingHeight = 20;
-      const minBuildingWidth = 5
-      const maxBuildingWidth = 10
+      const minBuildingHeight = 100;
+      const maxBuildingHeight = 120;
+      const minBuildingWidth = 15
+      const maxBuildingWidth = 30
       const minBuildingDistance = 0
       const maxBuildingDistance = 0
-      const subwayHeight = 2;
+      const subwayHeight = 6;
       
 
       document.addEventListener('DOMContentLoaded', function() {
-        var randomCity = generateRandomCity(cityLength, cityHeight, minBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
+        var randomCity = generateRandomCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
         drawCityLayout(randomCity, pixelPerUnit);
       });
     </script>
   </body>
 </html>
+
