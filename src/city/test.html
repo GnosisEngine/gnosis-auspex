@@ -25,7 +25,9 @@
       function generateRandomCity(cityLength, cityHeight, minBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
         // Array to store the city layout
         var cityLayout = [];
-        const roadPosition = Math.floor(cityHeight / 2)
+
+        // Put the road in the middle
+        const roadPosition = cityHeight - subwayHeight - 1
 
         const buildings = []
 
@@ -92,14 +94,34 @@
 
           // Generate the connecting rectangle to the subway
 
-          const connectingRectangle = {
-            type: 'connecting',
+          const elevator = {
+            type: 'elevator',
             x: building.x + (buildingWidth / 2) - (0.5),
             y: roadPosition - buildingHeight,
             width: 1,
             height: buildingHeight + subwayHeight
           };
-          cityLayout.push(connectingRectangle);
+          cityLayout.push(elevator);
+
+          for (let roomId = 0; roomId < building.height; roomId++) {
+            const leftRoom = {
+              type: 'room',
+              x: building.x + 1,
+              y: roadPosition - buildingHeight + roomId,
+              width: buildingWidth / 2 - elevator.width ,
+              height: 1
+            };
+            cityLayout.push(leftRoom);
+
+            const rightRoom = {
+              type: 'room',
+              x: elevator.x + elevator.width + 0.5,
+              y: roadPosition - buildingHeight + roomId,
+              width: buildingWidth / 2 - elevator.width ,
+              height: 1
+            };
+            cityLayout.push(rightRoom);
+          }
         }
 
 
@@ -111,31 +133,54 @@
       function drawCityLayout(cityLayout, pixelPerUnit) {
         var ctx = canvas.getContext('2d');
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+
+        // Define the gradient colors
+        gradient.addColorStop(0, 'rgb(64, 0, 64)');        // Dark purple
+        gradient.addColorStop(0.5, 'rgb(255, 102, 0)');    // Sunset blaze
+        gradient.addColorStop(1, 'rgb(255, 204, 153)');    // Light orange
+
+        // Fill the canvas with the gradient
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (var i = 0; i < cityLayout.length; i++) {
           var shape = cityLayout[i];
+          let offsetHeight = 0
+          let offsetWidth = 0
 
           switch (shape.type) {
             case 'road':
-              ctx.fillStyle = '#808080'; // gray
+              ctx.fillStyle = '#242629';
               break;
             case 'building':
-              ctx.fillStyle = '#ff0000'; // red
+              ctx.fillStyle = '#5B6A7A';
               break;
-            case 'connecting':
-              ctx.fillStyle = '#0000ff'; // blue
+            case 'elevator':
+              ctx.fillStyle = '#F8DF9D';
               break;
             case 'subway':
-              ctx.fillStyle = '#00ff00'; // green
+              ctx.fillStyle = '#903642';
               break;
+            case 'room':
+              ctx.fillStyle = '#BDAFEE';
+              offsetHeight = 1
+              offsetWidth = 1
+              break;
+            
           }
 
-          ctx.fillRect(shape.x * pixelPerUnit, shape.y * pixelPerUnit, shape.width * pixelPerUnit, shape.height * pixelPerUnit);
+          ctx.fillRect(
+            shape.x * pixelPerUnit - offsetWidth * 2,
+            shape.y * pixelPerUnit + offsetHeight,
+            shape.width * pixelPerUnit - offsetWidth,
+            shape.height * pixelPerUnit - offsetHeight 
+          );
         }
       }
 
       // Example usage
+      const metersPerUnit = 3
       const pixelPerUnit = 5
       const cityLength = canvasWidth / pixelPerUnit
       const cityHeight = canvasHeight / pixelPerUnit
@@ -143,7 +188,7 @@
       const minBuildingWidth = 5
       const maxBuildingWidth = 10
       const minBuildingDistance = 0
-      const maxBuildingDistance = 5
+      const maxBuildingDistance = 0
       const subwayHeight = 2;
       
 
