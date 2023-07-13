@@ -12,16 +12,34 @@
     <canvas id="cityCanvas" width="500" height="300"></canvas>
 
     <script>
+      const canvas = document.getElementById('cityCanvas');
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+
       // Function to generate a random number within a range
       function getRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
       // Function to generate a random city
-      function generateRandomCity(cityLength, cityHeight, numBuildings, minHeight, subwayHeight) {
+      function generateRandomCity(cityLength, cityHeight, minBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
         // Array to store the city layout
         var cityLayout = [];
         const roadPosition = Math.floor(cityHeight / 2)
+
+        const buildings = []
+
+        // Prepare building width dimensions
+        for (let position = 0; position < cityLength; position += getRandomNumber(minBuildingDistance, maxBuildingDistance)) {
+          const width = getRandomNumber(minBuildingWidth, maxBuildingWidth)
+
+          if (position + width > cityLength) {
+            break
+          }
+
+          buildings.push([position, width])
+          position += width
+        }
 
         // Generate the road
         var road = {
@@ -44,12 +62,14 @@
         cityLayout.push(subway);
 
         // Generate the buildings
-        for (var i = 0; i < numBuildings; i++) {
-          var buildingHeight = getRandomNumber(minHeight, cityLength);
-		  const buildingWidth = 1
-          var building = {
+        for (const buildingData of buildings) {
+          const buildingHeight = getRandomNumber(minBuildingHeight, cityHeight * 0.20);
+		      const x = buildingData[0]
+          const buildingWidth = buildingData[1]
+
+          const building = {
             type: 'building',
-            x: getRandomNumber(0, cityLength - 1),
+            x: x,
             y: roadPosition - buildingHeight,
             width: buildingWidth,
             height: buildingHeight
@@ -58,11 +78,11 @@
 
           // Generate the connecting rectangle to the subway
 
-          var connectingRectangle = {
+          const connectingRectangle = {
             type: 'connecting',
-            x: building.x + (buildingWidth * 0.25),
+            x: building.x + (buildingWidth / 2) - (0.5),
             y: roadPosition - buildingHeight,
-            width: 1 - (buildingWidth * 0.50),
+            width: 1,
             height: buildingHeight + subwayHeight
           };
           cityLayout.push(connectingRectangle);
@@ -75,7 +95,6 @@
 
       // Draw the city layout on the canvas
       function drawCityLayout(cityLayout, pixelPerUnit) {
-        var canvas = document.getElementById('cityCanvas');
         var ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -103,15 +122,19 @@
       }
 
       // Example usage
-      var cityLength = 10;
-      var cityHeight = 6
-      var numBuildings = 5;
-      var minHeight = 3;
-      var subwayHeight = 2;
-      const pixelPerUnit = 50
+      const pixelPerUnit = 5
+      const cityLength = canvasWidth / pixelPerUnit
+      const cityHeight = canvasHeight / pixelPerUnit
+      const minBuildingHeight = 20;
+      const minBuildingWidth = 5
+      const maxBuildingWidth = 10
+      const minBuildingDistance = 0
+      const maxBuildingDistance = 0
+      const subwayHeight = 2;
+      
 
       document.addEventListener('DOMContentLoaded', function() {
-        var randomCity = generateRandomCity(cityLength, cityHeight, numBuildings, minHeight, subwayHeight);
+        var randomCity = generateRandomCity(cityLength, cityHeight, minBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
         drawCityLayout(randomCity, pixelPerUnit);
       });
     </script>
