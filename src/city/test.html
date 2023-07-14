@@ -279,6 +279,26 @@
         return xOverlap * yOverlap;
       }
 
+      function handleCamera(event, buildings, camera, pixelsPerMeter) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX
+        const mouseY = event.clientY
+
+        const cameraX = mouseX - camera.width;
+        const cameraY = mouseY - camera.height;
+
+        camera.x = mouseX
+        camera.y = mouseY
+
+        drawBuildings(buildings, pixelsPerMeter)
+        drawBuildings([camera], 2, false)
+        getMeterBlocks(buildings, camera)
+      }
+
+      // Function to handle mouse up event
+      function handleMouseUp() {
+        selectedRectangle = null;
+      }
 
       // Example usage
       const pixelsPerMeter = 2
@@ -315,8 +335,12 @@
         
         drawBuildings(buildings, pixelsPerMeter)
         //console.log(count)
-        getMeterBlocks(buildings, camera)
         drawBuildings([camera], pixelsPerMeter, false)
+        getMeterBlocks(buildings, camera)
+
+        // Add event listeners to the canvas
+        canvas.addEventListener('mousemove', e => handleCamera(e, buildings, camera, pixelsPerMeter));
+        canvas.addEventListener('mouseup', handleMouseUp);
       })
     </script>
   </body>
