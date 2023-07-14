@@ -4,51 +4,119 @@
     <title>Random City Generator</title>
     <style>
       #cityCanvas {
-        border: 1px solid #000;
+        border: 1px solid #000
       }
     </style>
   </head>
   <body>
-    <canvas id="cityCanvas" width="800" height="500"></canvas>
+    <canvas id="cityCanvas" width="30000" height="500"></canvas>
 
     <script>
-      const canvas = document.getElementById('cityCanvas');
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
+      const canvas = document.getElementById('cityCanvas')
+      const canvasWidth = canvas.width
+      const canvasHeight = canvas.height
 
-      // Function to generate a random number within a range
+      /**
+       * Function to generate a random number within a range
+       */
       function getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min
       }
 
-      // Function to generate a random city
-      function generateCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
+      /**
+       * Draw all features in the family
+       */
+      function drawFeatures(ctx, features, pixelPerUnit) {
+        for (const shape of features) {
+          let offsetHeight = 0
+
+          switch (shape.type) {
+            case 'road':
+              ctx.fillStyle = '#242629'
+              break
+            case 'building':
+              ctx.fillStyle = '#5B6A7A'
+              break
+            case 'elevator':
+              ctx.fillStyle = '#F8DF9D'
+              break
+            case 'subway':
+              ctx.fillStyle = '#903642'
+              break
+            case 'subwayEntrance':
+              ctx.fillStyle = '#FF0000'
+              break
+            case 'leftRoom':
+            case 'rightRoom':
+              ctx.fillStyle = '#BDAFEE'
+              offsetHeight = 1
+              break
+            
+          }
+
+          ctx.fillRect(
+            shape.x * pixelPerUnit,
+            shape.y * pixelPerUnit + offsetHeight,
+            shape.width * pixelPerUnit,
+            shape.height * pixelPerUnit - offsetHeight 
+          )
+
+          if (shape.children !== undefined) {
+            drawFeatures(ctx, shape.children, pixelPerUnit)
+          }
+        }
+      }
+
+      /**
+       * Draw the city layout on the canvas
+       */
+      function drawBuildings(buildings, pixelPerUnit) {
+        const ctx = canvas.getContext('2d')
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+
+        // Define the gradient colors
+        gradient.addColorStop(0, 'rgb(64, 0, 64)')        // Dark purple
+        gradient.addColorStop(0.5, 'rgb(255, 102, 0)')    // Sunset blaze
+        gradient.addColorStop(1, 'rgb(255, 204, 153)')    // Light orange
+
+        // Fill the canvas with the gradient
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        drawFeatures(ctx, buildings, pixelPerUnit)        
+      }
+
+      /**
+       * Function to generate a random city
+       */
+      function generateCity(options, pixelsPerMeter) {
         // Array to store the city layout
-        var buildings = [];
+        const buildings = []
 
         // Put the road in the middle
-        const roadPosition = cityHeight - subwayHeight - 1
+        const roadPosition = options.city.height - options.subway.height - 1
 
         const buildingQueue = []
 
         // Prepare building width dimensions
         let position = 0
-        for (; position < cityLength; position += getRandomNumber(minBuildingDistance, maxBuildingDistance)) {
+        for (; position < options.city.length; position += getRandomNumber(options.buildings.minDistance, options.buildings.maxDistance)) {
           // Generate a random building width
-          let width = getRandomNumber(minBuildingWidth, maxBuildingWidth)
+          let width = getRandomNumber(options.buildings.minWidth, options.buildings.maxWidth)
 
           if (width % 2 === 1) {
             // Don't allow odd number building widths, this makes elevator generation easier
             width += 1
           }
 
-          if (position + width > cityLength) {
+          if (position + width > options.city.length) {
             // The next buidling size is out of bounds of the city
-            if (cityLength - position < minBuildingWidth ) {
+            if (options.city.length - position < options.buildings.minWidth ) {
               // stretch the last building to the end
               const building = buildingQueue[buildingQueue.length - 1]
-              building[1] = cityLength - building[0]
-              position = cityLength
+              building[1] = options.city.length - building[0]
+              position = options.city.length
             }
             break
           }
@@ -58,38 +126,40 @@
           position += width
         }
 
-        if (position < cityLength) {
+        if (position < options.city.length) {
           // If there is a gap, fill it with a building
-          buildingQueue.push([position, cityLength - position])
+          buildingQueue.push([position, options.city.length - position])
         }
 
         // Generate the road
-        var road = {
+        const road = {
           type: 'road',
           x: 0,
           y: roadPosition,
-          width: cityLength,
+          width: options.city.length,
           height: 1
-        };
-        buildings.push(road);
+        }
+        buildings.push(road)
 
         // Generate the subway
-        var subway = {
+        const subway = {
           type: 'subway',
           x: 0,
           y: roadPosition + 1,
-          width: cityLength,
-          height: subwayHeight
-        };
-        buildings.push(subway);
+          width: options.city.length,
+          height: options.subway.height
+        }
+        buildings.push(subway)
 
-        const actualMaxBuildingHeight = maxBuildingHeight > cityHeight
-          ? cityHeight
-          : maxBuildingHeight
+        const actualBuildingMaxHeight = options.buildings.maxHeight > options.city.height
+          ? options.city.height
+          : options.buildings.maxHeight
 
         // Generate the buildings
+        let firstBuilding = true
+        let distanceCovered = 0
         for (const buildingData of buildingQueue) {
-          const buildingHeight = getRandomNumber(minBuildingHeight, actualMaxBuildingHeight);
+          const buildingHeight = getRandomNumber(options.buildings.minHeight, actualBuildingMaxHeight)
 		      const x = buildingData[0]
           const buildingWidth = buildingData[1]
 
@@ -100,20 +170,40 @@
             width: buildingWidth,
             height: buildingHeight,
             children: []
-          };
-          buildings.push(building);
+          }
+          buildings.push(building)
 
           // Generate the elevator to the subway
-
           const elevator = {
             type: 'elevator',
             x: building.x + (buildingWidth / 2),
             y: roadPosition - buildingHeight,
             width: 1,
-            height: buildingHeight + subwayHeight
-          };
+            height: buildingHeight + options.subway.height
+          }
           building.children.push(elevator)
 
+
+
+          if (distanceCovered === 0) {
+            // Generate subway entrance
+            const subwayEntrance = {
+              type: 'subwayEntrance',
+              x: elevator.x - 1,
+              y: roadPosition - 3,
+              width: 3,
+              height: 3
+            }
+            buildings.push(subwayEntrance)
+          }
+
+          distanceCovered += buildingWidth
+
+          if (distanceCovered > options.subway.onrampDistance) {
+            distanceCovered = 0
+          }
+
+          // Generate rooms
           for (let roomId = building.height - 3; roomId > 0; roomId -= 3) {
             const leftRoom = {
               type: 'leftRoom',
@@ -121,7 +211,7 @@
               y: roadPosition - buildingHeight + roomId,
               width: buildingWidth / 2 - elevator.width ,
               height: 3
-            };
+            }
             building.children.push(leftRoom)
 
             const rightRoom = {
@@ -130,93 +220,40 @@
               y: roadPosition - buildingHeight + roomId,
               width: buildingWidth / 2 - elevator.width - 1,
               height: 3
-            };
+            }
             building.children.push(rightRoom)
           }
         }
 
-        return buildings;
-      }
-
-      /**
-       * 
-       */
-      function drawRect(ctx, features, pixelPerUnit) {
-        for (const shape of features) {
-          let offsetHeight = 0
-
-          switch (shape.type) {
-            case 'road':
-              ctx.fillStyle = '#242629';
-              break;
-            case 'building':
-              ctx.fillStyle = '#5B6A7A';
-              break;
-            case 'elevator':
-              ctx.fillStyle = '#F8DF9D';
-              break;
-            case 'subway':
-              ctx.fillStyle = '#903642';
-              break;
-            case 'leftRoom':
-            case 'rightRoom':
-              ctx.fillStyle = '#BDAFEE';
-              offsetHeight = 1
-              break;
-            
-          }
-
-          ctx.fillRect(
-            shape.x * pixelPerUnit,
-            shape.y * pixelPerUnit + offsetHeight,
-            shape.width * pixelPerUnit,
-            shape.height * pixelPerUnit - offsetHeight 
-          );
-
-          if (shape.children !== undefined) {
-            drawRect(ctx, shape.children, pixelPerUnit)
-          }
-        }
-      }
-
-      /**
-       * Draw the city layout on the canvas
-       */
-      function drawBuildings(buildings, pixelPerUnit) {
-        var ctx = canvas.getContext('2d');
-
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-
-        // Define the gradient colors
-        gradient.addColorStop(0, 'rgb(64, 0, 64)');        // Dark purple
-        gradient.addColorStop(0.5, 'rgb(255, 102, 0)');    // Sunset blaze
-        gradient.addColorStop(1, 'rgb(255, 204, 153)');    // Light orange
-
-        // Fill the canvas with the gradient
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        drawRect(ctx, buildings, pixelPerUnit)        
+        return buildings
       }
 
       // Example usage
-      const metersPerUnit = 1
-      const pixelPerUnit = 3
-      const cityLength = canvasWidth / pixelPerUnit
-      const cityHeight = canvasHeight / pixelPerUnit
-      const minBuildingHeight = 100;
-      const maxBuildingHeight = 120;
-      const minBuildingWidth = 15
-      const maxBuildingWidth = 20
-      const minBuildingDistance = 0
-      const maxBuildingDistance = 5
-      const subwayHeight = 6;
-      
+      const pixelsPerMeter = 4
+
+      const options = {
+        city: {
+          length: canvasWidth / pixelsPerMeter,
+          height: canvasHeight / pixelsPerMeter
+        },
+        buildings: {
+          minHeight: 100,
+          maxHeight: 120,
+          minWidth: 15,
+          maxWidth: 20,
+          minDistance: 0,
+          maxDistance: 6
+        },
+        subway: {
+          height: 6,
+          onrampDistance: 160,
+        }
+      }
 
       document.addEventListener('DOMContentLoaded', function() {
-        var city = generateCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
-        drawBuildings(city, pixelPerUnit);
-      });
+        const city = generateCity(options, pixelsPerMeter)
+        drawBuildings(city, pixelsPerMeter)
+      })
     </script>
   </body>
 </html>
