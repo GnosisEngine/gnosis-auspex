@@ -10,7 +10,6 @@
   </head>
   <body>
     <canvas id="cityCanvas" width="30000" height="500"></canvas>
-
     <script>
       const canvas = document.getElementById('cityCanvas')
       const canvasWidth = canvas.width
@@ -93,6 +92,12 @@
       function generateCity(options, pixelsPerMeter) {
         // Array to store the city layout
         const buildings = []
+        const count = {
+          buildings: 0,
+          rooms: 0,
+          estimatedPopulation: 0,
+          miles: 0
+        }
 
         // Put the road in the middle
         const roadPosition = options.city.height - options.subway.height - 1
@@ -123,12 +128,14 @@
 
           // Add the building to the queue
           buildingQueue.push([position, width])
+          count.buildings += 1
           position += width
         }
 
         if (position < options.city.length) {
           // If there is a gap, fill it with a building
           buildingQueue.push([position, options.city.length - position])
+          count.buildings += 1
         }
 
         // Generate the road
@@ -213,6 +220,8 @@
               height: 3
             }
             building.children.push(leftRoom)
+            count.rooms += 1
+            count.estimatedPopulation += options.buildings.averageRoomPopulation
 
             const rightRoom = {
               type: 'rightRoom',
@@ -222,10 +231,13 @@
               height: 3
             }
             building.children.push(rightRoom)
+            count.rooms += 1
+            count.estimatedPopulation += options.buildings.averageRoomPopulation
           }
         }
 
-        return buildings
+        count.miles = (options.city.length / 1609.344).toFixed(2)
+        return { buildings, count }
       }
 
       // Example usage
@@ -242,7 +254,8 @@
           minWidth: 15,
           maxWidth: 20,
           minDistance: 0,
-          maxDistance: 6
+          maxDistance: 6,
+          averageRoomPopulation: 4
         },
         subway: {
           height: 6,
@@ -251,8 +264,9 @@
       }
 
       document.addEventListener('DOMContentLoaded', function() {
-        const city = generateCity(options, pixelsPerMeter)
-        drawBuildings(city, pixelsPerMeter)
+        const { buildings, count } = generateCity(options, pixelsPerMeter)
+        drawBuildings(buildings, pixelsPerMeter)
+        console.log(count)
       })
     </script>
   </body>
