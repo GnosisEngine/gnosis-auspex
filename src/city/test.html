@@ -22,14 +22,14 @@
       }
 
       // Function to generate a random city
-      function generateRandomCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
+      function generateCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance) {
         // Array to store the city layout
-        var cityLayout = [];
+        var buildings = [];
 
         // Put the road in the middle
         const roadPosition = cityHeight - subwayHeight - 1
 
-        const buildings = []
+        const buildingQueue = []
 
         // Prepare building width dimensions
         let position = 0
@@ -46,7 +46,7 @@
             // The next buidling size is out of bounds of the city
             if (cityLength - position < minBuildingWidth ) {
               // stretch the last building to the end
-              const building = buildings[buildings.length - 1]
+              const building = buildingQueue[buildingQueue.length - 1]
               building[1] = cityLength - building[0]
               position = cityLength
             }
@@ -54,13 +54,13 @@
           }
 
           // Add the building to the queue
-          buildings.push([position, width])
+          buildingQueue.push([position, width])
           position += width
         }
 
         if (position < cityLength) {
           // If there is a gap, fill it with a building
-          buildings.push([position, cityLength - position])
+          buildingQueue.push([position, cityLength - position])
         }
 
         // Generate the road
@@ -71,7 +71,7 @@
           width: cityLength,
           height: 1
         };
-        cityLayout.push(road);
+        buildings.push(road);
 
         // Generate the subway
         var subway = {
@@ -81,14 +81,14 @@
           width: cityLength,
           height: subwayHeight
         };
-        cityLayout.push(subway);
+        buildings.push(subway);
 
         const actualMaxBuildingHeight = maxBuildingHeight > cityHeight
           ? cityHeight
           : maxBuildingHeight
 
         // Generate the buildings
-        for (const buildingData of buildings) {
+        for (const buildingData of buildingQueue) {
           const buildingHeight = getRandomNumber(minBuildingHeight, actualMaxBuildingHeight);
 		      const x = buildingData[0]
           const buildingWidth = buildingData[1]
@@ -98,12 +98,13 @@
             x: x,
             y: roadPosition - buildingHeight,
             width: buildingWidth,
-            height: buildingHeight
+            height: buildingHeight,
+            children: []
           };
-          cityLayout.push(building);
+          buildings.push(building);
 
-          // Generate the connecting rectangle to the subway
-          console.log(building.x + (buildingWidth / 2))
+          // Generate the elevator to the subway
+
           const elevator = {
             type: 'elevator',
             x: building.x + (buildingWidth / 2),
@@ -111,53 +112,38 @@
             width: 1,
             height: buildingHeight + subwayHeight
           };
-          cityLayout.push(elevator);
+          building.children.push(elevator)
 
-          for (let roomId = 0; roomId < building.height; roomId++) {
+          for (let roomId = building.height - 3; roomId > 0; roomId -= 3) {
             const leftRoom = {
-              type: 'room',
+              type: 'leftRoom',
               x: building.x + 1,
               y: roadPosition - buildingHeight + roomId,
               width: buildingWidth / 2 - elevator.width ,
-              height: 1
+              height: 3
             };
-            cityLayout.push(leftRoom);
+            building.children.push(leftRoom)
 
             const rightRoom = {
-              type: 'room',
-              x: elevator.x + elevator.width + 0.5,
+              type: 'rightRoom',
+              x: elevator.x + elevator.width,
               y: roadPosition - buildingHeight + roomId,
-              width: buildingWidth / 2 - elevator.width ,
-              height: 1
+              width: buildingWidth / 2 - elevator.width - 1,
+              height: 3
             };
-            cityLayout.push(rightRoom);
+            building.children.push(rightRoom)
           }
         }
 
-
-
-        return cityLayout;
+        return buildings;
       }
 
-      // Draw the city layout on the canvas
-      function drawCityLayout(cityLayout, pixelPerUnit) {
-        var ctx = canvas.getContext('2d');
-
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-
-        // Define the gradient colors
-        gradient.addColorStop(0, 'rgb(64, 0, 64)');        // Dark purple
-        gradient.addColorStop(0.5, 'rgb(255, 102, 0)');    // Sunset blaze
-        gradient.addColorStop(1, 'rgb(255, 204, 153)');    // Light orange
-
-        // Fill the canvas with the gradient
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (var i = 0; i < cityLayout.length; i++) {
-          var shape = cityLayout[i];
+      /**
+       * 
+       */
+      function drawRect(ctx, features, pixelPerUnit) {
+        for (const shape of features) {
           let offsetHeight = 0
-          let offsetWidth = 0
 
           switch (shape.type) {
             case 'road':
@@ -172,40 +158,64 @@
             case 'subway':
               ctx.fillStyle = '#903642';
               break;
-            case 'room':
+            case 'leftRoom':
+            case 'rightRoom':
               ctx.fillStyle = '#BDAFEE';
               offsetHeight = 1
-              offsetWidth = 1
               break;
             
           }
 
           ctx.fillRect(
-            shape.x * pixelPerUnit - offsetWidth * 2,
+            shape.x * pixelPerUnit,
             shape.y * pixelPerUnit + offsetHeight,
-            shape.width * pixelPerUnit - offsetWidth,
+            shape.width * pixelPerUnit,
             shape.height * pixelPerUnit - offsetHeight 
           );
+
+          if (shape.children !== undefined) {
+            drawRect(ctx, shape.children, pixelPerUnit)
+          }
         }
+      }
+
+      /**
+       * Draw the city layout on the canvas
+       */
+      function drawBuildings(buildings, pixelPerUnit) {
+        var ctx = canvas.getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+
+        // Define the gradient colors
+        gradient.addColorStop(0, 'rgb(64, 0, 64)');        // Dark purple
+        gradient.addColorStop(0.5, 'rgb(255, 102, 0)');    // Sunset blaze
+        gradient.addColorStop(1, 'rgb(255, 204, 153)');    // Light orange
+
+        // Fill the canvas with the gradient
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        drawRect(ctx, buildings, pixelPerUnit)        
       }
 
       // Example usage
       const metersPerUnit = 1
-      const pixelPerUnit = 20
+      const pixelPerUnit = 3
       const cityLength = canvasWidth / pixelPerUnit
       const cityHeight = canvasHeight / pixelPerUnit
       const minBuildingHeight = 100;
       const maxBuildingHeight = 120;
       const minBuildingWidth = 15
-      const maxBuildingWidth = 30
+      const maxBuildingWidth = 20
       const minBuildingDistance = 0
-      const maxBuildingDistance = 0
+      const maxBuildingDistance = 5
       const subwayHeight = 6;
       
 
       document.addEventListener('DOMContentLoaded', function() {
-        var randomCity = generateRandomCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
-        drawCityLayout(randomCity, pixelPerUnit);
+        var city = generateCity(cityLength, cityHeight, minBuildingHeight, maxBuildingHeight, subwayHeight, minBuildingWidth, maxBuildingWidth, minBuildingDistance, maxBuildingDistance);
+        drawBuildings(city, pixelPerUnit);
       });
     </script>
   </body>
