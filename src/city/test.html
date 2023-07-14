@@ -9,7 +9,7 @@
     </style>
   </head>
   <body>
-    <canvas id="cityCanvas" width="30000" height="500"></canvas>
+    <canvas id="cityCanvas" width="800" height="500"></canvas>
     <script>
       const canvas = document.getElementById('cityCanvas')
       const canvasWidth = canvas.width
@@ -45,6 +45,9 @@
             case 'subwayEntrance':
               ctx.fillStyle = '#FF0000'
               break
+            case 'camera':
+              ctx.fillStyle = '#00FFFF'
+              break
             case 'leftRoom':
             case 'rightRoom':
               ctx.fillStyle = '#BDAFEE'
@@ -69,19 +72,21 @@
       /**
        * Draw the city layout on the canvas
        */
-      function drawBuildings(buildings, pixelPerUnit) {
+      function drawBuildings(buildings, pixelPerUnit, clear = true) {
         const ctx = canvas.getContext('2d')
 
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+        if (clear === true) {
+          const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
 
-        // Define the gradient colors
-        gradient.addColorStop(0, 'rgb(64, 0, 64)')        // Dark purple
-        gradient.addColorStop(0.5, 'rgb(255, 102, 0)')    // Sunset blaze
-        gradient.addColorStop(1, 'rgb(255, 204, 153)')    // Light orange
+          // Define the gradient colors
+          gradient.addColorStop(0, 'rgb(64, 0, 64)')        // Dark purple
+          gradient.addColorStop(0.5, 'rgb(255, 102, 0)')    // Sunset blaze
+          gradient.addColorStop(1, 'rgb(255, 204, 153)')    // Light orange
 
-        // Fill the canvas with the gradient
-        ctx.fillStyle = gradient
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+          // Fill the canvas with the gradient
+          ctx.fillStyle = gradient
+          ctx.fillRect(0, 0, canvas.width, canvas.height)
+        }
 
         drawFeatures(ctx, buildings, pixelPerUnit)        
       }
@@ -170,6 +175,7 @@
 		      const x = buildingData[0]
           const buildingWidth = buildingData[1]
 
+          // Add building
           const building = {
             type: 'building',
             x: x,
@@ -189,8 +195,6 @@
             height: buildingHeight + options.subway.height
           }
           building.children.push(elevator)
-
-
 
           if (distanceCovered === 0) {
             // Generate subway entrance
@@ -240,8 +244,44 @@
         return { buildings, count }
       }
 
+      function getMeterBlocks (buildings, camera) {
+        const buildingSubsets = [];
+
+        // Find intersecting rectangles and calculate their intersection area
+        buildings.forEach(building => {
+          if (checkIntersection(building, camera)) {
+            const buildingSubset = calculateIntersectionArea(building, camera);
+            buildingSubsets.push({ building, buildingSubset });
+          }
+        });
+
+        // Print the intersecting rectangles and their intersection areas
+        console.log("Intersecting Rectangles:");
+        buildingSubsets.forEach(({ building, buildingSubset }) => {
+          console.log(building, "Intersection Area:", buildingSubset);
+        });
+      }
+
+      // Function to check rectangle-camera intersection
+      function checkIntersection(rect, cam) {
+        return (
+          rect.x < cam.x + cam.width &&
+          rect.x + rect.width > cam.x &&
+          rect.y < cam.y + cam.height &&
+          rect.y + rect.height > cam.y
+        );
+      }
+
+      // Function to calculate intersection area
+      function calculateIntersectionArea(rect, cam) {
+        const xOverlap = Math.max(0, Math.min(rect.x + rect.width, cam.x + cam.width) - Math.max(rect.x, cam.x));
+        const yOverlap = Math.max(0, Math.min(rect.y + rect.height, cam.y + cam.height) - Math.max(rect.y, cam.y));
+        return xOverlap * yOverlap;
+      }
+
+
       // Example usage
-      const pixelsPerMeter = 4
+      const pixelsPerMeter = 2
 
       const options = {
         city: {
@@ -264,9 +304,19 @@
       }
 
       document.addEventListener('DOMContentLoaded', function() {
+        const camera = {
+          type: 'camera',
+          x: 0,
+          y: 220,
+          width: 50,
+          height: 30
+        }
         const { buildings, count } = generateCity(options, pixelsPerMeter)
+        
         drawBuildings(buildings, pixelsPerMeter)
-        console.log(count)
+        //console.log(count)
+        getMeterBlocks(buildings, camera)
+        drawBuildings([camera], pixelsPerMeter, false)
       })
     </script>
   </body>
