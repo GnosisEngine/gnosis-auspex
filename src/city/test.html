@@ -9,8 +9,14 @@
     </style>
   </head>
   <body>
-    <canvas id="cityCanvas" width="800" height="500"></canvas>
+    <div>
+      <canvas id="cityCanvas" width="800" height="500"></canvas>
+      <span>
+        <pre id="output">boop</pre>
+      </span>
+    <div>
     <script>
+      const output = document.getElementById('output')
       const canvas = document.getElementById('cityCanvas')
       const canvasWidth = canvas.width
       const canvasHeight = canvas.height
@@ -244,41 +250,63 @@
         return { buildings, count }
       }
 
+      /**
+       * 
+       */
       function getMeterBlocks (buildings, camera) {
         const buildingSubsets = [];
 
         // Find intersecting rectangles and calculate their intersection area
         buildings.forEach(building => {
-          if (checkIntersection(building, camera)) {
-            const buildingSubset = calculateIntersectionArea(building, camera);
-            buildingSubsets.push({ building, buildingSubset });
+          const width = calculateOverlap(building.x, building.width, camera.x, camera.width)
+
+          if (width <= 0) {
+            return
+          }
+
+          const height = calculateOverlap(building.y, building.height, camera.y, camera.height)
+
+          if (height <= 0) {
+            return
+          }
+
+          buildingSubsets.push({
+            subset: building,
+            x: camera.x,
+            y: camera.y,
+            height,
+            width
+          })
+
+          if (building.children) {
+            getMeterBlocks(building.children, camera).map(subset => buildingSubsets.push(subset))
           }
         });
 
-        // Print the intersecting rectangles and their intersection areas
-        console.log("Intersecting Rectangles:");
-        buildingSubsets.forEach(({ building, buildingSubset }) => {
-          console.log(building, "Intersection Area:", buildingSubset);
-        });
+        return buildingSubsets
       }
 
-      // Function to check rectangle-camera intersection
-      function checkIntersection(rect, cam) {
-        return (
-          rect.x < cam.x + cam.width &&
-          rect.x + rect.width > cam.x &&
-          rect.y < cam.y + cam.height &&
-          rect.y + rect.height > cam.y
-        );
+      /**
+       * 
+       */
+      function calculateOverlap(lineX, lineWidth, focusX, focusWidth) {
+        const lineEnd = lineX + lineWidth;
+        const focusEnd = focusX + focusWidth;
+
+        // If the lines don't overlap at all
+        if (lineX >= focusEnd || lineEnd <= focusX) {
+          return 0;
+        }
+
+        // Calculate the overlapping region
+        const overlapStart = Math.max(lineX, focusX);
+        const overlapEnd = Math.min(lineEnd, focusEnd);
+        return overlapEnd - overlapStart;
       }
 
-      // Function to calculate intersection area
-      function calculateIntersectionArea(rect, cam) {
-        const xOverlap = Math.max(0, Math.min(rect.x + rect.width, cam.x + cam.width) - Math.max(rect.x, cam.x));
-        const yOverlap = Math.max(0, Math.min(rect.y + rect.height, cam.y + cam.height) - Math.max(rect.y, cam.y));
-        return xOverlap * yOverlap;
-      }
-
+      /**
+       * 
+       */
       function handleCamera(event, buildings, camera, pixelsPerMeter) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX
@@ -292,7 +320,13 @@
 
         drawBuildings(buildings, pixelsPerMeter)
         drawBuildings([camera], 2, false)
-        getMeterBlocks(buildings, camera)
+        const buildingSubsets = getMeterBlocks(buildings, camera)
+
+                // Print the intersecting rectangles and their intersection areas
+        output.innerHTML = '';
+        buildingSubsets.forEach(subset => {
+          output.innerHTML += JSON.stringify(subset) + '\n';
+        });
       }
 
       // Function to handle mouse up event
@@ -334,7 +368,6 @@
         const { buildings, count } = generateCity(options, pixelsPerMeter)
         
         drawBuildings(buildings, pixelsPerMeter)
-        //console.log(count)
         drawBuildings([camera], pixelsPerMeter, false)
         getMeterBlocks(buildings, camera)
 
