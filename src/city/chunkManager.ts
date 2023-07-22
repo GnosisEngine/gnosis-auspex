@@ -10,6 +10,14 @@ interface ChunkInstance {
   [key: string]: Chunk
 }
 
+export interface ChunkRange {
+  target: Element
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 let newChunkId = 1
 
 export default class ChunkManager {

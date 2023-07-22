@@ -762,8 +762,8 @@
             var GEOM_CONST = __webpack_require__(56);
             var Line = __webpack_require__(47);
             var Random = __webpack_require__(174);
-            var Rectangle = new Class({
-              initialize: function Rectangle2(x, y, width, height) {
+            var Rectangle2 = new Class({
+              initialize: function Rectangle3(x, y, width, height) {
                 if (x === void 0) {
                   x = 0;
                 }
@@ -918,7 +918,7 @@
                 }
               }
             });
-            module2.exports = Rectangle;
+            module2.exports = Rectangle2;
           },
           function(module2, exports2, __webpack_require__) {
             module2.exports = {
@@ -7492,7 +7492,7 @@
             var CONST = __webpack_require__(29);
             var Class = __webpack_require__(0);
             var Components = __webpack_require__(11);
-            var Rectangle = __webpack_require__(502);
+            var Rectangle2 = __webpack_require__(502);
             var Tile = new Class({
               Mixins: [
                 Components.Alpha,
@@ -7571,7 +7571,7 @@
               },
               getBounds: function(camera, output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 output.x = this.getLeft();
                 output.y = this.getTop();
@@ -8027,7 +8027,7 @@
           function(module2, exports2, __webpack_require__) {
             var Class = __webpack_require__(0);
             var FromPoints = __webpack_require__(199);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var Curve = new Class({
               initialize: function Curve2(type) {
@@ -8048,7 +8048,7 @@
               },
               getBounds: function(out, accuracy) {
                 if (!out) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 if (accuracy === void 0) {
                   accuracy = 16;
@@ -10389,7 +10389,7 @@
           },
           function(module2, exports2, __webpack_require__) {
             var Class = __webpack_require__(0);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             function GetLength(x1, y1, x2, y2) {
               var x = x1 - x2;
@@ -10402,7 +10402,7 @@
                 this.vertex1 = vertex1;
                 this.vertex2 = vertex2;
                 this.vertex3 = vertex3;
-                this.bounds = new Rectangle();
+                this.bounds = new Rectangle2();
                 this._inCenter = new Vector2();
               },
               getInCenter: function(local) {
@@ -11411,7 +11411,7 @@
             var Class = __webpack_require__(0);
             var Components = __webpack_require__(11);
             var GameObject = __webpack_require__(15);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var Zone = new Class({
               Extends: GameObject,
@@ -11476,7 +11476,7 @@
                 return this.setDropZone(new Circle(0, 0, radius), CircleContains);
               },
               setRectangleDropZone: function(width, height) {
-                return this.setDropZone(new Rectangle(0, 0, width, height), RectangleContains);
+                return this.setDropZone(new Rectangle2(0, 0, width, height), RectangleContains);
               },
               setDropZone: function(hitArea, hitAreaCallback) {
                 if (hitArea === void 0) {
@@ -11538,7 +11538,7 @@
             var DegToRad = __webpack_require__(36);
             var EventEmitter = __webpack_require__(9);
             var Events = __webpack_require__(37);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var TransformMatrix = __webpack_require__(25);
             var ValueToColor = __webpack_require__(187);
             var Vector2 = __webpack_require__(3);
@@ -11570,13 +11570,13 @@
                 this.name = "";
                 this.roundPixels = false;
                 this.useBounds = false;
-                this.worldView = new Rectangle();
+                this.worldView = new Rectangle2();
                 this.dirty = true;
                 this._x = x;
                 this._y = y;
                 this._width = width;
                 this._height = height;
-                this._bounds = new Rectangle();
+                this._bounds = new Rectangle2();
                 this._scrollX = 0;
                 this._scrollY = 0;
                 this._zoomX = 1;
@@ -11861,7 +11861,7 @@
               },
               getBounds: function(out) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 var source = this._bounds;
                 out.setTo(source.x, source.y, source.width, source.height);
@@ -13151,7 +13151,7 @@
             var GetBitmapTextSize = __webpack_require__(1043);
             var ParseFromAtlas = __webpack_require__(1044);
             var ParseXMLBitmapFont = __webpack_require__(212);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Render = __webpack_require__(1045);
             var BitmapText = new Class({
               Extends: GameObject,
@@ -13349,7 +13349,7 @@
                 var point = this.getLocalPoint(x, y, null, camera);
                 var bounds = this.getTextBounds();
                 var chars = bounds.characters;
-                var tempRect = new Rectangle();
+                var tempRect = new Rectangle2();
                 for (var i = 0; i < chars.length; i++) {
                   var char = chars[i];
                   tempRect.setTo(char.x, char.t, char.r - char.x, char.b);
@@ -16376,11 +16376,11 @@
             module2.exports = ColorMatrix;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var MATH_CONST = __webpack_require__(14);
             var FromPoints = function(points, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               if (points.length === 0) {
                 return out;
@@ -17232,7 +17232,7 @@
             var Components = __webpack_require__(11);
             var Events = __webpack_require__(75);
             var GameObject = __webpack_require__(15);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Render = __webpack_require__(1052);
             var Union = __webpack_require__(441);
             var Vector2 = __webpack_require__(3);
@@ -17298,7 +17298,7 @@
               },
               getBounds: function(output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 output.setTo(this.x, this.y, 0, 0);
                 if (this.parentContainer) {
@@ -17308,7 +17308,7 @@
                 }
                 if (this.list.length > 0) {
                   var children = this.list;
-                  var tempRect = new Rectangle();
+                  var tempRect = new Rectangle2();
                   var hasSetFirst = false;
                   output.setEmpty();
                   for (var i = 0; i < children.length; i++) {
@@ -25400,7 +25400,7 @@
             var Effects = __webpack_require__(333);
             var Events = __webpack_require__(37);
             var Linear = __webpack_require__(135);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var Camera2 = new Class({
               Extends: BaseCamera,
@@ -25433,7 +25433,7 @@
                     this.deadzone.width = width;
                     this.deadzone.height = height;
                   } else {
-                    this.deadzone = new Rectangle(0, 0, width, height);
+                    this.deadzone = new Rectangle2(0, 0, width, height);
                   }
                   if (this._follow) {
                     var originX = this.width / 2;
@@ -30957,7 +30957,7 @@
             var Class = __webpack_require__(0);
             var Curve = __webpack_require__(94);
             var FromPoints = __webpack_require__(199);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var LineCurve = new Class({
               Extends: Curve,
@@ -30973,7 +30973,7 @@
               },
               getBounds: function(out) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 return FromPoints([this.p0, this.p1], out);
               },
@@ -32906,7 +32906,7 @@
             var GetTarget = __webpack_require__(407);
             var GetScreenOrientation = __webpack_require__(402);
             var NOOP = __webpack_require__(1);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Size = __webpack_require__(416);
             var SnapFloor = __webpack_require__(76);
             var Vector2 = __webpack_require__(3);
@@ -32916,7 +32916,7 @@
                 EventEmitter.call(this);
                 this.game = game;
                 this.canvas;
-                this.canvasBounds = new Rectangle();
+                this.canvasBounds = new Rectangle2();
                 this.parent = null;
                 this.parentIsWindow = false;
                 this.parentSize = new Size();
@@ -36694,10 +36694,10 @@
             module2.exports = Bob;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Union = function(rectA, rectB, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var x = Math.min(rectA.x, rectB.x);
               var y = Math.min(rectA.y, rectB.y);
@@ -37692,7 +37692,7 @@
             var HasValue = __webpack_require__(126);
             var Particle = __webpack_require__(451);
             var RandomZone = __webpack_require__(456);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var StableSort = __webpack_require__(79);
             var Vector2 = __webpack_require__(3);
             var Wrap = __webpack_require__(68);
@@ -37987,7 +37987,7 @@
                 if (this.bounds) {
                   this.bounds.setTo(x, y, width, height);
                 } else {
-                  this.bounds = new Rectangle(x, y, width, height);
+                  this.bounds = new Rectangle2(x, y, width, height);
                 }
                 return this;
               },
@@ -39055,7 +39055,7 @@
             var Class = __webpack_require__(0);
             var CurveRender = __webpack_require__(1100);
             var Earcut = __webpack_require__(59);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Shape = __webpack_require__(34);
             var Curve = new Class({
               Extends: Shape,
@@ -39071,7 +39071,7 @@
                 }
                 Shape.call(this, scene, "Curve", curve);
                 this._smoothness = 32;
-                this._curveBounds = new Rectangle();
+                this._curveBounds = new Rectangle2();
                 this.closePath = false;
                 this.setPosition(x, y);
                 if (fillColor !== void 0) {
@@ -39534,10 +39534,10 @@
             module2.exports = Polygon;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetAABB = function(polygon, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var minX = Infinity;
               var minY = Infinity;
@@ -39658,12 +39658,12 @@
             var GeomRectangle = __webpack_require__(10);
             var Shape = __webpack_require__(34);
             var RectangleRender = __webpack_require__(1121);
-            var Rectangle = new Class({
+            var Rectangle2 = new Class({
               Extends: Shape,
               Mixins: [
                 RectangleRender
               ],
-              initialize: function Rectangle2(scene, x, y, width, height, fillColor, fillAlpha) {
+              initialize: function Rectangle3(scene, x, y, width, height, fillColor, fillAlpha) {
                 if (x === void 0) {
                   x = 0;
                 }
@@ -39708,7 +39708,7 @@
                 return this;
               }
             });
-            module2.exports = Rectangle;
+            module2.exports = Rectangle2;
           },
           function(module2, exports2, __webpack_require__) {
             var StarRender = __webpack_require__(1124);
@@ -40900,46 +40900,46 @@
             module2.exports = GetMagnitudeSq;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
-            Rectangle.Area = __webpack_require__(1267);
-            Rectangle.Ceil = __webpack_require__(1268);
-            Rectangle.CeilAll = __webpack_require__(1269);
-            Rectangle.CenterOn = __webpack_require__(190);
-            Rectangle.Clone = __webpack_require__(1270);
-            Rectangle.Contains = __webpack_require__(57);
-            Rectangle.ContainsPoint = __webpack_require__(1271);
-            Rectangle.ContainsRect = __webpack_require__(503);
-            Rectangle.CopyFrom = __webpack_require__(1272);
-            Rectangle.Decompose = __webpack_require__(490);
-            Rectangle.Equals = __webpack_require__(1273);
-            Rectangle.FitInside = __webpack_require__(1274);
-            Rectangle.FitOutside = __webpack_require__(1275);
-            Rectangle.Floor = __webpack_require__(1276);
-            Rectangle.FloorAll = __webpack_require__(1277);
-            Rectangle.FromPoints = __webpack_require__(199);
-            Rectangle.FromXY = __webpack_require__(1278);
-            Rectangle.GetAspectRatio = __webpack_require__(237);
-            Rectangle.GetCenter = __webpack_require__(1279);
-            Rectangle.GetPoint = __webpack_require__(171);
-            Rectangle.GetPoints = __webpack_require__(306);
-            Rectangle.GetSize = __webpack_require__(1280);
-            Rectangle.Inflate = __webpack_require__(1281);
-            Rectangle.Intersection = __webpack_require__(1282);
-            Rectangle.MarchingAnts = __webpack_require__(316);
-            Rectangle.MergePoints = __webpack_require__(1283);
-            Rectangle.MergeRect = __webpack_require__(1284);
-            Rectangle.MergeXY = __webpack_require__(1285);
-            Rectangle.Offset = __webpack_require__(1286);
-            Rectangle.OffsetPoint = __webpack_require__(1287);
-            Rectangle.Overlaps = __webpack_require__(1288);
-            Rectangle.Perimeter = __webpack_require__(130);
-            Rectangle.PerimeterPoint = __webpack_require__(1289);
-            Rectangle.Random = __webpack_require__(174);
-            Rectangle.RandomOutside = __webpack_require__(1290);
-            Rectangle.SameDimensions = __webpack_require__(1291);
-            Rectangle.Scale = __webpack_require__(1292);
-            Rectangle.Union = __webpack_require__(441);
-            module2.exports = Rectangle;
+            var Rectangle2 = __webpack_require__(10);
+            Rectangle2.Area = __webpack_require__(1267);
+            Rectangle2.Ceil = __webpack_require__(1268);
+            Rectangle2.CeilAll = __webpack_require__(1269);
+            Rectangle2.CenterOn = __webpack_require__(190);
+            Rectangle2.Clone = __webpack_require__(1270);
+            Rectangle2.Contains = __webpack_require__(57);
+            Rectangle2.ContainsPoint = __webpack_require__(1271);
+            Rectangle2.ContainsRect = __webpack_require__(503);
+            Rectangle2.CopyFrom = __webpack_require__(1272);
+            Rectangle2.Decompose = __webpack_require__(490);
+            Rectangle2.Equals = __webpack_require__(1273);
+            Rectangle2.FitInside = __webpack_require__(1274);
+            Rectangle2.FitOutside = __webpack_require__(1275);
+            Rectangle2.Floor = __webpack_require__(1276);
+            Rectangle2.FloorAll = __webpack_require__(1277);
+            Rectangle2.FromPoints = __webpack_require__(199);
+            Rectangle2.FromXY = __webpack_require__(1278);
+            Rectangle2.GetAspectRatio = __webpack_require__(237);
+            Rectangle2.GetCenter = __webpack_require__(1279);
+            Rectangle2.GetPoint = __webpack_require__(171);
+            Rectangle2.GetPoints = __webpack_require__(306);
+            Rectangle2.GetSize = __webpack_require__(1280);
+            Rectangle2.Inflate = __webpack_require__(1281);
+            Rectangle2.Intersection = __webpack_require__(1282);
+            Rectangle2.MarchingAnts = __webpack_require__(316);
+            Rectangle2.MergePoints = __webpack_require__(1283);
+            Rectangle2.MergeRect = __webpack_require__(1284);
+            Rectangle2.MergeXY = __webpack_require__(1285);
+            Rectangle2.Offset = __webpack_require__(1286);
+            Rectangle2.OffsetPoint = __webpack_require__(1287);
+            Rectangle2.Overlaps = __webpack_require__(1288);
+            Rectangle2.Perimeter = __webpack_require__(130);
+            Rectangle2.PerimeterPoint = __webpack_require__(1289);
+            Rectangle2.Random = __webpack_require__(174);
+            Rectangle2.RandomOutside = __webpack_require__(1290);
+            Rectangle2.SameDimensions = __webpack_require__(1291);
+            Rectangle2.Scale = __webpack_require__(1292);
+            Rectangle2.Union = __webpack_require__(441);
+            module2.exports = Rectangle2;
           },
           function(module2, exports2) {
             var ContainsRect = function(rectA, rectB) {
@@ -42114,7 +42114,7 @@
             var MATH_CONST = __webpack_require__(14);
             var ProcessQueue = __webpack_require__(211);
             var ProcessTileCallbacks = __webpack_require__(530);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RTree = __webpack_require__(531);
             var SeparateTile = __webpack_require__(532);
             var SeparateX = __webpack_require__(537);
@@ -42135,7 +42135,7 @@
                 this.pendingDestroy = new Set();
                 this.colliders = new ProcessQueue();
                 this.gravity = new Vector2(GetValue(config2, "gravity.x", 0), GetValue(config2, "gravity.y", 0));
-                this.bounds = new Rectangle(
+                this.bounds = new Rectangle2(
                   GetValue(config2, "x", 0),
                   GetValue(config2, "y", 0),
                   GetValue(config2, "width", scene.sys.scale.width),
@@ -43017,7 +43017,7 @@
             var CONST = __webpack_require__(62);
             var Events = __webpack_require__(245);
             var RadToDeg = __webpack_require__(196);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var Vector2 = __webpack_require__(3);
             var Body = new Class({
@@ -43110,7 +43110,7 @@
                 this._dy = 0;
                 this._tx = 0;
                 this._ty = 0;
-                this._bounds = new Rectangle();
+                this._bounds = new Rectangle2();
               },
               updateBounds: function() {
                 var sprite = this.gameObject;
@@ -44711,10 +44711,10 @@
             module2.exports = ReplaceByIndex;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var SnapCeil = __webpack_require__(139);
             var SnapFloor = __webpack_require__(76);
-            var bounds = new Rectangle();
+            var bounds = new Rectangle2();
             var CullBounds = function(layer, camera) {
               var tilemap = layer.tilemapLayer.tilemap;
               var tilemapLayer = layer.tilemapLayer;
@@ -49183,7 +49183,7 @@
             module2.exports = Flip;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RotateAround = __webpack_require__(308);
             var Vector2 = __webpack_require__(3);
             var GetBounds = {
@@ -49274,7 +49274,7 @@
               },
               getBounds: function(output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 var TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy;
                 if (this.parentContainer) {
@@ -53950,7 +53950,7 @@
             var LineCurve = __webpack_require__(392);
             var MovePathTo = __webpack_require__(393);
             var QuadraticBezierCurve = __webpack_require__(394);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var SplineCurve = __webpack_require__(395);
             var Vector2 = __webpack_require__(3);
             var MATH_CONST = __webpack_require__(14);
@@ -54070,14 +54070,14 @@
               },
               getBounds: function(out, accuracy) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 if (accuracy === void 0) {
                   accuracy = 16;
                 }
                 out.x = Number.MAX_VALUE;
                 out.y = Number.MAX_VALUE;
-                var bounds = new Rectangle();
+                var bounds = new Rectangle2();
                 var maxRight = MATH_CONST.MIN_SAFE_INTEGER;
                 var maxBottom = MATH_CONST.MIN_SAFE_INTEGER;
                 for (var i = 0; i < this.curves.length; i++) {
@@ -59881,9 +59881,9 @@
           },
           function(module2, exports2, __webpack_require__) {
             var GameObjectFactory = __webpack_require__(5);
-            var Rectangle = __webpack_require__(473);
+            var Rectangle2 = __webpack_require__(473);
             GameObjectFactory.register("rectangle", function(x, y, width, height, fillColor, fillAlpha) {
-              return this.displayList.add(new Rectangle(this.scene, x, y, width, height, fillColor, fillAlpha));
+              return this.displayList.add(new Rectangle2(this.scene, x, y, width, height, fillColor, fillAlpha));
             });
           },
           function(module2, exports2, __webpack_require__) {
@@ -60556,10 +60556,10 @@
             module2.exports = Equals;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetBounds = function(circle, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               out.x = circle.left;
               out.y = circle.top;
@@ -60647,10 +60647,10 @@
             module2.exports = Equals;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetBounds = function(ellipse, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               out.x = ellipse.left;
               out.y = ellipse.top;
@@ -60786,11 +60786,11 @@
             module2.exports = GetRaysFromPointToPolygon;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleToRectangle = __webpack_require__(152);
             var GetRectangleIntersection = function(rectA, rectB, output) {
               if (output === void 0) {
-                output = new Rectangle();
+                output = new Rectangle2();
               }
               if (RectangleToRectangle(rectA, rectB)) {
                 output.x = Math.max(rectA.x, rectB.x);
@@ -61441,10 +61441,10 @@
             module2.exports = GetCentroid;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetRectangleFromPoints = function(points, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var xMax = Number.NEGATIVE_INFINITY;
               var xMin = Number.POSITIVE_INFINITY;
@@ -61716,9 +61716,9 @@
             module2.exports = CeilAll;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Clone = function(source) {
-              return new Rectangle(source.x, source.y, source.width, source.height);
+              return new Rectangle2(source.x, source.y, source.width, source.height);
             };
             module2.exports = Clone;
           },
@@ -61792,10 +61792,10 @@
             module2.exports = FloorAll;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var FromXY = function(x1, y1, x2, y2, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               return out.setTo(
                 Math.min(x1, x2),
@@ -61841,11 +61841,11 @@
             module2.exports = Inflate;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Intersects = __webpack_require__(152);
             var Intersection = function(rectA, rectB, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               if (Intersects(rectA, rectB)) {
                 out.x = Math.max(rectA.x, rectB.x);
@@ -62573,7 +62573,7 @@
             var InputPluginCache = __webpack_require__(153);
             var IsPlainObject = __webpack_require__(7);
             var PluginCache = __webpack_require__(24);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var SceneEvents = __webpack_require__(20);
             var Triangle = __webpack_require__(82);
@@ -63433,7 +63433,7 @@
                     continue;
                   }
                   if (width !== 0 && height !== 0) {
-                    gameObject.input = CreateInteractiveObject(gameObject, new Rectangle(0, 0, width, height), callback);
+                    gameObject.input = CreateInteractiveObject(gameObject, new Rectangle2(0, 0, width, height), callback);
                     this.queueForInsertion(gameObject);
                   }
                 }
@@ -63443,7 +63443,7 @@
                 if (callback === void 0) {
                   callback = RectangleContains;
                 }
-                var shape = new Rectangle(x, y, width, height);
+                var shape = new Rectangle2(x, y, width, height);
                 return this.setHitArea(gameObjects, shape, callback);
               },
               setHitAreaTriangle: function(gameObjects, x1, y1, x2, y2, x3, y3, callback) {
@@ -74215,53 +74215,289 @@
     }
   };
 
-  // src/city/index.ts
-  var City = class {
-    constructor(scene, fovWidth, fovHeight) {
-      this.scene = scene;
-      this.fovWidth = fovWidth === void 0 ? scene.game.config.width : fovWidth;
-      this.fovHeight = fovHeight === void 0 ? scene.game.config.height : fovHeight;
-      this.chunks = new ChunkManager(this.scene, this.fovWidth, this.fovHeight);
+  // src/city/elements/index.ts
+  var zeroArray = [];
+  var _Element = class {
+    constructor(id) {
+      this.children = zeroArray;
+      this.id = id || _Element.nextId;
+      _Element.nextId += 1;
     }
-    getChunk(chunkX, chunkY) {
-      return [
-        [
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-        ],
-        [
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-        ],
-        [
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-          [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-        ]
-      ];
+    add(element) {
+      if (this.children === zeroArray) {
+        this.children = [];
+      }
+      if (element instanceof Array) {
+        for (const e of element) {
+          this.add(e);
+        }
+      } else {
+        this.children.push(element);
+      }
+    }
+    remove(element) {
+      if (element instanceof Array) {
+        for (const e of element) {
+          this.remove(e);
+        }
+      } else if (typeof element === "number") {
+        this.children.splice(element, 1);
+      } else {
+        const index = this.children.indexOf(element);
+        this.children.splice(index, 1);
+      }
+      if (this.children.length === 0) {
+        this.children = zeroArray;
+      }
+    }
+    setChildren(children) {
+      if (children.length === 0) {
+        this.children = zeroArray;
+      } else {
+        this.children = children;
+      }
+    }
+    hasChildren() {
+      return this.children !== zeroArray;
+    }
+    map(transform) {
+      return this.children.map(transform);
+    }
+    forEach(iterate) {
+      this.children.forEach(iterate);
+    }
+    filter(criteria) {
+      return this.children.filter(criteria);
+    }
+    mapAll(transform) {
+      return this.children.map((e) => {
+        const result = transform(e);
+        if (e.hasChildren()) {
+          result.setChildren(e.mapAll(transform));
+        }
+        return result;
+      });
+    }
+    immutableMapAll() {
+      return [];
+    }
+    forEachAll(iterate) {
+      this.children.forEach((e) => {
+        const result = iterate(e);
+        if (e.hasChildren()) {
+          e.forEachAll(iterate);
+        }
+      });
+    }
+    filterAll(criteria) {
+      let results = [];
+      this.children.forEach((e) => {
+        if (criteria(e) === true) {
+          results.push(e);
+        }
+        if (e.hasChildren()) {
+          results = results.concat(e.filterAll(criteria));
+        }
+      });
+      return results;
+    }
+    getById(id) {
+      if (this.id === id) {
+        return this;
+      } else {
+        const result = this.filterAll((e) => {
+          return e.id === id;
+        });
+        if (result.length > 0) {
+          return result[0];
+        }
+      }
+      return false;
+    }
+    getIndex(element) {
+      return this.children.indexOf(element);
+    }
+  };
+  var Element2 = _Element;
+  Element2.nextId = 0;
+
+  // src/city/elements/rectangle.ts
+  var Rectangle = class extends Element2 {
+    constructor(x, y, width, height, id) {
+      super(id);
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+    }
+  };
+
+  // src/city/elements/road.ts
+  var Road = class extends Rectangle {
+  };
+
+  // src/city/elements/subway.ts
+  var Subway = class extends Rectangle {
+  };
+
+  // src/city/elements/subwayOnRamp.ts
+  var SubwayOnRamp = class extends Rectangle {
+  };
+
+  // src/city/elements/room.js
+  var Room = class extends Rectangle {
+  };
+
+  // src/city/index.ts
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  var City = class {
+    constructor(scene, options = CityOptions) {
+      this.buildings = [];
+      this.scene = scene;
+      this.options = options.fov.width;
+      this.chunks = new ChunkManager(this.scene, this.options.fov.width, this.options.fov.height);
+    }
+    generate() {
+      const count = {
+        buildings: 0,
+        rooms: 0,
+        estimatedPopulation: 0,
+        miles: 0
+      };
+      const roadPosition = this.options.city.height - this.options.subway.height - 1;
+      const buildingQueue = [];
+      let position = 0;
+      for (; position < this.options.city.length; position += getRandomNumber(this.options.buildings.minDistance, this.options.buildings.maxDistance)) {
+        let width = getRandomNumber(this.options.buildings.minWidth, this.options.buildings.maxWidth);
+        if (width % 2 === 1) {
+          width += 1;
+        }
+        if (position + width > this.options.city.length) {
+          if (this.options.city.length - position < this.options.buildings.minWidth) {
+            const building = buildingQueue[buildingQueue.length - 1];
+            building[1] = this.options.city.length - building[0];
+            position = this.options.city.length;
+          }
+          break;
+        }
+        buildingQueue.push([position, width]);
+        count.buildings += 1;
+        position += width;
+      }
+      if (position < this.options.city.length) {
+        buildingQueue.push([position, this.options.city.length - position]);
+        count.buildings += 1;
+      }
+      const road = new Road(
+        0,
+        roadPosition,
+        this.options.city.length,
+        1
+      );
+      this.buildings.push(road);
+      const subway = new Subway(
+        0,
+        roadPosition + 1,
+        this.options.city.length,
+        this.options.subway.height
+      );
+      this.buildings.push(subway);
+      const actualBuildingMaxHeight = this.options.buildings.maxHeight > this.options.city.height ? this.options.city.height : this.options.buildings.maxHeight;
+      let firstBuilding = true;
+      let distanceCovered = 0;
+      for (const buildingData of buildingQueue) {
+        const buildingHeight = getRandomNumber(this.options.buildings.minHeight, actualBuildingMaxHeight);
+        const x = buildingData[0];
+        const buildingWidth = buildingData[1];
+        const building = new Road(
+          x,
+          roadPosition - buildingHeight,
+          buildingWidth,
+          buildingHeight
+        );
+        this.buildings.push(building);
+        const elevator = new Road(
+          building.x + buildingWidth / 2,
+          roadPosition - buildingHeight,
+          1,
+          buildingHeight + this.options.subway.height
+        );
+        building.add(elevator);
+        if (distanceCovered === 0) {
+          const subwayEntrance = new SubwayOnRamp(
+            elevator.x - 1,
+            roadPosition - 3,
+            3,
+            3
+          );
+          this.buildings.push(subwayEntrance);
+        }
+        distanceCovered += buildingWidth;
+        if (distanceCovered > this.options.subway.onrampDistance) {
+          distanceCovered = 0;
+        }
+        for (let roomId = building.height - 3; roomId > 0; roomId -= 3) {
+          const leftRoom = new Room(
+            building.x + 1,
+            roadPosition - buildingHeight + roomId,
+            buildingWidth / 2 - elevator.width,
+            3
+          );
+          building.add(leftRoom);
+          count.rooms += 1;
+          count.estimatedPopulation += this.options.buildings.averageRoomPopulation;
+          const rightRoom = new Room(
+            elevator.x + elevator.width,
+            roadPosition - buildingHeight + roomId,
+            buildingWidth / 2 - elevator.width - 1,
+            3
+          );
+          building.add(rightRoom);
+          count.rooms += 1;
+          count.estimatedPopulation += this.options.buildings.averageRoomPopulation;
+        }
+      }
+      count.miles = (this.options.city.length / 1609.344).toFixed(2);
+      return {
+        buildings: this.buildings,
+        count
+      };
+    }
+    getChunk(buildings = this.buildings, camera) {
+      const result = [];
+      buildings.forEach((building) => {
+        const width = this.calculateOverlap(building.x, building.width, camera.x, camera.width);
+        if (width <= 0) {
+          return;
+        }
+        const height = this.calculateOverlap(building.y, building.height, camera.y, camera.height);
+        if (height <= 0) {
+          return;
+        }
+        result.push({
+          target: building,
+          x: camera.x,
+          y: camera.y,
+          height,
+          width
+        });
+        if (building.children) {
+          this.getChunk(building.children, camera).map((child) => result.push(child));
+        }
+      });
+      return result;
+    }
+    calculateOverlap(lineX, lineWidth, focusX, focusWidth) {
+      const lineEnd = lineX + lineWidth;
+      const focusEnd = focusX + focusWidth;
+      if (lineX >= focusEnd || lineEnd <= focusX) {
+        return 0;
+      }
+      const overlapStart = Math.max(lineX, focusX);
+      const overlapEnd = Math.min(lineEnd, focusEnd);
+      return overlapEnd - overlapStart;
     }
   };
 
