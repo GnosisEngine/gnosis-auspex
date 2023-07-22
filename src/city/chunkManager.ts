@@ -1,4 +1,7 @@
+import Rectangle from './rectangle'
+import Camera from '../camera'
 import Chunk from './chunkManager'
+import City from './index'
 import { GameScene } from '../scenes'
 
 interface ChunkIndex {
@@ -121,8 +124,8 @@ export default class ChunkManager {
   /**
    * 
    */
-  update (cameraX: number, cameraY: number) {
-    const { x, y } = this.getChunk(cameraX, cameraY)
+  update (camera: Camera, city: City) {
+    const { x, y } = this.getChunk(camera.x, camera.y)
 
     if (x !== this.lastChunkX || y !== this.lastChunkY) {
       const chunkIndexs = this.getSurroundingChunks(x, y)
@@ -136,6 +139,16 @@ export default class ChunkManager {
         if (chunk.loaded === false) {
           // Schedule chunk for creation
           const chunkCoords = this.getXY(x, y)
+          /*
+           @TODO
+          const { tileLayers, objects } = city.getChunk(new Rectangle(
+            chunkCoords.x,
+            chunkCoords.y,
+            camera.width,
+            camera.height
+          ))
+          */
+
           const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y) // @TODO
           chunk.load(400, 200, tileLayers, objects) //@TODO coords
           this.chucks[key] === chunk

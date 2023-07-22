@@ -203,7 +203,7 @@ export default class City {
   /**
    * Get all the tile layers and data for what the camera sees
    */
-  getChunk (buildings = this.buildings, camera: Rectangle | Camera) {
+  getChunk (camera: Rectangle | Camera, buildings = this.buildings) {
     const result: ChunkRange[] = [];
 
     // Find intersecting rectangles and calculate their intersection area
@@ -228,16 +228,14 @@ export default class City {
         width
       })
 
-      if (building.children) {
-        this.getChunk(building.children, camera).map(child => result.push(child))
+      if (building.hasChildren()) {
+        this.getChunk(camera, building.children).map(child => result.push(child))
       }
 
       
     });
 
-    // @TODO it is the job of the chunk manager to invoke the tile and layer data
-
-    return result
+    return result // @TODO: each city element manages its own tileLayers and objects in view
   }
 
   /**
