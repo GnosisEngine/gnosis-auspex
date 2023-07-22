@@ -1,5 +1,11 @@
 import Rectangle from './rectangle'
+import type Tiles from './tiles'
 
-export default class SubwayOnRamp extends Rectangle {
-	
+export default class SubwayOnRamp extends Rectangle implements Tiles {
+	/**
+	 * 
+	 */
+	getTiles(): number[][] {
+		return []
+	}
 }

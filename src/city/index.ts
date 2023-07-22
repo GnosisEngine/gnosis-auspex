@@ -37,7 +37,6 @@ function getRandomNumber(min, max) {
 }
 
 export default class City {
-  scene: Phaser.Scene
   chunks: ChunkManager
   options: CityOptions
   buildings: Element[] = []
@@ -233,8 +232,10 @@ export default class City {
         this.getChunk(building.children, camera).map(child => result.push(child))
       }
 
-      // @TODO it is the job of the chunk manager to invoke the tile and layer data
+      
     });
+
+    // @TODO it is the job of the chunk manager to invoke the tile and layer data
 
     return result
   }
