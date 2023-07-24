@@ -106,86 +106,8 @@
         }
       ]
     },
-    "src/city/elements/index.ts": {
-      "bytes": 3368,
-      "imports": []
-    },
-    "src/city/elements/rectangle.ts": {
-      "bytes": 411,
-      "imports": [
-        {
-          "path": "src/city/elements/index.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/elements/road.ts": {
-      "bytes": 202,
-      "imports": [
-        {
-          "path": "src/city/elements/rectangle.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/elements/subway.ts": {
-      "bytes": 204,
-      "imports": [
-        {
-          "path": "src/city/elements/rectangle.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/elements/subwayOnRamp.ts": {
-      "bytes": 210,
-      "imports": [
-        {
-          "path": "src/city/elements/rectangle.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/elements/room.ts": {
-      "bytes": 204,
-      "imports": [
-        {
-          "path": "src/city/elements/rectangle.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/index.ts": {
-      "bytes": 7312,
-      "imports": [
-        {
-          "path": "src/city/elements/road.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/elements/subway.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/elements/road.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/elements/subwayOnRamp.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/elements/road.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/elements/room.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
     "src/game.ts": {
-      "bytes": 3233,
+      "bytes": 2341,
       "imports": [
         {
           "path": "src/config.ts",
@@ -193,10 +115,6 @@
         },
         {
           "path": "src/scenes/example.ts",
-          "kind": "import-statement"
-        },
-        {
-          "path": "src/city/index.ts",
           "kind": "import-statement"
         }
       ]
@@ -233,7 +151,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9038732
+      "bytes": 9015584
     },
     "dist/index.js": {
       "imports": [],
@@ -241,7 +159,7 @@
       "entryPoint": "index.ts",
       "inputs": {
         "node_modules/phaser/dist/phaser.js": {
-          "bytesInOutput": 3058468
+          "bytesInOutput": 3056909
         },
         "src/style.css": {
           "bytesInOutput": 0
@@ -253,7 +171,7 @@
           "bytesInOutput": 285
         },
         "src/scenes/index.ts": {
-          "bytesInOutput": 2653
+          "bytesInOutput": 2640
         },
         "src/citytile/chunks.ts": {
           "bytesInOutput": 7142
@@ -265,7 +183,7 @@
           "bytesInOutput": 518
         },
         "src/player/index.ts": {
-          "bytesInOutput": 738
+          "bytesInOutput": 733
         },
         "src/debugView/performance.ts": {
           "bytesInOutput": 5192
@@ -276,35 +194,14 @@
         "src/scenes/example.ts": {
           "bytesInOutput": 1153
         },
-        "src/city/elements/index.ts": {
-          "bytesInOutput": 2481
-        },
-        "src/city/elements/rectangle.ts": {
-          "bytesInOutput": 204
-        },
-        "src/city/elements/road.ts": {
-          "bytesInOutput": 84
-        },
-        "src/city/elements/subway.ts": {
-          "bytesInOutput": 86
-        },
-        "src/city/elements/subwayOnRamp.ts": {
-          "bytesInOutput": 92
-        },
-        "src/city/elements/room.ts": {
-          "bytesInOutput": 84
-        },
-        "src/city/index.ts": {
-          "bytesInOutput": 5173
-        },
         "src/game.ts": {
-          "bytesInOutput": 2389
+          "bytesInOutput": 1529
         },
         "index.ts": {
           "bytesInOutput": 21
         }
       },
-      "bytes": 3107692
+      "bytes": 3096819
     },
     "dist/index.css.map": {
       "imports": [],

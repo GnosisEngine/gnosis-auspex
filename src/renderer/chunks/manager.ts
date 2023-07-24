@@ -1,6 +1,6 @@
 //import Rectangle from './rectangle'
 import Camera from '../../camera'
-import Chunk from './chunkManager'
+import Chunk from './index'
 import City from '../../city'
 import { GameScene } from '../../scenes'
 
@@ -69,7 +69,7 @@ export default class ChunkManager {
   /**
    * 
    */
-  getSurroudingChunks (chunkX: number, chunkY: number): ChunkIndex[] {
+  getSurroundingChunks (chunkX: number, chunkY: number): ChunkIndex[] {
     const topLeft = {
       x: chunkX - 1,
       y: chunkY - 1
@@ -152,7 +152,8 @@ export default class ChunkManager {
           ))
           */
 
-          const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y) // @TODO
+          // @TODO begin drawing all the city elements!
+          const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y)
           chunk.load(400, 200, tileLayers, objects) //@TODO coords
           this.chucks[key] === chunk
         } else {

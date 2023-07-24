@@ -2,6 +2,7 @@ import type { GameConfig } from './index.d';
 import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from './config';
 import { GameScene } from './scenes';
 import { ExampleScene } from './scenes/example';
+import { TestCityScene } from './scenes/testCityScene';
 import City from './city'
 
 export const gameConfig: GameConfig = {
@@ -11,7 +12,8 @@ export const gameConfig: GameConfig = {
   mode: Phaser.Scale.NONE,
   parent: 'viewport',
   type: Phaser.WEBGL,
-  scene: [ExampleScene], // <-- scenes go here
+  //scene: [ExampleScene, TestCityScene], // <-- scenes go here
+  scene: [TestCityScene], // <-- scenes go here
   physics: {
     default: 'arcade',
     arcade: {
@@ -29,7 +31,6 @@ export const gameConfig: GameConfig = {
 
 export class GnosisGame extends Phaser.Game {
   onReady: () => Promise<void>;
-  cities: City[]
   currentScene: Phaser.Scene
 
   /**
@@ -48,12 +49,9 @@ export class GnosisGame extends Phaser.Game {
     return new Promise(async (resolve) => {
       this.events.once('ready', async () => {
         // Build initial scene
-        const scene = this.getScene(ExampleScene.key) // @TODO make this dynamic
-        this.currentScene = scene
-
-        // @TODO bring these into City
-        const layer = scene.addLayer('test');
-        const container = scene.addContainer('box', 'test', 0, 0)
+        //const scene = this.getScene(ExampleScene.key) // @TODO make this dynamic
+        //const scene = this.getScene(TestCityScene.key) // @TODO make this dynamic
+        //this.currentScene = scene
 
         // Allow for dynamic window resizing
         window.addEventListener('resize', () => this.resizeGameCanvas())

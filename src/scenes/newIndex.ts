@@ -13,7 +13,7 @@ interface Containers {
   [key: string]: Phaser.GameObjects.Container;
 }
 
-export class GameScene extends Phaser.Scene {
+export class NewGameScene extends Phaser.Scene {
   layers: Layers;
   containers: Containers;
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;

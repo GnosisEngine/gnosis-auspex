@@ -762,8 +762,8 @@
             var GEOM_CONST = __webpack_require__(56);
             var Line = __webpack_require__(47);
             var Random = __webpack_require__(174);
-            var Rectangle = new Class({
-              initialize: function Rectangle2(x, y, width, height) {
+            var Rectangle2 = new Class({
+              initialize: function Rectangle3(x, y, width, height) {
                 if (x === void 0) {
                   x = 0;
                 }
@@ -918,7 +918,7 @@
                 }
               }
             });
-            module2.exports = Rectangle;
+            module2.exports = Rectangle2;
           },
           function(module2, exports2, __webpack_require__) {
             module2.exports = {
@@ -7492,7 +7492,7 @@
             var CONST = __webpack_require__(29);
             var Class = __webpack_require__(0);
             var Components = __webpack_require__(11);
-            var Rectangle = __webpack_require__(502);
+            var Rectangle2 = __webpack_require__(502);
             var Tile = new Class({
               Mixins: [
                 Components.Alpha,
@@ -7571,7 +7571,7 @@
               },
               getBounds: function(camera, output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 output.x = this.getLeft();
                 output.y = this.getTop();
@@ -8027,7 +8027,7 @@
           function(module2, exports2, __webpack_require__) {
             var Class = __webpack_require__(0);
             var FromPoints = __webpack_require__(199);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var Curve = new Class({
               initialize: function Curve2(type) {
@@ -8048,7 +8048,7 @@
               },
               getBounds: function(out, accuracy) {
                 if (!out) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 if (accuracy === void 0) {
                   accuracy = 16;
@@ -10389,7 +10389,7 @@
           },
           function(module2, exports2, __webpack_require__) {
             var Class = __webpack_require__(0);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             function GetLength(x1, y1, x2, y2) {
               var x = x1 - x2;
@@ -10402,7 +10402,7 @@
                 this.vertex1 = vertex1;
                 this.vertex2 = vertex2;
                 this.vertex3 = vertex3;
-                this.bounds = new Rectangle();
+                this.bounds = new Rectangle2();
                 this._inCenter = new Vector2();
               },
               getInCenter: function(local) {
@@ -11411,7 +11411,7 @@
             var Class = __webpack_require__(0);
             var Components = __webpack_require__(11);
             var GameObject = __webpack_require__(15);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var Zone = new Class({
               Extends: GameObject,
@@ -11476,7 +11476,7 @@
                 return this.setDropZone(new Circle(0, 0, radius), CircleContains);
               },
               setRectangleDropZone: function(width, height) {
-                return this.setDropZone(new Rectangle(0, 0, width, height), RectangleContains);
+                return this.setDropZone(new Rectangle2(0, 0, width, height), RectangleContains);
               },
               setDropZone: function(hitArea, hitAreaCallback) {
                 if (hitArea === void 0) {
@@ -11538,7 +11538,7 @@
             var DegToRad = __webpack_require__(36);
             var EventEmitter = __webpack_require__(9);
             var Events = __webpack_require__(37);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var TransformMatrix = __webpack_require__(25);
             var ValueToColor = __webpack_require__(187);
             var Vector2 = __webpack_require__(3);
@@ -11570,13 +11570,13 @@
                 this.name = "";
                 this.roundPixels = false;
                 this.useBounds = false;
-                this.worldView = new Rectangle();
+                this.worldView = new Rectangle2();
                 this.dirty = true;
                 this._x = x;
                 this._y = y;
                 this._width = width;
                 this._height = height;
-                this._bounds = new Rectangle();
+                this._bounds = new Rectangle2();
                 this._scrollX = 0;
                 this._scrollY = 0;
                 this._zoomX = 1;
@@ -11861,7 +11861,7 @@
               },
               getBounds: function(out) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 var source = this._bounds;
                 out.setTo(source.x, source.y, source.width, source.height);
@@ -13151,7 +13151,7 @@
             var GetBitmapTextSize = __webpack_require__(1043);
             var ParseFromAtlas = __webpack_require__(1044);
             var ParseXMLBitmapFont = __webpack_require__(212);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Render = __webpack_require__(1045);
             var BitmapText = new Class({
               Extends: GameObject,
@@ -13349,7 +13349,7 @@
                 var point = this.getLocalPoint(x, y, null, camera);
                 var bounds = this.getTextBounds();
                 var chars = bounds.characters;
-                var tempRect = new Rectangle();
+                var tempRect = new Rectangle2();
                 for (var i = 0; i < chars.length; i++) {
                   var char = chars[i];
                   tempRect.setTo(char.x, char.t, char.r - char.x, char.b);
@@ -16376,11 +16376,11 @@
             module2.exports = ColorMatrix;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var MATH_CONST = __webpack_require__(14);
             var FromPoints = function(points, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               if (points.length === 0) {
                 return out;
@@ -17232,7 +17232,7 @@
             var Components = __webpack_require__(11);
             var Events = __webpack_require__(75);
             var GameObject = __webpack_require__(15);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Render = __webpack_require__(1052);
             var Union = __webpack_require__(441);
             var Vector2 = __webpack_require__(3);
@@ -17298,7 +17298,7 @@
               },
               getBounds: function(output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 output.setTo(this.x, this.y, 0, 0);
                 if (this.parentContainer) {
@@ -17308,7 +17308,7 @@
                 }
                 if (this.list.length > 0) {
                   var children = this.list;
-                  var tempRect = new Rectangle();
+                  var tempRect = new Rectangle2();
                   var hasSetFirst = false;
                   output.setEmpty();
                   for (var i = 0; i < children.length; i++) {
@@ -25400,7 +25400,7 @@
             var Effects = __webpack_require__(333);
             var Events = __webpack_require__(37);
             var Linear = __webpack_require__(135);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var Camera2 = new Class({
               Extends: BaseCamera,
@@ -25433,7 +25433,7 @@
                     this.deadzone.width = width;
                     this.deadzone.height = height;
                   } else {
-                    this.deadzone = new Rectangle(0, 0, width, height);
+                    this.deadzone = new Rectangle2(0, 0, width, height);
                   }
                   if (this._follow) {
                     var originX = this.width / 2;
@@ -30957,7 +30957,7 @@
             var Class = __webpack_require__(0);
             var Curve = __webpack_require__(94);
             var FromPoints = __webpack_require__(199);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Vector2 = __webpack_require__(3);
             var LineCurve = new Class({
               Extends: Curve,
@@ -30973,7 +30973,7 @@
               },
               getBounds: function(out) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 return FromPoints([this.p0, this.p1], out);
               },
@@ -32906,7 +32906,7 @@
             var GetTarget = __webpack_require__(407);
             var GetScreenOrientation = __webpack_require__(402);
             var NOOP = __webpack_require__(1);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Size = __webpack_require__(416);
             var SnapFloor = __webpack_require__(76);
             var Vector2 = __webpack_require__(3);
@@ -32916,7 +32916,7 @@
                 EventEmitter.call(this);
                 this.game = game;
                 this.canvas;
-                this.canvasBounds = new Rectangle();
+                this.canvasBounds = new Rectangle2();
                 this.parent = null;
                 this.parentIsWindow = false;
                 this.parentSize = new Size();
@@ -36694,10 +36694,10 @@
             module2.exports = Bob;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Union = function(rectA, rectB, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var x = Math.min(rectA.x, rectB.x);
               var y = Math.min(rectA.y, rectB.y);
@@ -37692,7 +37692,7 @@
             var HasValue = __webpack_require__(126);
             var Particle = __webpack_require__(451);
             var RandomZone = __webpack_require__(456);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var StableSort = __webpack_require__(79);
             var Vector2 = __webpack_require__(3);
             var Wrap = __webpack_require__(68);
@@ -37987,7 +37987,7 @@
                 if (this.bounds) {
                   this.bounds.setTo(x, y, width, height);
                 } else {
-                  this.bounds = new Rectangle(x, y, width, height);
+                  this.bounds = new Rectangle2(x, y, width, height);
                 }
                 return this;
               },
@@ -39055,7 +39055,7 @@
             var Class = __webpack_require__(0);
             var CurveRender = __webpack_require__(1100);
             var Earcut = __webpack_require__(59);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Shape = __webpack_require__(34);
             var Curve = new Class({
               Extends: Shape,
@@ -39071,7 +39071,7 @@
                 }
                 Shape.call(this, scene, "Curve", curve);
                 this._smoothness = 32;
-                this._curveBounds = new Rectangle();
+                this._curveBounds = new Rectangle2();
                 this.closePath = false;
                 this.setPosition(x, y);
                 if (fillColor !== void 0) {
@@ -39534,10 +39534,10 @@
             module2.exports = Polygon;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetAABB = function(polygon, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var minX = Infinity;
               var minY = Infinity;
@@ -39658,12 +39658,12 @@
             var GeomRectangle = __webpack_require__(10);
             var Shape = __webpack_require__(34);
             var RectangleRender = __webpack_require__(1121);
-            var Rectangle = new Class({
+            var Rectangle2 = new Class({
               Extends: Shape,
               Mixins: [
                 RectangleRender
               ],
-              initialize: function Rectangle2(scene, x, y, width, height, fillColor, fillAlpha) {
+              initialize: function Rectangle3(scene, x, y, width, height, fillColor, fillAlpha) {
                 if (x === void 0) {
                   x = 0;
                 }
@@ -39708,7 +39708,7 @@
                 return this;
               }
             });
-            module2.exports = Rectangle;
+            module2.exports = Rectangle2;
           },
           function(module2, exports2, __webpack_require__) {
             var StarRender = __webpack_require__(1124);
@@ -40900,46 +40900,46 @@
             module2.exports = GetMagnitudeSq;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
-            Rectangle.Area = __webpack_require__(1267);
-            Rectangle.Ceil = __webpack_require__(1268);
-            Rectangle.CeilAll = __webpack_require__(1269);
-            Rectangle.CenterOn = __webpack_require__(190);
-            Rectangle.Clone = __webpack_require__(1270);
-            Rectangle.Contains = __webpack_require__(57);
-            Rectangle.ContainsPoint = __webpack_require__(1271);
-            Rectangle.ContainsRect = __webpack_require__(503);
-            Rectangle.CopyFrom = __webpack_require__(1272);
-            Rectangle.Decompose = __webpack_require__(490);
-            Rectangle.Equals = __webpack_require__(1273);
-            Rectangle.FitInside = __webpack_require__(1274);
-            Rectangle.FitOutside = __webpack_require__(1275);
-            Rectangle.Floor = __webpack_require__(1276);
-            Rectangle.FloorAll = __webpack_require__(1277);
-            Rectangle.FromPoints = __webpack_require__(199);
-            Rectangle.FromXY = __webpack_require__(1278);
-            Rectangle.GetAspectRatio = __webpack_require__(237);
-            Rectangle.GetCenter = __webpack_require__(1279);
-            Rectangle.GetPoint = __webpack_require__(171);
-            Rectangle.GetPoints = __webpack_require__(306);
-            Rectangle.GetSize = __webpack_require__(1280);
-            Rectangle.Inflate = __webpack_require__(1281);
-            Rectangle.Intersection = __webpack_require__(1282);
-            Rectangle.MarchingAnts = __webpack_require__(316);
-            Rectangle.MergePoints = __webpack_require__(1283);
-            Rectangle.MergeRect = __webpack_require__(1284);
-            Rectangle.MergeXY = __webpack_require__(1285);
-            Rectangle.Offset = __webpack_require__(1286);
-            Rectangle.OffsetPoint = __webpack_require__(1287);
-            Rectangle.Overlaps = __webpack_require__(1288);
-            Rectangle.Perimeter = __webpack_require__(130);
-            Rectangle.PerimeterPoint = __webpack_require__(1289);
-            Rectangle.Random = __webpack_require__(174);
-            Rectangle.RandomOutside = __webpack_require__(1290);
-            Rectangle.SameDimensions = __webpack_require__(1291);
-            Rectangle.Scale = __webpack_require__(1292);
-            Rectangle.Union = __webpack_require__(441);
-            module2.exports = Rectangle;
+            var Rectangle2 = __webpack_require__(10);
+            Rectangle2.Area = __webpack_require__(1267);
+            Rectangle2.Ceil = __webpack_require__(1268);
+            Rectangle2.CeilAll = __webpack_require__(1269);
+            Rectangle2.CenterOn = __webpack_require__(190);
+            Rectangle2.Clone = __webpack_require__(1270);
+            Rectangle2.Contains = __webpack_require__(57);
+            Rectangle2.ContainsPoint = __webpack_require__(1271);
+            Rectangle2.ContainsRect = __webpack_require__(503);
+            Rectangle2.CopyFrom = __webpack_require__(1272);
+            Rectangle2.Decompose = __webpack_require__(490);
+            Rectangle2.Equals = __webpack_require__(1273);
+            Rectangle2.FitInside = __webpack_require__(1274);
+            Rectangle2.FitOutside = __webpack_require__(1275);
+            Rectangle2.Floor = __webpack_require__(1276);
+            Rectangle2.FloorAll = __webpack_require__(1277);
+            Rectangle2.FromPoints = __webpack_require__(199);
+            Rectangle2.FromXY = __webpack_require__(1278);
+            Rectangle2.GetAspectRatio = __webpack_require__(237);
+            Rectangle2.GetCenter = __webpack_require__(1279);
+            Rectangle2.GetPoint = __webpack_require__(171);
+            Rectangle2.GetPoints = __webpack_require__(306);
+            Rectangle2.GetSize = __webpack_require__(1280);
+            Rectangle2.Inflate = __webpack_require__(1281);
+            Rectangle2.Intersection = __webpack_require__(1282);
+            Rectangle2.MarchingAnts = __webpack_require__(316);
+            Rectangle2.MergePoints = __webpack_require__(1283);
+            Rectangle2.MergeRect = __webpack_require__(1284);
+            Rectangle2.MergeXY = __webpack_require__(1285);
+            Rectangle2.Offset = __webpack_require__(1286);
+            Rectangle2.OffsetPoint = __webpack_require__(1287);
+            Rectangle2.Overlaps = __webpack_require__(1288);
+            Rectangle2.Perimeter = __webpack_require__(130);
+            Rectangle2.PerimeterPoint = __webpack_require__(1289);
+            Rectangle2.Random = __webpack_require__(174);
+            Rectangle2.RandomOutside = __webpack_require__(1290);
+            Rectangle2.SameDimensions = __webpack_require__(1291);
+            Rectangle2.Scale = __webpack_require__(1292);
+            Rectangle2.Union = __webpack_require__(441);
+            module2.exports = Rectangle2;
           },
           function(module2, exports2) {
             var ContainsRect = function(rectA, rectB) {
@@ -42114,7 +42114,7 @@
             var MATH_CONST = __webpack_require__(14);
             var ProcessQueue = __webpack_require__(211);
             var ProcessTileCallbacks = __webpack_require__(530);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RTree = __webpack_require__(531);
             var SeparateTile = __webpack_require__(532);
             var SeparateX = __webpack_require__(537);
@@ -42135,7 +42135,7 @@
                 this.pendingDestroy = new Set();
                 this.colliders = new ProcessQueue();
                 this.gravity = new Vector2(GetValue(config, "gravity.x", 0), GetValue(config, "gravity.y", 0));
-                this.bounds = new Rectangle(
+                this.bounds = new Rectangle2(
                   GetValue(config, "x", 0),
                   GetValue(config, "y", 0),
                   GetValue(config, "width", scene.sys.scale.width),
@@ -43017,7 +43017,7 @@
             var CONST = __webpack_require__(62);
             var Events = __webpack_require__(245);
             var RadToDeg = __webpack_require__(196);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var Vector2 = __webpack_require__(3);
             var Body = new Class({
@@ -43110,7 +43110,7 @@
                 this._dy = 0;
                 this._tx = 0;
                 this._ty = 0;
-                this._bounds = new Rectangle();
+                this._bounds = new Rectangle2();
               },
               updateBounds: function() {
                 var sprite = this.gameObject;
@@ -44711,10 +44711,10 @@
             module2.exports = ReplaceByIndex;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var SnapCeil = __webpack_require__(139);
             var SnapFloor = __webpack_require__(76);
-            var bounds = new Rectangle();
+            var bounds = new Rectangle2();
             var CullBounds = function(layer, camera) {
               var tilemap = layer.tilemapLayer.tilemap;
               var tilemapLayer = layer.tilemapLayer;
@@ -49183,7 +49183,7 @@
             module2.exports = Flip;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RotateAround = __webpack_require__(308);
             var Vector2 = __webpack_require__(3);
             var GetBounds = {
@@ -49274,7 +49274,7 @@
               },
               getBounds: function(output) {
                 if (output === void 0) {
-                  output = new Rectangle();
+                  output = new Rectangle2();
                 }
                 var TLx, TLy, TRx, TRy, BLx, BLy, BRx, BRy;
                 if (this.parentContainer) {
@@ -53950,7 +53950,7 @@
             var LineCurve = __webpack_require__(392);
             var MovePathTo = __webpack_require__(393);
             var QuadraticBezierCurve = __webpack_require__(394);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var SplineCurve = __webpack_require__(395);
             var Vector2 = __webpack_require__(3);
             var MATH_CONST = __webpack_require__(14);
@@ -54070,14 +54070,14 @@
               },
               getBounds: function(out, accuracy) {
                 if (out === void 0) {
-                  out = new Rectangle();
+                  out = new Rectangle2();
                 }
                 if (accuracy === void 0) {
                   accuracy = 16;
                 }
                 out.x = Number.MAX_VALUE;
                 out.y = Number.MAX_VALUE;
-                var bounds = new Rectangle();
+                var bounds = new Rectangle2();
                 var maxRight = MATH_CONST.MIN_SAFE_INTEGER;
                 var maxBottom = MATH_CONST.MIN_SAFE_INTEGER;
                 for (var i = 0; i < this.curves.length; i++) {
@@ -55486,7 +55486,7 @@
             module2.exports = "volume";
           },
           function(module2, exports2, __webpack_require__) {
-            var GameObjects2 = {
+            var GameObjects = {
               Events: __webpack_require__(75),
               DisplayList: __webpack_require__(1012),
               GameObjectCreator: __webpack_require__(16),
@@ -55585,20 +55585,20 @@
               }
             };
             if (true) {
-              GameObjects2.Shader = __webpack_require__(229);
-              GameObjects2.Mesh = __webpack_require__(230);
-              GameObjects2.PointLight = __webpack_require__(150);
-              GameObjects2.Factories.Shader = __webpack_require__(1184);
-              GameObjects2.Factories.Mesh = __webpack_require__(1185);
-              GameObjects2.Factories.PointLight = __webpack_require__(1186);
-              GameObjects2.Creators.Shader = __webpack_require__(1187);
-              GameObjects2.Creators.Mesh = __webpack_require__(1188);
-              GameObjects2.Creators.PointLight = __webpack_require__(1189);
-              GameObjects2.Light = __webpack_require__(481);
-              GameObjects2.LightsManager = __webpack_require__(482);
-              GameObjects2.LightsPlugin = __webpack_require__(1190);
+              GameObjects.Shader = __webpack_require__(229);
+              GameObjects.Mesh = __webpack_require__(230);
+              GameObjects.PointLight = __webpack_require__(150);
+              GameObjects.Factories.Shader = __webpack_require__(1184);
+              GameObjects.Factories.Mesh = __webpack_require__(1185);
+              GameObjects.Factories.PointLight = __webpack_require__(1186);
+              GameObjects.Creators.Shader = __webpack_require__(1187);
+              GameObjects.Creators.Mesh = __webpack_require__(1188);
+              GameObjects.Creators.PointLight = __webpack_require__(1189);
+              GameObjects.Light = __webpack_require__(481);
+              GameObjects.LightsManager = __webpack_require__(482);
+              GameObjects.LightsPlugin = __webpack_require__(1190);
             }
-            module2.exports = GameObjects2;
+            module2.exports = GameObjects;
           },
           function(module2, exports2, __webpack_require__) {
             var Class = __webpack_require__(0);
@@ -59881,9 +59881,9 @@
           },
           function(module2, exports2, __webpack_require__) {
             var GameObjectFactory = __webpack_require__(5);
-            var Rectangle = __webpack_require__(473);
+            var Rectangle2 = __webpack_require__(473);
             GameObjectFactory.register("rectangle", function(x, y, width, height, fillColor, fillAlpha) {
-              return this.displayList.add(new Rectangle(this.scene, x, y, width, height, fillColor, fillAlpha));
+              return this.displayList.add(new Rectangle2(this.scene, x, y, width, height, fillColor, fillAlpha));
             });
           },
           function(module2, exports2, __webpack_require__) {
@@ -60556,10 +60556,10 @@
             module2.exports = Equals;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetBounds = function(circle, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               out.x = circle.left;
               out.y = circle.top;
@@ -60647,10 +60647,10 @@
             module2.exports = Equals;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetBounds = function(ellipse, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               out.x = ellipse.left;
               out.y = ellipse.top;
@@ -60786,11 +60786,11 @@
             module2.exports = GetRaysFromPointToPolygon;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleToRectangle = __webpack_require__(152);
             var GetRectangleIntersection = function(rectA, rectB, output) {
               if (output === void 0) {
-                output = new Rectangle();
+                output = new Rectangle2();
               }
               if (RectangleToRectangle(rectA, rectB)) {
                 output.x = Math.max(rectA.x, rectB.x);
@@ -61441,10 +61441,10 @@
             module2.exports = GetCentroid;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var GetRectangleFromPoints = function(points, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               var xMax = Number.NEGATIVE_INFINITY;
               var xMin = Number.POSITIVE_INFINITY;
@@ -61716,9 +61716,9 @@
             module2.exports = CeilAll;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Clone = function(source) {
-              return new Rectangle(source.x, source.y, source.width, source.height);
+              return new Rectangle2(source.x, source.y, source.width, source.height);
             };
             module2.exports = Clone;
           },
@@ -61792,10 +61792,10 @@
             module2.exports = FloorAll;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var FromXY = function(x1, y1, x2, y2, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               return out.setTo(
                 Math.min(x1, x2),
@@ -61841,11 +61841,11 @@
             module2.exports = Inflate;
           },
           function(module2, exports2, __webpack_require__) {
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var Intersects = __webpack_require__(152);
             var Intersection = function(rectA, rectB, out) {
               if (out === void 0) {
-                out = new Rectangle();
+                out = new Rectangle2();
               }
               if (Intersects(rectA, rectB)) {
                 out.x = Math.max(rectA.x, rectB.x);
@@ -62573,7 +62573,7 @@
             var InputPluginCache = __webpack_require__(153);
             var IsPlainObject = __webpack_require__(7);
             var PluginCache = __webpack_require__(24);
-            var Rectangle = __webpack_require__(10);
+            var Rectangle2 = __webpack_require__(10);
             var RectangleContains = __webpack_require__(57);
             var SceneEvents = __webpack_require__(20);
             var Triangle = __webpack_require__(82);
@@ -63433,7 +63433,7 @@
                     continue;
                   }
                   if (width !== 0 && height !== 0) {
-                    gameObject.input = CreateInteractiveObject(gameObject, new Rectangle(0, 0, width, height), callback);
+                    gameObject.input = CreateInteractiveObject(gameObject, new Rectangle2(0, 0, width, height), callback);
                     this.queueForInsertion(gameObject);
                   }
                 }
@@ -63443,7 +63443,7 @@
                 if (callback === void 0) {
                   callback = RectangleContains;
                 }
-                var shape = new Rectangle(x, y, width, height);
+                var shape = new Rectangle2(x, y, width, height);
                 return this.setHitArea(gameObjects, shape, callback);
               },
               setHitAreaTriangle: function(gameObjects, x1, y1, x2, y2, x3, y3, callback) {
@@ -73223,533 +73223,16 @@
   var import_phaser = __toESM(require_phaser());
 
   // src/config.ts
-  var TILE_WIDTH = 25;
-  var TILE_HEIGHT = 25;
   var VIEWPORT_WIDTH = 430 * 2;
   var VIEWPORT_HEIGHT = 300 * 2;
   var FOV_WIDTH = 430;
   var FOV_HEIGHT = 300;
   var CAMERA_DEADZONE_WIDTH = 0;
   var CAMERA_DEADZONE_HEIGHT = 0;
-  var CHUNK_DESTRUCT_DELAY = 5e3;
   var DEBUG_MODE = true;
 
-  // src/scenes/index.ts
+  // src/scenes/newIndex.ts
   var Phaser2 = __toESM(require_phaser());
-
-  // src/citytile/chunks.ts
-  var Chunks = class {
-    constructor(assetName, scene, fovWidth, fovHeight, cameraX, cameraY) {
-      this.blitterMap = {};
-      this.destructQueue = {};
-      this.createdChunks = {};
-      this.debug = {};
-      this.fovWidth = fovWidth;
-      this.fovHeight = fovHeight;
-      const { x, y } = this.getChunk(cameraX, cameraY);
-      this.lastChunkX = x;
-      this.lastChunkY = y;
-      this.assetName = assetName;
-      this.scene = scene;
-      for (const index of CityLayerIndexes) {
-        const layerName = CityLayers[index];
-        const layer = this.scene.addLayer(layerName);
-        const blitter = this.scene.make.blitter({
-          key: this.assetName,
-          add: false
-        });
-        layer.add(blitter);
-        this.blitterMap[index] = blitter;
-      }
-    }
-    debugRect(name, chunk) {
-      const xy = this.getXY(chunk.x, chunk.y);
-      if (this.debug[name] === void 0) {
-        this.debug[name] = this.scene.add.rectangle(xy.x, xy.y, this.fovWidth, this.fovHeight).setStrokeStyle(1, 34816);
-      } else {
-        this.debug[name].x = xy.x;
-        this.debug[name].y = xy.y;
-      }
-    }
-    getChunk(cameraX, cameraY) {
-      return {
-        x: Math.floor(cameraX / this.fovWidth) + 1,
-        y: Math.floor(cameraY / this.fovHeight) + 1
-      };
-    }
-    getXY(chunkX, chunkY) {
-      return {
-        x: chunkX * this.fovWidth,
-        y: chunkY * this.fovHeight
-      };
-    }
-    getSurroudingChunks(chunkX, chunkY) {
-      return {
-        topLeft: {
-          x: chunkX - 1,
-          y: chunkY - 1
-        },
-        top: {
-          x: chunkX,
-          y: chunkY - 1
-        },
-        topRight: {
-          x: chunkX + 1,
-          y: chunkY - 1
-        },
-        left: {
-          x: chunkX - 1,
-          y: chunkY
-        },
-        right: {
-          x: chunkX + 1,
-          y: chunkY
-        },
-        bottomLeft: {
-          x: chunkX - 1,
-          y: chunkY + 1
-        },
-        bottom: {
-          x: chunkX,
-          y: chunkY + 1
-        },
-        bottomRight: {
-          x: chunkX + 1,
-          y: chunkY + 1
-        }
-      };
-    }
-    update(cameraX, cameraY) {
-      const { x, y } = this.getChunk(cameraX, cameraY);
-      const chunks = this.getSurroudingChunks(x, y);
-      this.debugRect("topLeft", chunks.topLeft);
-      this.debugRect("top", chunks.top);
-      this.debugRect("topRight", chunks.topRight);
-      this.debugRect("left", chunks.left);
-      this.debugRect("right", chunks.right);
-      this.debugRect("bottomLeft", chunks.bottomLeft);
-      this.debugRect("bottom", chunks.bottom);
-      this.debugRect("bottomRight", chunks.bottomRight);
-      document.getElementById("debug").innerHTML = `
-      <style>
-      table, td, th {
-        border: 1px solid;
-      }
-      </style>
-      <div>fovWidth: ${this.fovWidth}</div>
-      <div>cameraX: ${cameraX}</div>
-      <div>cameraY: ${cameraY}</div>
-      <div>chunkX: ${x}</div>
-      <div>chunkY: ${y}</div>
-      <div>lastChunkX: ${this.lastChunkX}</div>
-      <div>lastChunkY: ${this.lastChunkY}</div>
-      <table>
-        <tr>
-          <td>${chunks.topLeft.x}/${chunks.topLeft.y}</td>
-          <td>${chunks.top.x}/${chunks.top.y}</td>
-          <td>${chunks.topRight.x}/${chunks.topRight.y}</td>
-        </tr>
-        <tr>
-          <td>${chunks.left.x}/${chunks.left.y}</td>
-          <td>${x}/${y}</td>
-          <td>${chunks.right.x}/${chunks.right.y}</td>
-        </tr>
-        <tr>
-          <td>${chunks.bottomLeft.x}/${chunks.bottomLeft.y}</td>
-          <td>${chunks.bottom.x}/${chunks.bottom.y}</td>
-          <td>${chunks.bottomRight.x}/${chunks.bottomRight.y}</td>
-        </tr>
-      </table>
-    `;
-      if (this.lastChunkX === x && this.lastChunkY === y) {
-        return;
-      }
-      if (x > this.lastChunkX) {
-        this.updateChunks([
-          chunks.topLeft,
-          chunks.left,
-          chunks.bottomLeft
-        ], [
-          chunks.topRight,
-          chunks.right,
-          chunks.bottomRight
-        ]);
-      } else if (x < this.lastChunkX) {
-        this.updateChunks([
-          chunks.topRight,
-          chunks.right,
-          chunks.bottomRight
-        ], [
-          chunks.topLeft,
-          chunks.left,
-          chunks.bottomLeft
-        ]);
-      }
-      if (y > this.lastChunkY) {
-        this.updateChunks([
-          chunks.topLeft,
-          chunks.top,
-          chunks.topRight
-        ], [
-          chunks.bottomLeft,
-          chunks.bottom,
-          chunks.bottomRight
-        ]);
-      } else if (y < this.lastChunkY) {
-        this.updateChunks([
-          chunks.bottomLeft,
-          chunks.bottom,
-          chunks.bottomRight
-        ], [
-          chunks.topLeft,
-          chunks.top,
-          chunks.topRight
-        ]);
-      }
-      this.lastChunkX = x;
-      this.lastChunkY = y;
-    }
-    updateChunks(destructChunks, createChunks) {
-      const now = Date.now();
-      for (const chunk of destructChunks) {
-        if (this.destructQueue[chunk.x] === void 0) {
-          console.log("Create new Destruct Chunk X (marked as 0) at", chunk.x);
-          this.destructQueue[chunk.x] = {};
-        }
-        const destructQueue = this.destructQueue[chunk.x];
-        if (destructQueue[chunk.y] === void 0) {
-          destructQueue[chunk.y] = now + CHUNK_DESTRUCT_DELAY;
-        } else if (now > destructQueue[chunk.y]) {
-          this.modifyBobs(chunk.x, chunk.y, false);
-          if (this.destructQueue[chunk.x]) {
-            delete this.destructQueue[chunk.x][chunk.y];
-          }
-          if (this.createdChunks[chunk.x]) {
-            delete this.createdChunks[chunk.x][chunk.y];
-          }
-        }
-      }
-      for (const chunk of createChunks) {
-        if (this.createdChunks[chunk.x] === void 0) {
-          console.log("Create new Chunk X (marked as 0) at", chunk.x);
-          this.createdChunks[chunk.x] = {};
-        }
-        const createdChunk = this.createdChunks[chunk.x];
-        if (createdChunk[chunk.y] === void 0) {
-          console.log("Create new Chunk Y (marked as 0) at", chunk.y);
-          createdChunk[chunk.y] = 0;
-        }
-        if (createdChunk[chunk.y] === 0) {
-          console.log("Populate the chunks blitters", chunk.x, chunk.y);
-          this.modifyBobs(chunk.x, chunk.y, true);
-          createdChunk[chunk.y] = 1;
-        }
-        if (this.destructQueue[chunk.x]) {
-          console.log("Delete the chunk from the destruct queue if it exists");
-          delete this.destructQueue[chunk.x][chunk.y];
-        }
-      }
-      console.log("destructQueue", this.destructQueue);
-      console.log("createdChunks", this.createdChunks);
-    }
-    modifyBobs(chunkX, chunkY, create) {
-      if (create === true) {
-        const x = 0;
-        const y = 0;
-        for (const index of CityLayerIndexes) {
-          const blitter = this.blitterMap[index];
-        }
-      } else {
-        const startIndex = 0;
-        const endIndex = 0;
-        for (const index of CityLayerIndexes) {
-          const blitter = this.blitterMap[index];
-          for (let i = startIndex; i < endIndex; i++) {
-            blitter.children.removeAt(i);
-          }
-        }
-      }
-    }
-  };
-
-  // src/citytile/index.ts
-  var CityLayers = /* @__PURE__ */ ((CityLayers2) => {
-    CityLayers2[CityLayers2["sky"] = 0] = "sky";
-    CityLayers2[CityLayers2["cityscape"] = 1] = "cityscape";
-    CityLayers2[CityLayers2["rooms"] = 2] = "rooms";
-    CityLayers2[CityLayers2["building"] = 3] = "building";
-    CityLayers2[CityLayers2["tunnel"] = 4] = "tunnel";
-    CityLayers2[CityLayers2["tunnelAtmosphere"] = 5] = "tunnelAtmosphere";
-    CityLayers2[CityLayers2["street"] = 6] = "street";
-    CityLayers2[CityLayers2["people"] = 7] = "people";
-    CityLayers2[CityLayers2["glowBackground"] = 8] = "glowBackground";
-    CityLayers2[CityLayers2["glowForeground"] = 9] = "glowForeground";
-    CityLayers2[CityLayers2["weather"] = 10] = "weather";
-    CityLayers2[CityLayers2["ground"] = 11] = "ground";
-    return CityLayers2;
-  })(CityLayers || {});
-  var CityLayerIndexes = Object.keys(CityLayers).filter((key) => isNaN(Number(key)) === false).map((key) => Number(key));
-  var CityLayerNames = Object.keys(CityLayers).filter(
-    (key) => isNaN(Number(key)) === true
-  );
-  var CityTile = class {
-    constructor(scene, name, textureUrlsOrPaths, jsonPathOrUrl, ringWidth = 1920, ringHeight = 1600, fovWidth = FOV_WIDTH, fovHeight = FOV_HEIGHT) {
-      this.cameraSynced = false;
-      this.halfTileWidth = TILE_WIDTH / 2;
-      this.halfTileHeight = TILE_WIDTH / 2;
-      this.scene = scene;
-      this.name = name;
-      this.textureUrlsOrPaths = textureUrlsOrPaths;
-      this.jsonPathOrUrl = jsonPathOrUrl;
-      this.blitterMap = {};
-      this.ringWidth = ringWidth;
-      this.ringHeight = ringHeight;
-      this.tilesPerCityRow = Math.ceil(ringWidth / TILE_WIDTH);
-      this.fovWidth = fovWidth;
-      this.fovHeight = fovHeight;
-    }
-    async preload() {
-      this.scene.loadAtlas(
-        this.name,
-        this.textureUrlsOrPaths,
-        this.jsonPathOrUrl
-      );
-    }
-    create() {
-      for (const index of CityLayerIndexes) {
-        const layerName = CityLayers[index];
-        const layer = this.scene.addLayer(layerName);
-        const blitter = this.scene.make.blitter({
-          key: this.name,
-          add: false
-        });
-        layer.add(blitter);
-        this.blitterMap[index] = blitter;
-      }
-      const fovWidthOffset = this.fovWidth / -2;
-      const fovHeightOffset = this.fovHeight / -2;
-      const bounds = this.getBounds(fovWidthOffset, fovHeightOffset);
-      this.scene.cameras.main.dirty = true;
-      this.lastCameraX = -(this.scene.cameras.main.x + this.fovWidth / 2);
-      this.lastCameraY = -(this.scene.cameras.main.y + this.fovWidth / 2);
-      this.chunks = new Chunks(this.name, this.scene, this.fovWidth, this.fovHeight, this.lastCameraX, this.lastCameraY);
-      const tileCommands = [];
-      for (let y = 0; y < this.ringHeight; y += TILE_HEIGHT) {
-        for (let x = 0; x < this.ringWidth; x += TILE_WIDTH) {
-          tileCommands.push(
-            ((x2, y2) => {
-              return new Promise(() => {
-                const tile = this.addTile(3 /* building */, x2, y2, "city1");
-                if (x2 >= bounds.left + TILE_WIDTH && x2 < bounds.right - TILE_WIDTH && y2 >= bounds.top + TILE_HEIGHT && y2 < bounds.bottom - TILE_HEIGHT) {
-                  tile.visible = true;
-                } else {
-                  tile.visible = false;
-                }
-              });
-            })(x, y)
-          );
-        }
-      }
-      Promise.all(tileCommands);
-      this.showOnlyLayers([3 /* building */]);
-      this.rects = {
-        topLeft: this.scene.add.rectangle(bounds.left, bounds.top, TILE_WIDTH, TILE_HEIGHT).setStrokeStyle(1, 16711680),
-        topRight: this.scene.add.rectangle(bounds.right, bounds.top, TILE_WIDTH, TILE_HEIGHT).setStrokeStyle(1, 16711680),
-        bottomLeft: this.scene.add.rectangle(bounds.left, bounds.bottom, TILE_WIDTH, TILE_HEIGHT).setStrokeStyle(1, 16711680),
-        bottomRight: this.scene.add.rectangle(bounds.right, bounds.bottom, TILE_WIDTH, TILE_HEIGHT).setStrokeStyle(1, 16711680)
-      };
-    }
-    showOnlyLayers(layerIndexes) {
-      for (const index of CityLayerIndexes) {
-        if (layerIndexes.indexOf(index) > -1) {
-          this.scene.getLayer(CityLayers[index]).visible = true;
-        } else {
-          this.scene.getLayer(CityLayers[index]).visible = false;
-        }
-      }
-    }
-    addTile(layerIndex, x, y, name) {
-      const blitter = this.blitterMap[layerIndex];
-      const bob = blitter.create(x, y, name);
-      bob.visible = false;
-      return bob;
-    }
-    getBobCount() {
-      let result = 0;
-      for (const index of CityLayerIndexes) {
-        const layer = this.scene.getLayer(CityLayers[index]);
-        if (layer === void 0 || layer.visible === false) {
-          continue;
-        }
-        const blitter = this.blitterMap[index];
-        result += blitter.children.length;
-      }
-      return result;
-    }
-    getTileIndex(x, y) {
-      return ~~(x / TILE_WIDTH) + ~~(y / TILE_HEIGHT) * this.tilesPerCityRow;
-    }
-    getBounds(x, y) {
-      const cityLeftLimit = -TILE_WIDTH;
-      const cityTopLimit = -TILE_HEIGHT;
-      const cityRightLimit = this.ringWidth + TILE_WIDTH;
-      const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
-      const deadZoneLeftX = x - TILE_WIDTH;
-      const deadZoneTopY = y - TILE_WIDTH;
-      const deadZoneRightX = x + this.fovWidth + TILE_WIDTH;
-      const deadZoneBottomY = y + this.fovHeight + TILE_WIDTH;
-      return {
-        chunkX: ~~(x / this.fovWidth),
-        chunkY: ~~(y / this.fovHeight),
-        left: deadZoneLeftX < cityLeftLimit ? cityLeftLimit : deadZoneLeftX > cityRightLimit ? cityRightLimit : deadZoneLeftX,
-        right: deadZoneRightX < cityLeftLimit ? cityLeftLimit : deadZoneRightX > cityRightLimit ? cityRightLimit : deadZoneRightX,
-        top: deadZoneTopY < cityTopLimit ? cityTopLimit : deadZoneTopY > cityBottomLimit ? cityBottomLimit : deadZoneTopY,
-        bottom: deadZoneBottomY < cityTopLimit ? cityTopLimit : deadZoneBottomY > cityBottomLimit ? cityBottomLimit : deadZoneBottomY
-      };
-    }
-    update() {
-      const cameraX = this.scene.cameras.main.worldView.x + this.fovWidth / 2;
-      const cameraY = this.scene.cameras.main.worldView.y + this.fovHeight / 2;
-      if (this.lastCameraX === cameraX && this.lastCameraY === cameraY) {
-        this.cameraSynced = true;
-        return;
-      }
-      this.chunks.update(cameraX, cameraY);
-      const showTiles = [];
-      const hideTiles = [];
-      const cityLeftLimit = -TILE_WIDTH;
-      const cityTopLimit = -TILE_HEIGHT;
-      const cityRightLimit = this.ringWidth + TILE_WIDTH;
-      const cityBottomLimit = this.ringHeight + TILE_HEIGHT;
-      const deadZoneLeftX = cameraX - TILE_WIDTH;
-      const deadZoneTopY = cameraY - TILE_WIDTH;
-      const deadZoneRightX = cameraX + this.fovWidth + TILE_WIDTH;
-      const deadZoneBottomY = cameraY + this.fovHeight + TILE_WIDTH;
-      const bounds = this.getBounds(cameraX, cameraY);
-      const deadZone = {
-        topLeftX: bounds.left,
-        topLeftY: bounds.top,
-        topRightX: bounds.right,
-        topRightY: bounds.top,
-        bottomLeftX: bounds.left,
-        bottomLeftY: bounds.bottom,
-        bottomRightX: bounds.right,
-        bottomRightY: bounds.bottom,
-        leftRange: {
-          start: bounds.top,
-          end: bounds.bottom,
-          fixed: bounds.left
-        },
-        rightRange: {
-          start: bounds.top,
-          end: bounds.bottom,
-          fixed: bounds.right
-        },
-        topRange: {
-          start: bounds.left,
-          end: bounds.right,
-          fixed: bounds.top
-        },
-        bottomRange: {
-          start: bounds.left,
-          end: bounds.right,
-          fixed: bounds.bottom
-        }
-      };
-      if (cameraX > this.lastCameraX) {
-        for (let y = deadZone.rightRange.start + TILE_HEIGHT; y <= deadZone.rightRange.end - TILE_HEIGHT; y += TILE_HEIGHT) {
-          const x = deadZone.rightRange.fixed - TILE_WIDTH;
-          if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
-            const showIndex = this.getTileIndex(x, y);
-            showTiles.push(showIndex);
-          }
-        }
-        for (let y = deadZone.leftRange.start; y < deadZone.leftRange.end; y += TILE_HEIGHT) {
-          const x = deadZone.leftRange.fixed;
-          if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
-            const hideIndex = this.getTileIndex(x, y);
-            hideTiles.push(hideIndex);
-          }
-        }
-      } else if (cameraX < this.lastCameraX) {
-        for (let y = deadZone.leftRange.start + TILE_HEIGHT; y <= deadZone.leftRange.end - TILE_HEIGHT; y += TILE_HEIGHT) {
-          const x = deadZone.leftRange.fixed + TILE_WIDTH;
-          if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
-            const showIndex = this.getTileIndex(x, y);
-            showTiles.push(showIndex);
-          }
-        }
-        for (let y = deadZone.rightRange.start; y < deadZone.rightRange.end; y += TILE_HEIGHT) {
-          const x = deadZone.rightRange.fixed;
-          if (x > cityLeftLimit + TILE_WIDTH && x < cityRightLimit - TILE_WIDTH) {
-            const hideIndex = this.getTileIndex(x, y);
-            hideTiles.push(hideIndex);
-          }
-        }
-      }
-      if (cameraY > this.lastCameraY) {
-        for (let x = deadZone.bottomRange.start + TILE_WIDTH; x < deadZone.bottomRange.end - TILE_WIDTH; x += TILE_WIDTH) {
-          const y = deadZone.bottomRange.fixed - TILE_WIDTH;
-          if (y > cityTopLimit + TILE_HEIGHT && y < cityBottomLimit - TILE_HEIGHT) {
-            const showIndex = this.getTileIndex(x, y);
-            showTiles.push(showIndex);
-          }
-        }
-        for (let x = deadZone.topRange.start; x < deadZone.topRange.end; x += TILE_WIDTH) {
-          const y = deadZone.topRange.fixed;
-          if (y > cityTopLimit + TILE_HEIGHT && y < cityBottomLimit - TILE_HEIGHT) {
-            const hideIndex = this.getTileIndex(x, y);
-            hideTiles.push(hideIndex);
-          }
-        }
-      } else if (cameraY < this.lastCameraY) {
-        for (let x = deadZone.topRange.start + TILE_WIDTH; x < deadZone.topRange.end - TILE_WIDTH; x += TILE_WIDTH) {
-          const y = deadZone.topRange.fixed + TILE_WIDTH;
-          if (y > cityTopLimit + TILE_HEIGHT && y < cityBottomLimit - TILE_HEIGHT) {
-            const showIndex = this.getTileIndex(x, y);
-            showTiles.push(showIndex);
-          }
-        }
-        for (let x = deadZone.bottomRange.start; x < deadZone.bottomRange.end; x += TILE_WIDTH) {
-          const y = deadZone.bottomRange.fixed;
-          if (y > cityTopLimit + TILE_HEIGHT && y < cityBottomLimit - TILE_HEIGHT) {
-            const hideIndex = this.getTileIndex(x, y);
-            hideTiles.push(hideIndex);
-          }
-        }
-      }
-      for (const index of CityLayerIndexes) {
-        if (this.scene.getLayer(CityLayers[index]).visible === false) {
-          continue;
-        }
-        const blitter = this.blitterMap[index];
-        for (const tileIndex of hideTiles) {
-          const tile = blitter.children.getAt(tileIndex);
-          if (tile) {
-            tile.visible = false;
-          }
-        }
-        for (const tileIndex of showTiles) {
-          const tile = blitter.children.getAt(tileIndex);
-          if (tile) {
-            tile.visible = true;
-          }
-        }
-      }
-      this.rects.topLeft.setPosition(deadZone.topLeftX, deadZone.topLeftY);
-      this.rects.topRight.setPosition(deadZone.topRightX, deadZone.topRightY);
-      this.rects.bottomLeft.setPosition(
-        deadZone.bottomLeftX,
-        deadZone.bottomLeftY
-      );
-      this.rects.bottomRight.setPosition(
-        deadZone.bottomRightX,
-        deadZone.bottomRightY
-      );
-      this.lastCameraX = cameraX;
-      this.lastCameraY = cameraY;
-    }
-  };
 
   // src/camera/index.ts
   var Camera = class {
@@ -74002,30 +73485,19 @@
     }
   };
 
-  // src/scenes/index.ts
-  var GameScene = class extends Phaser2.Scene {
+  // src/scenes/newIndex.ts
+  var NewGameScene = class extends Phaser2.Scene {
     constructor(config) {
       super(config);
-      this.loadedSprites = [];
       this.config = config;
       this.layers = {};
       this.containers = {};
-      this.cityTile = new CityTile(
-        this,
-        "atlas",
-        this.config.defaultTilePaths,
-        this.config.defaultTileConfigPath
-      );
       this.ready = false;
-    }
-    preload() {
-      this.cityTile.preload();
     }
     async create() {
       this.player = new Player(this.physics, this.config);
-      this.cityTile.create();
       this.cursors = this.input.keyboard.createCursorKeys();
-      this.debugContainer = new DebugView(this);
+      this.debugView = new DebugView(this);
       this.camera = new Camera(this.cameras.main);
       this.ready = await this.camera.initialize(this.player);
     }
@@ -74034,19 +73506,7 @@
         return;
       }
       this.player.update(this.cursors);
-      this.debugContainer.update(this.player);
-      this.cityTile.update();
-    }
-    loadAtlas(name, texturePathsOrUrls, atlasJsonPathsOrUrls) {
-      const result = this.load.atlas(
-        name,
-        texturePathsOrUrls,
-        atlasJsonPathsOrUrls
-      );
-      return result;
-    }
-    loadSprite(config, path) {
-      this.load.image(config.key, path);
+      this.debugView.update(this.player);
     }
     addLayer(name, children = []) {
       const layer = this.add.layer(children);
@@ -74067,49 +73527,506 @@
     getContainer(name) {
       return this.containers[name];
     }
-    addSpriteToLayer(layerName, spriteConfigs) {
-      const layer = this.getLayer(layerName);
-      const result = [];
-      for (const config of spriteConfigs) {
-        const sprite = config instanceof Phaser2.GameObjects.Sprite ? config : this.make.sprite(config, false);
-        layer.add(sprite);
-        result.push(sprite);
-      }
-      return result;
+  };
+
+  // src/renderer/chunks/index.ts
+  var Chunk = class {
+    constructor(scene, x, y, id) {
+      this.loaded = false;
+      this.scene = scene;
+      this.x = x;
+      this.y = y;
+      this.id = id;
+      this.layers = [];
+      this.physicsLayer = this.scene.physics.add.group();
     }
-    addSpritesToContainer(name, spriteConfigs) {
-      const container = this.getContainer(name);
-      const result = [];
-      for (const config of spriteConfigs) {
-        const sprite = config instanceof Phaser2.GameObjects.Sprite ? config : this.make.sprite(config, false);
-        container.add(sprite);
-        result.push(sprite);
+    async load(width, height, tiles = [], physics = []) {
+      for (const layer of tiles) {
+        const pixels = await getPixels(layer);
+        this.addImageLayer(width, height, pixels);
       }
-      return result;
+      for (const object of physics) {
+        this.physicsLayer.add(object);
+      }
+      this.loaded = true;
+    }
+    async addImageLayer(width, height, bufferData) {
+      const texture = this.scene.textures.createCanvas(`chunk-${this.id}`, width, height);
+      texture.context.drawImage(bufferData, 0, 0, width, height);
+      texture.refresh();
+      const frame = texture.getFrame();
+      const layer = this.scene.add.container(this.x, this.y);
+      const blitter = layer.add.blitter(0, 0);
+      blitter.create(0, 0, frame);
+      this.layers.push(blitter);
+      texture.destroy();
+      return layer;
+    }
+    addPhysics(thing) {
+      this.physicsLayer.add(thing);
+    }
+    destroy() {
+      for (let i = 0; i < this.layers.length; i++) {
+        this.layers[i].destroy();
+      }
+      this.layers = [];
+      if (this.physicsLayer) {
+        this.physicsLayer.destroy();
+      }
     }
   };
 
-  // src/scenes/example.ts
-  var _ExampleScene = class extends GameScene {
-    constructor() {
+  // src/renderer/chunks/manager.ts
+  var newChunkId = 1;
+  var ChunkManager = class {
+    constructor(scene, startX, startY, fovWidth, fovHeight) {
+      this.chunks = {};
+      this.fovWidth = fovWidth;
+      this.fovHeight = fovHeight;
+      this.scene = scene;
+      const { x, y } = this.getChunkIndex(startX, startY);
+      this.lastChunkX = x;
+      this.lastChunkY = y;
+    }
+    getChunkIndex(cameraX, cameraY) {
+      return {
+        x: Math.floor(cameraX / this.fovWidth) + 1,
+        y: Math.floor(cameraY / this.fovHeight) + 1
+      };
+    }
+    getChunkCoords(chunkX, chunkY) {
+      return {
+        x: chunkX * this.fovWidth,
+        y: chunkY * this.fovHeight
+      };
+    }
+    getSurroundingChunks(chunkX, chunkY) {
+      const topLeft = {
+        x: chunkX - 1,
+        y: chunkY - 1
+      };
+      const top = {
+        x: chunkX,
+        y: chunkY - 1
+      };
+      const topRight = {
+        x: chunkX + 1,
+        y: chunkY - 1
+      };
+      const left = {
+        x: chunkX - 1,
+        y: chunkY
+      };
+      const right = {
+        x: chunkX + 1,
+        y: chunkY
+      };
+      const bottomLeft = {
+        x: chunkX - 1,
+        y: chunkY + 1
+      };
+      const bottom = {
+        x: chunkX,
+        y: chunkY + 1
+      };
+      const bottomRight = {
+        x: chunkX + 1,
+        y: chunkY + 1
+      };
+      return [
+        top,
+        topRight,
+        right,
+        bottomRight,
+        bottom,
+        bottomLeft,
+        left,
+        topLeft
+      ];
+    }
+    update(camera, city) {
+      const { x, y } = this.getChunkIndex(camera.x, camera.y);
+      if (x !== this.lastChunkX || y !== this.lastChunkY) {
+        const chunkIndexs = this.getSurroundingChunks(x, y);
+        for (const chunkIndex in chunkIndexs) {
+          const key = `${chunkIndex.x}-${chunkIndex.y}`;
+          const chunk = this.chunks[key] || new Chunk(this.scene, chunkIndex.x, chunkIndex.y, newChunkId);
+          newChunkId += 1;
+          if (chunk.loaded === false) {
+            const chunkCoords = this.getChunkCoords(x, y);
+            const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y);
+            chunk.load(400, 200, tileLayers, objects);
+            this.chucks[key] === chunk;
+          } else {
+            const purge = [];
+            if (chunkKey.x < x - 1) {
+              purge.push(chunk);
+            } else if (chunkKey.x > x + 1) {
+              purge.push(chunk);
+            } else if (chunkKey.y < y - 1) {
+              purge.push(chunk);
+            } else if (chunkKey.y > y + 1) {
+              purge.push(chunk);
+            }
+            for (const purgeChunk of purge) {
+              purgeChunk.destroy();
+            }
+          }
+        }
+        this.lastChunkX = x;
+        this.lastChunkY = y;
+      }
+    }
+  };
+
+  // src/city/elements/index.ts
+  var zeroArray = [];
+  var _Element = class {
+    constructor(id) {
+      this.children = zeroArray;
+      this.id = id || _Element.nextId;
+      _Element.nextId += 1;
+    }
+    add(element) {
+      if (this.children === zeroArray) {
+        this.children = [];
+      }
+      if (element instanceof Array) {
+        for (const e of element) {
+          this.add(e);
+        }
+      } else {
+        this.children.push(element);
+      }
+    }
+    remove(element) {
+      if (element instanceof Array) {
+        for (const e of element) {
+          this.remove(e);
+        }
+      } else if (typeof element === "number") {
+        this.children.splice(element, 1);
+      } else {
+        const index = this.children.indexOf(element);
+        this.children.splice(index, 1);
+      }
+      if (this.children.length === 0) {
+        this.children = zeroArray;
+      }
+    }
+    setChildren(children) {
+      if (children.length === 0) {
+        this.children = zeroArray;
+      } else {
+        this.children = children;
+      }
+    }
+    hasChildren() {
+      return this.children !== zeroArray;
+    }
+    map(transform) {
+      return this.children.map(transform);
+    }
+    forEach(iterate) {
+      this.children.forEach(iterate);
+    }
+    filter(criteria) {
+      return this.children.filter(criteria);
+    }
+    mapAll(transform) {
+      return this.children.map((e) => {
+        const result = transform(e);
+        if (e.hasChildren()) {
+          result.setChildren(e.mapAll(transform));
+        }
+        return result;
+      });
+    }
+    immutableMapAll() {
+      return [];
+    }
+    forEachAll(iterate) {
+      this.children.forEach((e) => {
+        const result = iterate(e);
+        if (e.hasChildren()) {
+          e.forEachAll(iterate);
+        }
+      });
+    }
+    filterAll(criteria) {
+      let results = [];
+      this.children.forEach((e) => {
+        if (criteria(e) === true) {
+          results.push(e);
+        }
+        if (e.hasChildren()) {
+          results = results.concat(e.filterAll(criteria));
+        }
+      });
+      return results;
+    }
+    getById(id) {
+      if (this.id === id) {
+        return this;
+      } else {
+        const result = this.filterAll((e) => {
+          return e.id === id;
+        });
+        if (result.length > 0) {
+          return result[0];
+        }
+      }
+      return false;
+    }
+    getIndex(element) {
+      return this.children.indexOf(element);
+    }
+  };
+  var Element2 = _Element;
+  Element2.nextId = 0;
+
+  // src/city/elements/rectangle.ts
+  var Rectangle = class extends Element2 {
+    constructor(x, y, width, height, id) {
+      super(id);
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+    }
+  };
+
+  // src/city/elements/road.ts
+  var Road = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
+  };
+
+  // src/city/elements/subway.ts
+  var Subway = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
+  };
+
+  // src/city/elements/subwayOnRamp.ts
+  var SubwayOnRamp = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
+  };
+
+  // src/city/elements/room.ts
+  var Room = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
+  };
+
+  // src/city/index.ts
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  var City = class {
+    constructor(scene, options = CityOptions) {
+      this.buildings = [];
+      this.scene = scene;
+      this.options = options;
+    }
+    generate() {
+      const count = {
+        buildings: 0,
+        rooms: 0,
+        estimatedPopulation: 0,
+        miles: 0
+      };
+      const roadPosition = this.options.city.height - this.options.subway.height - 1;
+      const buildingQueue = [];
+      let position = 0;
+      for (; position < this.options.city.length; position += getRandomNumber(this.options.buildings.minDistance, this.options.buildings.maxDistance)) {
+        let width = getRandomNumber(this.options.buildings.minWidth, this.options.buildings.maxWidth);
+        if (width % 2 === 1) {
+          width += 1;
+        }
+        if (position + width > this.options.city.length) {
+          if (this.options.city.length - position < this.options.buildings.minWidth) {
+            const building = buildingQueue[buildingQueue.length - 1];
+            building[1] = this.options.city.length - building[0];
+            position = this.options.city.length;
+          }
+          break;
+        }
+        buildingQueue.push([position, width]);
+        count.buildings += 1;
+        position += width;
+      }
+      if (position < this.options.city.length) {
+        buildingQueue.push([position, this.options.city.length - position]);
+        count.buildings += 1;
+      }
+      const road = new Road(
+        0,
+        roadPosition,
+        this.options.city.length,
+        1
+      );
+      this.buildings.push(road);
+      const subway = new Subway(
+        0,
+        roadPosition + 1,
+        this.options.city.length,
+        this.options.subway.height
+      );
+      this.buildings.push(subway);
+      const actualBuildingMaxHeight = this.options.buildings.maxHeight > this.options.city.height ? this.options.city.height : this.options.buildings.maxHeight;
+      let firstBuilding = true;
+      let distanceCovered = 0;
+      for (const buildingData of buildingQueue) {
+        const buildingHeight = getRandomNumber(this.options.buildings.minHeight, actualBuildingMaxHeight);
+        const x = buildingData[0];
+        const buildingWidth = buildingData[1];
+        const building = new Road(
+          x,
+          roadPosition - buildingHeight,
+          buildingWidth,
+          buildingHeight
+        );
+        this.buildings.push(building);
+        const elevator = new Road(
+          building.x + buildingWidth / 2,
+          roadPosition - buildingHeight,
+          1,
+          buildingHeight + this.options.subway.height
+        );
+        building.add(elevator);
+        if (distanceCovered === 0) {
+          const subwayEntrance = new SubwayOnRamp(
+            elevator.x - 1,
+            roadPosition - 3,
+            3,
+            3
+          );
+          this.buildings.push(subwayEntrance);
+        }
+        distanceCovered += buildingWidth;
+        if (distanceCovered > this.options.subway.onrampDistance) {
+          distanceCovered = 0;
+        }
+        for (let roomId = building.height - 3; roomId > 0; roomId -= 3) {
+          const leftRoom = new Room(
+            building.x + 1,
+            roadPosition - buildingHeight + roomId,
+            buildingWidth / 2 - elevator.width,
+            3
+          );
+          building.add(leftRoom);
+          count.rooms += 1;
+          count.estimatedPopulation += this.options.buildings.averageRoomPopulation;
+          const rightRoom = new Room(
+            elevator.x + elevator.width,
+            roadPosition - buildingHeight + roomId,
+            buildingWidth / 2 - elevator.width - 1,
+            3
+          );
+          building.add(rightRoom);
+          count.rooms += 1;
+          count.estimatedPopulation += this.options.buildings.averageRoomPopulation;
+        }
+      }
+      count.miles = (this.options.city.length / 1609.344).toFixed(2);
+      return {
+        buildings: this.buildings,
+        count
+      };
+    }
+    getChunk(camera, buildings = this.buildings) {
+      const result = [];
+      buildings.forEach((building) => {
+        const width = this.calculateOverlap(building.x, building.width, camera.x, camera.width);
+        if (width <= 0) {
+          return;
+        }
+        const height = this.calculateOverlap(building.y, building.height, camera.y, camera.height);
+        if (height <= 0) {
+          return;
+        }
+        result.push({
+          target: building,
+          x: camera.x,
+          y: camera.y,
+          height,
+          width
+        });
+        if (building.hasChildren()) {
+          this.getChunk(camera, building.children).forEach((child) => result.push(child));
+        }
+      });
+      return result;
+    }
+    calculateOverlap(lineX, lineWidth, focusX, focusWidth) {
+      const lineEnd = lineX + lineWidth;
+      const focusEnd = focusX + focusWidth;
+      if (lineX >= focusEnd || lineEnd <= focusX) {
+        return 0;
+      }
+      const overlapStart = Math.max(lineX, focusX);
+      const overlapEnd = Math.min(lineEnd, focusEnd);
+      return overlapEnd - overlapStart;
+    }
+  };
+
+  // src/scenes/cityScene.ts
+  var CityScene = class extends NewGameScene {
+    constructor(key, tileAtlases, cityOptions) {
       super({
-        key: _ExampleScene.key,
+        key,
         bounds: {
           x: VIEWPORT_WIDTH / -2,
           y: VIEWPORT_WIDTH / -2,
           width: Infinity,
           height: Infinity
-        },
-        defaultTilePaths: [
-          "assets/tiling.png"
-        ],
-        defaultTileConfigPath: "assets/tiling.json"
+        }
       });
-      this.tileAtlases = [{
+      this.tileAtlases = tileAtlases;
+      this.cityOptions = cityOptions;
+    }
+    loadAtlases() {
+      for (const tileAtlas of this.tileAtlases) {
+        this.load.atlas(
+          tileAtlas.name,
+          tileAtlas.png,
+          tileAtlas.json
+        );
+      }
+    }
+    preload() {
+      this.loadAtlases();
+    }
+    async create() {
+      await super.create();
+      this.ready = false;
+      this.city = new City(this, this.cityOptions);
+      this.chunkManager = new ChunkManager(this, this.cityOptions.fov.x, this.cityOptions.fov.y, this.cityOptions.fov.width, this.cityOptions.fov.height);
+      this.city.generate();
+      this.ready = true;
+    }
+    update() {
+      if (this.ready === false) {
+        return;
+      }
+      this.chunkManager.update(this.camera, this.city);
+    }
+  };
+
+  // src/scenes/testCityScene.ts
+  var _TestCityScene = class extends CityScene {
+    constructor() {
+      super(_TestCityScene.key, [{
+        name: "tiling",
         json: "assets/tiling.json",
         png: "assets/tiling.png"
-      }];
-      this.cityOptions = {
+      }], {
         city: {
           length: 500,
           height: 100
@@ -74128,16 +74045,16 @@
           onrampDistance: 160
         },
         fov: {
-          width: this.config.width,
-          height: this.config.height,
-          x: this.config.startX,
-          y: this.config.startY
+          width: window.innerWidth,
+          height: window.innerHeight,
+          x: 0,
+          y: 0
         }
-      };
+      });
     }
   };
-  var ExampleScene = _ExampleScene;
-  ExampleScene.key = "example";
+  var TestCityScene = _TestCityScene;
+  TestCityScene.key = "testCity";
 
   // src/game.ts
   var gameConfig = {
@@ -74147,7 +74064,7 @@
     mode: Phaser.Scale.NONE,
     parent: "viewport",
     type: Phaser.WEBGL,
-    scene: [ExampleScene],
+    scene: [TestCityScene],
     physics: {
       default: "arcade",
       arcade: {
@@ -74170,10 +74087,6 @@
     startEngine() {
       return new Promise(async (resolve) => {
         this.events.once("ready", async () => {
-          const scene = this.getScene(ExampleScene.key);
-          this.currentScene = scene;
-          const layer = scene.addLayer("test");
-          const container = scene.addContainer("box", "test", 0, 0);
           window.addEventListener("resize", () => this.resizeGameCanvas());
           this.resizeGameCanvas();
           this.canvas.getContext("2d", { willReadFrequently: true });
