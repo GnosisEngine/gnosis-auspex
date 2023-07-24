@@ -171,6 +171,7 @@
   },
   "meta": {
     "version": "1.0",
+    "name": "tiling",
     "image": "tiling.png",
     "format": "RGBA8888",
     "size": { "w": 25, "h": 25 },

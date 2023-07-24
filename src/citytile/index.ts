@@ -77,7 +77,7 @@ export class CityTile {
   /**
    *
    */
-  preload() {
+  async preload() {
     this.scene.loadAtlas(
       this.name,
       this.textureUrlsOrPaths,

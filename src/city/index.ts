@@ -28,10 +28,14 @@ interface CityOptions {
   },
   fov: {
     width: number,
-    height: number
-  }
+    height: number,
+    x: number,
+    y: number
+  },
+  rng: Object
 }
 
+// @TODO: seedable rng needs to be specified 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -41,16 +45,22 @@ export default class City {
   options: CityOptions
   buildings: Element[] = []
 
+  /**
+   * Called by: ../game.ts (startEngine)
+   */
 	constructor (scene: Phaser.Scene, options = CityOptions) {
     this.scene = scene
-    this.options = options.fov.width
+    this.options = options
 
     // scene.game.config.width
     // scene.game.config.height
 
-    this.chunks = new ChunkManager(this.scene, this.options.fov.width, this.options.fov.height)
+    this.chunks = new ChunkManager(this.scene, this.options.fov.x, this.options.fov.y, this.options.fov.width, this.options.fov.height)
 	}
 
+  /**
+   * Generates a city
+   */
   generate () {
     // Array to store the city layout
     const count = {
@@ -229,13 +239,13 @@ export default class City {
       })
 
       if (building.hasChildren()) {
-        this.getChunk(camera, building.children).map(child => result.push(child))
+        this.getChunk(camera, building.children).forEach(child => result.push(child))
       }
 
       
     });
 
-    return result // @TODO: each city element manages its own tileLayers and objects in view
+    return result
   }
 
   /**

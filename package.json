@@ -16,7 +16,8 @@
     "prepare-assets": "cp -r -p assets/* dist/assets && cp index.html dist/ && cp node_modules/phaser/dist/phaser.min.js dist/phaser.js && cp src/renderer/renderer.js dist/renderer.js",
     "compile": "yarn prepare-assets && ./node_modules/.bin/esbuild ./index.ts --metafile=dist/meta.json --bundle --sourcemap --target=chrome58,firefox57,safari11,edge79 --outfile=dist/index.js",
     "build": "yarn compile --minify",
-    "dev": "yarn compile --watch",
+    "dev": "./node_modules/.bin/concurrently \"yarn compile --watch\" \"yarn serve\"",
+    "serve": "./node_modules/.bin/live-server ./dist",
     "test": "nodemon --watch tests/ --watch src/ -e ts,tsx,js --exec \"tsup-node --entry.tests=tests/index.ts --onSuccess 'uvu -r source-map-support/register dist ^tests.js$'\""
   },
   "tsup": {
@@ -44,6 +45,8 @@
     "uvu": "^0.5.3"
   },
   "dependencies": {
+    "concurrently": "^8.2.0",
+    "live-server": "^1.2.2",
     "phaser": "^3.55.2",
     "threads": "^1.7.0"
   }

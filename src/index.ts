@@ -1,7 +1,6 @@
 import './style.css';
 import 'phaser';
 import { gameConfig, GnosisGame } from './game';
-import { ExampleScene } from './scenes/example';
 
 /**
  *

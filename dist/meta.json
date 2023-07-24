@@ -26,7 +26,7 @@
       ]
     },
     "src/citytile/index.ts": {
-      "bytes": 14341,
+      "bytes": 14348,
       "imports": [
         {
           "path": "src/config.ts",
@@ -107,25 +107,98 @@
       ]
     },
     "src/city/chunkManager.ts": {
-      "bytes": 3535,
+      "bytes": 4173,
       "imports": [
         {
           "path": "src/city/chunkManager.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/city/elements/index.ts": {
+      "bytes": 3368,
+      "imports": []
+    },
+    "src/city/elements/rectangle.ts": {
+      "bytes": 411,
+      "imports": [
+        {
+          "path": "src/city/elements/index.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/city/elements/road.ts": {
+      "bytes": 202,
+      "imports": [
+        {
+          "path": "src/city/elements/rectangle.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/city/elements/subway.ts": {
+      "bytes": 204,
+      "imports": [
+        {
+          "path": "src/city/elements/rectangle.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/city/elements/subwayOnRamp.ts": {
+      "bytes": 210,
+      "imports": [
+        {
+          "path": "src/city/elements/rectangle.ts",
+          "kind": "import-statement"
+        }
+      ]
+    },
+    "src/city/elements/room.ts": {
+      "bytes": 204,
+      "imports": [
+        {
+          "path": "src/city/elements/rectangle.ts",
           "kind": "import-statement"
         }
       ]
     },
     "src/city/index.ts": {
-      "bytes": 2569,
+      "bytes": 7436,
       "imports": [
         {
           "path": "src/city/chunkManager.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/road.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/subway.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/road.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/subwayOnRamp.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/road.ts",
+          "kind": "import-statement"
+        },
+        {
+          "path": "src/city/elements/room.ts",
           "kind": "import-statement"
         }
       ]
     },
     "src/game.ts": {
-      "bytes": 2506,
+      "bytes": 3211,
       "imports": [
         {
           "path": "src/config.ts",
@@ -142,7 +215,7 @@
       ]
     },
     "src/index.ts": {
-      "bytes": 754,
+      "bytes": 704,
       "imports": [
         {
           "path": "src/style.css",
@@ -173,7 +246,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9027822
+      "bytes": 9044306
     },
     "dist/index.js": {
       "imports": [],
@@ -181,7 +254,7 @@
       "entryPoint": "index.ts",
       "inputs": {
         "node_modules/phaser/dist/phaser.js": {
-          "bytesInOutput": 3058361
+          "bytesInOutput": 3058468
         },
         "src/style.css": {
           "bytesInOutput": 0
@@ -199,7 +272,7 @@
           "bytesInOutput": 7142
         },
         "src/citytile/index.ts": {
-          "bytesInOutput": 11793
+          "bytesInOutput": 11799
         },
         "src/camera/index.ts": {
           "bytesInOutput": 518
@@ -217,19 +290,37 @@
           "bytesInOutput": 475
         },
         "src/city/chunkManager.ts": {
-          "bytesInOutput": 2810
+          "bytesInOutput": 2770
+        },
+        "src/city/elements/index.ts": {
+          "bytesInOutput": 2481
+        },
+        "src/city/elements/rectangle.ts": {
+          "bytesInOutput": 204
+        },
+        "src/city/elements/road.ts": {
+          "bytesInOutput": 84
+        },
+        "src/city/elements/subway.ts": {
+          "bytesInOutput": 86
+        },
+        "src/city/elements/subwayOnRamp.ts": {
+          "bytesInOutput": 92
+        },
+        "src/city/elements/room.ts": {
+          "bytesInOutput": 84
         },
         "src/city/index.ts": {
-          "bytesInOutput": 2029
+          "bytesInOutput": 5312
         },
         "src/game.ts": {
-          "bytesInOutput": 1792
+          "bytesInOutput": 2389
         },
         "index.ts": {
           "bytesInOutput": 21
         }
       },
-      "bytes": 3102762
+      "bytes": 3109954
     },
     "dist/index.css.map": {
       "imports": [],

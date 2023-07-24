@@ -171,6 +171,7 @@
   },
   "meta": {
     "version": "1.0",
+    "name": "city",
     "image": "city1.png",
     "format": "RGBA8888",
     "size": { "w": 25, "h": 25 },

@@ -31,14 +31,15 @@ export default class ChunkManager {
   lastChunkY: number
   chunks: ChunkInstance = {}
 
-  constructor (scene: GameScene, fovWidth: number, fovHeight: number, startX: number, startY: number) {
+  /**
+   * Called in: ./index.ts (constructor)
+   */
+  constructor (scene: GameScene, startX: number, startY: number, fovWidth: number, fovHeight: number) {
     this.fovWidth = fovWidth
     this.fovHeight = fovHeight
     this.scene = scene
-    this.maxHorizontalChunks = 10 // @TODO: fancy math
-    this.maxVerticalChunks = 4 // @TODO: fancy math
 
-    const { x, y } = this.getChunk(startX, startY)
+    const { x, y } = this.getChunkIndex(startX, startY)
 
     this.lastChunkX = x
     this.lastChunkY = y
@@ -46,9 +47,9 @@ export default class ChunkManager {
   }
 
   /**
-   * 
+   * Get's the index of a chunk based on a camera's position
    */
-  getChunk (cameraX: number, cameraY: number): ChunkIndex {
+  getChunkIndex (cameraX: number, cameraY: number): ChunkIndex {
     return {
       x: Math.floor(cameraX / this.fovWidth) + 1,
       y: Math.floor(cameraY / this.fovHeight) + 1
@@ -58,7 +59,7 @@ export default class ChunkManager {
   /**
    * Returns the x/y coords of a chunk
    */
-  getXY (chunkX: number, chunkY: number): ChunkIndex {
+  getChunkCoords (chunkX: number, chunkY: number): ChunkIndex {
     return {
       x: (chunkX) * (this.fovWidth),
       y: (chunkY) * (this.fovHeight)
@@ -122,10 +123,12 @@ export default class ChunkManager {
   }
 
   /**
-   * 
+   * Updates whats chunks are availbile for display
+   * This is the beating heart of how the graphics engine deals with tile rendering!
+   * Called by: 
    */
   update (camera: Camera, city: City) {
-    const { x, y } = this.getChunk(camera.x, camera.y)
+    const { x, y } = this.getChunkIndex(camera.x, camera.y)
 
     if (x !== this.lastChunkX || y !== this.lastChunkY) {
       const chunkIndexs = this.getSurroundingChunks(x, y)
@@ -138,7 +141,7 @@ export default class ChunkManager {
 
         if (chunk.loaded === false) {
           // Schedule chunk for creation
-          const chunkCoords = this.getXY(x, y)
+          const chunkCoords = this.getChunkCoords(x, y)
           /*
            @TODO
           const { tileLayers, objects } = city.getChunk(new Rectangle(

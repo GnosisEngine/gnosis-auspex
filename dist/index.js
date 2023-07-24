@@ -73508,7 +73508,7 @@
       this.fovWidth = fovWidth;
       this.fovHeight = fovHeight;
     }
-    preload() {
+    async preload() {
       this.scene.loadAtlas(
         this.name,
         this.textureUrlsOrPaths,
@@ -74113,24 +74113,22 @@
   // src/city/chunkManager.ts
   var newChunkId = 1;
   var ChunkManager = class {
-    constructor(scene, fovWidth, fovHeight, startX, startY) {
+    constructor(scene, startX, startY, fovWidth, fovHeight) {
       this.chunks = {};
       this.fovWidth = fovWidth;
       this.fovHeight = fovHeight;
       this.scene = scene;
-      this.maxHorizontalChunks = 10;
-      this.maxVerticalChunks = 4;
-      const { x, y } = this.getChunk(startX, startY);
+      const { x, y } = this.getChunkIndex(startX, startY);
       this.lastChunkX = x;
       this.lastChunkY = y;
     }
-    getChunk(cameraX, cameraY) {
+    getChunkIndex(cameraX, cameraY) {
       return {
         x: Math.floor(cameraX / this.fovWidth) + 1,
         y: Math.floor(cameraY / this.fovHeight) + 1
       };
     }
-    getXY(chunkX, chunkY) {
+    getChunkCoords(chunkX, chunkY) {
       return {
         x: chunkX * this.fovWidth,
         y: chunkY * this.fovHeight
@@ -74180,8 +74178,8 @@
         topLeft
       ];
     }
-    update(cameraX, cameraY) {
-      const { x, y } = this.getChunk(cameraX, cameraY);
+    update(camera, city) {
+      const { x, y } = this.getChunkIndex(camera.x, camera.y);
       if (x !== this.lastChunkX || y !== this.lastChunkY) {
         const chunkIndexs = this.getSurroundingChunks(x, y);
         for (const chunkIndex in chunkIndexs) {
@@ -74189,7 +74187,7 @@
           const chunk = this.chunks[key] || new ChunkManager(this.scene, chunkIndex.x, chunkIndex.y, newChunkId);
           newChunkId += 1;
           if (chunk.loaded === false) {
-            const chunkCoords = this.getXY(x, y);
+            const chunkCoords = this.getChunkCoords(x, y);
             const { tileLayers, objects } = getChunkData(chunkCoords.x, chunkCoords.y);
             chunk.load(400, 200, tileLayers, objects);
             this.chucks[key] === chunk;
@@ -74334,18 +74332,30 @@
 
   // src/city/elements/road.ts
   var Road = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
   };
 
   // src/city/elements/subway.ts
   var Subway = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
   };
 
   // src/city/elements/subwayOnRamp.ts
   var SubwayOnRamp = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
   };
 
-  // src/city/elements/room.js
+  // src/city/elements/room.ts
   var Room = class extends Rectangle {
+    getTiles() {
+      return [];
+    }
   };
 
   // src/city/index.ts
@@ -74356,8 +74366,8 @@
     constructor(scene, options = CityOptions) {
       this.buildings = [];
       this.scene = scene;
-      this.options = options.fov.width;
-      this.chunks = new ChunkManager(this.scene, this.options.fov.width, this.options.fov.height);
+      this.options = options;
+      this.chunks = new ChunkManager(this.scene, this.options.fov.x, this.options.fov.y, this.options.fov.width, this.options.fov.height);
     }
     generate() {
       const count = {
@@ -74465,7 +74475,7 @@
         count
       };
     }
-    getChunk(buildings = this.buildings, camera) {
+    getChunk(camera, buildings = this.buildings) {
       const result = [];
       buildings.forEach((building) => {
         const width = this.calculateOverlap(building.x, building.width, camera.x, camera.width);
@@ -74483,8 +74493,8 @@
           height,
           width
         });
-        if (building.children) {
-          this.getChunk(building.children, camera).map((child) => result.push(child));
+        if (building.hasChildren()) {
+          this.getChunk(camera, building.children).forEach((child) => result.push(child));
         }
       });
       return result;
@@ -74535,7 +74545,32 @@
         this.events.once("ready", async () => {
           const scene = this.getScene(ExampleScene.key || config.initialCity);
           this.currentScene = scene;
-          const initialCity = new City(scene, this.config.width, this.config.height, this.config.startX, this.config.startY);
+          const initialCity = new City(scene, {
+            city: {
+              length: 500,
+              height: 100
+            },
+            buildings: {
+              minHeight: 100,
+              maxHeight: 120,
+              minWidth: 15,
+              maxWidth: 20,
+              minDistance: 0,
+              maxDistance: 6,
+              averageRoomPopulation: 4
+            },
+            subway: {
+              height: 6,
+              onrampDistance: 160
+            },
+            fov: {
+              width: this.config.width,
+              height: this.config.height,
+              x: this.config.startX,
+              y: this.config.startY
+            }
+          });
+          initialCity.generate();
           this.cities = [initialCity];
           const layer = scene.addLayer("test");
           const container = scene.addContainer("box", "test", 0, 0);
