@@ -26,7 +26,7 @@
       ]
     },
     "src/citytile/index.ts": {
-      "bytes": 14348,
+      "bytes": 14347,
       "imports": [
         {
           "path": "src/config.ts",
@@ -94,7 +94,7 @@
       ]
     },
     "src/scenes/example.ts": {
-      "bytes": 732,
+      "bytes": 1465,
       "imports": [
         {
           "path": "src/scenes/index.ts",
@@ -102,15 +102,6 @@
         },
         {
           "path": "src/config.ts",
-          "kind": "import-statement"
-        }
-      ]
-    },
-    "src/city/chunkManager.ts": {
-      "bytes": 4173,
-      "imports": [
-        {
-          "path": "src/city/chunkManager.ts",
           "kind": "import-statement"
         }
       ]
@@ -165,12 +156,8 @@
       ]
     },
     "src/city/index.ts": {
-      "bytes": 7436,
+      "bytes": 7312,
       "imports": [
-        {
-          "path": "src/city/chunkManager.ts",
-          "kind": "import-statement"
-        },
         {
           "path": "src/city/elements/road.ts",
           "kind": "import-statement"
@@ -198,7 +185,7 @@
       ]
     },
     "src/game.ts": {
-      "bytes": 3211,
+      "bytes": 3233,
       "imports": [
         {
           "path": "src/config.ts",
@@ -246,7 +233,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 9044306
+      "bytes": 9038732
     },
     "dist/index.js": {
       "imports": [],
@@ -287,10 +274,7 @@
           "bytesInOutput": 1749
         },
         "src/scenes/example.ts": {
-          "bytesInOutput": 475
-        },
-        "src/city/chunkManager.ts": {
-          "bytesInOutput": 2770
+          "bytesInOutput": 1153
         },
         "src/city/elements/index.ts": {
           "bytesInOutput": 2481
@@ -311,7 +295,7 @@
           "bytesInOutput": 84
         },
         "src/city/index.ts": {
-          "bytesInOutput": 5312
+          "bytesInOutput": 5173
         },
         "src/game.ts": {
           "bytesInOutput": 2389
@@ -320,7 +304,7 @@
           "bytesInOutput": 21
         }
       },
-      "bytes": 3109954
+      "bytes": 3107692
     },
     "dist/index.css.map": {
       "imports": [],

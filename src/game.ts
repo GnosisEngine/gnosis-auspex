@@ -11,7 +11,7 @@ export const gameConfig: GameConfig = {
   mode: Phaser.Scale.NONE,
   parent: 'viewport',
   type: Phaser.WEBGL,
-  scene: [ExampleScene],
+  scene: [ExampleScene], // <-- scenes go here
   physics: {
     default: 'arcade',
     arcade: {
@@ -23,7 +23,6 @@ export const gameConfig: GameConfig = {
   pixelArt: true,
   roundPixels: false,
   antialias: false,
-  initialCity: 'first',
   startX: 0,
   startY: 0
 };
@@ -49,41 +48,8 @@ export class GnosisGame extends Phaser.Game {
     return new Promise(async (resolve) => {
       this.events.once('ready', async () => {
         // Build initial scene
-        const scene = this.getScene(ExampleScene.key || config.initialCity)
+        const scene = this.getScene(ExampleScene.key) // @TODO make this dynamic
         this.currentScene = scene
-
-        // Start city
-        const initialCity = new City(scene, {
-          city: {
-            length: 500,
-            height: 100
-          },
-          buildings: {
-            minHeight: 100,
-            maxHeight: 120,
-            minWidth: 15,
-            maxWidth: 20,
-            minDistance: 0,
-            maxDistance: 6,
-            averageRoomPopulation: 4
-          },
-          subway: {
-            height: 6,
-            onrampDistance: 160,
-          },
-          fov: {
-            width: this.config.width,
-            height: this.config.height,
-            x: this.config.startX,
-            y: this.config.startY
-          }
-        })
-
-        // Build the city
-        // @TODO: probably have to do this async and with a progress bar eventually
-        initialCity.generate()
-
-        this.cities = [initialCity]
 
         // @TODO bring these into City
         const layer = scene.addLayer('test');

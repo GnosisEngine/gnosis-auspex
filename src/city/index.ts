@@ -1,5 +1,3 @@
-import type { ChunkRange } from './chunkManager'
-import ChunkManager from './chunkManager'
 import Camera from '../camera'
 import Road from './elements/road'
 import Subway from './elements/subway'
@@ -8,7 +6,15 @@ import SubwayOnRamp from './elements/subwayOnRamp'
 import Elevator from './elements/road'
 import Room from './elements/room'
 
-interface CityOptions {
+export interface ChunkRange {
+  target: Element
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+export interface CityOptions {
   city: {
     length: number
     height: number
@@ -41,7 +47,6 @@ function getRandomNumber(min, max) {
 }
 
 export default class City {
-  chunks: ChunkManager
   options: CityOptions
   buildings: Element[] = []
 
@@ -51,11 +56,8 @@ export default class City {
 	constructor (scene: Phaser.Scene, options = CityOptions) {
     this.scene = scene
     this.options = options
-
     // scene.game.config.width
-    // scene.game.config.height
-
-    this.chunks = new ChunkManager(this.scene, this.options.fov.x, this.options.fov.y, this.options.fov.width, this.options.fov.height)
+    // scene.game.config.height  
 	}
 
   /**
